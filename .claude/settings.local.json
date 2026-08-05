@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/claude-1000/-mnt-g-Documents-GitHub-precision-adder/**)",
+      "Bash(python3 -)",
+      "Bash(sed -i 's|{{24,12,{k\\\\[0\\\\]},{k\\\\[1\\\\]}}:<8}|{{24,12,{k[0]},{k[1]}}}|' study.py)",
+      "Bash(python3 study.py)",
+      "Bash(cp /tmp/claude-1000/-mnt-g-Documents-GitHub-precision-adder/*/scratchpad/study.py /mnt/g/Documents/GitHub/precision-adder/interval-study.py)",
+      "Bash(chmod +x /mnt/g/Documents/GitHub/precision-adder/interval-study.py)",
+      "Bash(python3 interval-study.py)",
+      "WebSearch",
+      "WebFetch(domain:doepfer.de)",
+      "WebFetch(domain:www2.doepfer.eu)",
+      "Bash(grep *)"
+    ]
+  }
+}
