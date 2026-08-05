@@ -1,1 +1,4 @@
 BOM_precision-adder-final-v2.2.numbers
+
+# local session archives (raw Claude Code transcripts)
+docs/*.jsonl
