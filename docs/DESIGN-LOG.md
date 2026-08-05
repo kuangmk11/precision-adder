@@ -112,7 +112,23 @@ is reused; only the two third values are new.
   ±12 V supply. The worst case for the intended sources has not been worked.
 - **Input summing resistor matching.** This is where 1V/oct accuracy is spent once
   there are three inputs. Doepfer specs 0.1% for the same reason. Not yet specified here.
-- **Panel layout.** 16 positions is confirmed as a count, but the physical
-  arrangement — 8 switches is double v2.2's — has not been drawn.
+- ~~**Panel layout.**~~ **Resolved** — drawn in [`v3-panel.svg`](v3-panel.svg), 1:1.
+  The v2.2 panel is already 8 rows x 2 columns = 16 positions, so v3 reuses the outline,
+  the mounting holes and every hole *position* from
+  `Gerber_precision-adder-new-better-panel`; only the diameter at each position is
+  reassigned between 6 mm jack and 5 mm toggle (8 of 18 change, 10 do not). Layout and
+  hole table are in the README's Panel section.
+
+  Two things fell out of drawing it. First, the silkscreen is the binding constraint,
+  not the holes: a 6 mm jack in a 10.6 mm column pitch leaves 0.7 mm to the panel edge,
+  so nothing can be labelled outboard of either column and every mark has to live in the
+  3.1 mm centre channel or in the vertical gaps. Second, the grouping is forced — three
+  summed inputs have to sit together, which means some rows carry two toggles, which
+  means the stage's `OUT` cannot share its row. Outputs therefore land in pairs, row 5
+  serving the two switch rows above it and row 8 the two above it.
+
+  **Still to check:** rows 3-4 and 6-7 place two toggles 12.4 mm apart vertically. v2.2
+  never stacked toggles, so that spacing is unproven here — 1:1 print and a finger test
+  before any fab order.
 - **`ON-ON-ON` variant.** Type 1 vs Type 2 differ in which pole combinations the
   three positions produce. Not yet pinned down for the quality switches.

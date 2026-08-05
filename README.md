@@ -76,6 +76,49 @@ The interval problem first: because a fifth plus a fourth is exactly an octave (
 
 Same density as the board already built. No rotary, no new mechanical problem.
 
+<img src="docs/v3-panel.svg" width=210>
+
+[`docs/v3-panel.svg`](docs/v3-panel.svg) is drawn 1:1 (1 SVG unit = 1 mm, 20 x 128.499 mm).
+The grey rings are hardware footprints — 8 mm Thonkiconn nut, 7.5 mm toggle nut — shown
+for clearance checking, not artwork.
+
+**The 16 hole positions are v2.2's, unchanged.** The built panel already has 8 rows x 2
+columns, which is exactly what v3 needs, so the outline, the mounting holes and every
+hole *position* carry over; only the diameter at each position is reassigned between
+6 mm jack and 5 mm toggle. Eight of the eighteen holes change size, ten do not.
+
+| Row | Y (mm) | Left — X 4.699 | Right — X 15.299 |
+|---:|---:|---|---|
+| 1 | 113.149 | `IN 1` — Ø6 | `IN 2` — Ø6 |
+| 2 | 100.749 | `IN 3` — Ø6 | `SUM` (`PT`) — Ø6 |
+| 3 | 84.749 | `OCT` +/o/− — Ø5 (ON-OFF-ON) | `2` / `1` — Ø5 (ON-ON) |
+| 4 | 72.349 | `3rd` +/o/− — Ø5 (ON-OFF-ON) | `4` / `M3` / `m3` — Ø5 (ON-ON-ON) |
+| 5 | 56.449 | `OUT 1` — Ø6 | `OUT 2` — Ø6 |
+| 6 | 44.049 | `3rd` +/o/− — Ø5 (ON-OFF-ON) | `4` / `M3` / `m3` — Ø5 (ON-ON-ON) |
+| 7 | 27.849 | `EXT` +/o/− — Ø5 (ON-OFF-ON) | `5` / `M3` / `m3` — Ø5 (ON-ON-ON) |
+| 8 | 15.449 | `OUT 3` — Ø6 | `OUT 4` — Ø6 |
+
+Mounting holes Ø3.2 at X 7.499, Y 3.000 and 125.500. Origin bottom-left, as the gerbers
+have it; the SVG flips Y (`y_svg = 128.499 − y_gerber`).
+
+Reading it: **row 5 carries the outputs of the two switch rows above it, row 8 the two
+above it.** The left column is always polarity (`+` above the toggle, `−` below, centre
+detent off) and the right column is always the selector, so there is one rule for the
+whole panel. `PT` is silkscreened `SUM`, which is what it is once three inputs are
+summed at the front.
+
+The layout is constrained by where text can physically go. A 6 mm jack in a 10.6 mm
+column pitch leaves 0.7 mm to the panel edge, so no silkscreen fits outboard of either
+column — every label lives in the centre channel or in the vertical gaps. That is why
+input names sit below their jacks, output names above theirs (the gap below `OUT1`/`OUT2`
+is needed by the next stage's label), and stage names sit slightly right of centre,
+clear of the polarity marks.
+
+**One thing the drawing cannot settle:** rows 3-4 and 6-7 put two toggles 12.4 mm apart
+vertically. v2.2 has no two toggles stacked, so this spacing is unproven on this
+hardware. Print the SVG at 100%, check it measures 20 x 128.5 mm, and check finger
+clearance on those pairs before ordering anything.
+
 ### Stages
 
 | Stage | Control | Selects | Values | Volts |

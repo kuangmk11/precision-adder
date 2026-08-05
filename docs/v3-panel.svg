@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20mm" height="128.499mm" viewBox="0 0 20 128.499">
+  <title>Precision Adder v3 — panel mockup, 4 HP, 1:1</title>
+  <desc>To scale: 1 user unit = 1 mm. Hole positions are identical to the built v2.2
+  panel (Gerber_precision-adder-new-better-panel, Drill NPTH/PTH); only the diameter at
+  each position is reassigned between 6 mm jack and 5 mm toggle. Y is flipped from the
+  gerber's bottom-left origin: y_svg = 128.499 - y_gerber. Grey rings are hardware
+  footprints (8 mm Thonkiconn nut, 7.5 mm toggle nut) shown for clearance checking, not
+  artwork.</desc>
+
+  <g font-family="Helvetica, Arial, sans-serif" fill="#e8e8e8">
+
+    <!-- panel -->
+    <rect x="0" y="0" width="20" height="128.499" fill="#161616" stroke="#3c3c3c" stroke-width="0.12"/>
+
+    <!-- ================= hardware footprints (nut outlines) ================= -->
+    <g fill="#242424" stroke="#454545" stroke-width="0.1">
+      <!-- row 1 jacks -->
+      <circle cx="4.699" cy="15.350" r="4"/>
+      <circle cx="15.299" cy="15.350" r="4"/>
+      <!-- row 2 jacks -->
+      <circle cx="4.699" cy="27.750" r="4"/>
+      <circle cx="15.299" cy="27.750" r="4"/>
+      <!-- row 3 toggles -->
+      <circle cx="4.699" cy="43.750" r="3.75"/>
+      <circle cx="15.299" cy="43.750" r="3.75"/>
+      <!-- row 4 toggles -->
+      <circle cx="4.699" cy="56.150" r="3.75"/>
+      <circle cx="15.299" cy="56.150" r="3.75"/>
+      <!-- row 5 jacks -->
+      <circle cx="4.699" cy="72.050" r="4"/>
+      <circle cx="15.299" cy="72.050" r="4"/>
+      <!-- row 6 toggles -->
+      <circle cx="4.699" cy="84.450" r="3.75"/>
+      <circle cx="15.299" cy="84.450" r="3.75"/>
+      <!-- row 7 toggles -->
+      <circle cx="4.699" cy="100.650" r="3.75"/>
+      <circle cx="15.299" cy="100.650" r="3.75"/>
+      <!-- row 8 jacks -->
+      <circle cx="4.699" cy="113.050" r="4"/>
+      <circle cx="15.299" cy="113.050" r="4"/>
+    </g>
+
+    <!-- ================= drilled holes ================= -->
+    <!-- mounting, 3.2 mm PTH -->
+    <g fill="#000000">
+      <circle cx="7.499" cy="2.999" r="1.6"/>
+      <circle cx="7.499" cy="125.499" r="1.6"/>
+    </g>
+    <!-- jacks, 6.0 mm NPTH -->
+    <g fill="#000000">
+      <circle cx="4.699" cy="15.350" r="3"/>
+      <circle cx="15.299" cy="15.350" r="3"/>
+      <circle cx="4.699" cy="27.750" r="3"/>
+      <circle cx="15.299" cy="27.750" r="3"/>
+      <circle cx="4.699" cy="72.050" r="3"/>
+      <circle cx="15.299" cy="72.050" r="3"/>
+      <circle cx="4.699" cy="113.050" r="3"/>
+      <circle cx="15.299" cy="113.050" r="3"/>
+    </g>
+    <!-- toggles, 5.0 mm NPTH -->
+    <g fill="#000000">
+      <circle cx="4.699" cy="43.750" r="2.5"/>
+      <circle cx="15.299" cy="43.750" r="2.5"/>
+      <circle cx="4.699" cy="56.150" r="2.5"/>
+      <circle cx="15.299" cy="56.150" r="2.5"/>
+      <circle cx="4.699" cy="84.450" r="2.5"/>
+      <circle cx="15.299" cy="84.450" r="2.5"/>
+      <circle cx="4.699" cy="100.650" r="2.5"/>
+      <circle cx="15.299" cy="100.650" r="2.5"/>
+    </g>
+
+    <!-- ================= section rules ================= -->
+    <g stroke="#5a5a5a" stroke-width="0.15" opacity="0.7">
+      <line x1="3" y1="36.2" x2="17" y2="36.2"/>
+      <line x1="3" y1="63.6" x2="17" y2="63.6"/>
+      <line x1="3" y1="92.0" x2="17" y2="92.0"/>
+    </g>
+
+    <!-- ================= silkscreen ================= -->
+    <text x="10" y="8.8" font-size="2.9" letter-spacing="0.4" text-anchor="middle">ADDER</text>
+
+    <!-- inputs: names below the jack -->
+    <g font-size="1.6" letter-spacing="0.15" text-anchor="middle">
+      <text x="4.699"  y="21.9">IN 1</text>
+      <text x="15.299" y="21.9">IN 2</text>
+      <text x="4.699"  y="34.3">IN 3</text>
+      <text x="15.299" y="34.3">SUM</text>
+    </g>
+
+    <!-- outputs: names above the jack -->
+    <g font-size="1.6" letter-spacing="0.15" text-anchor="middle">
+      <text x="4.699"  y="67.7">OUT 1</text>
+      <text x="15.299" y="67.7">OUT 2</text>
+      <text x="4.699"  y="108.7">OUT 3</text>
+      <text x="15.299" y="108.7">OUT 4</text>
+    </g>
+
+    <!-- stage names, above each switch row. Centred on 11.4, not 10, to clear the
+         polarity marks on the left column - at 10 they read as "+OCTAVE". -->
+    <g text-anchor="middle" fill="#cfcfcf">
+      <text x="11.4" y="38.3" font-size="1.75" letter-spacing="0.35">OCTAVE</text>
+      <text x="11.4" y="50.6" font-size="1.5"  letter-spacing="0.25">3rd</text>
+      <text x="11.4" y="78.6" font-size="1.5"  letter-spacing="0.25">3rd</text>
+      <text x="11.4" y="94.9" font-size="1.75" letter-spacing="0.35">5th/EXT</text>
+    </g>
+
+    <!-- polarity, left column: + above the nut, - below, centre detent = off -->
+    <g font-size="1.6" text-anchor="middle">
+      <text x="4.699" y="39.9">+</text>
+      <text x="4.699" y="48.9">&#8722;</text>
+      <text x="4.699" y="52.3">+</text>
+      <text x="4.699" y="61.3">&#8722;</text>
+      <text x="4.699" y="80.6">+</text>
+      <text x="4.699" y="89.6">&#8722;</text>
+      <text x="4.699" y="96.8">+</text>
+      <text x="4.699" y="105.8">&#8722;</text>
+    </g>
+
+    <!-- selector marks, right column: stacked in the centre channel -->
+    <g font-size="1.4" text-anchor="end" fill="#cfcfcf">
+      <!-- octave magnitude, ON-ON -->
+      <text x="11.3" y="42.6">2</text>
+      <text x="11.3" y="46.3">1</text>
+      <!-- quality, ON-ON-ON -->
+      <text x="11.3" y="54.6">4</text>
+      <text x="11.3" y="56.9">M3</text>
+      <text x="11.3" y="59.2">m3</text>
+      <text x="11.3" y="82.9">4</text>
+      <text x="11.3" y="85.2">M3</text>
+      <text x="11.3" y="87.5">m3</text>
+      <text x="11.3" y="99.1">5</text>
+      <text x="11.3" y="101.4">M3</text>
+      <text x="11.3" y="103.7">m3</text>
+    </g>
+
+    <text x="10" y="119.6" font-size="1.4" letter-spacing="0.2" text-anchor="middle" fill="#cfcfcf">v3</text>
+    <text x="10" y="122.8" font-size="1.9" letter-spacing="0.3" text-anchor="middle">508</text>
+
+  </g>
+</svg>
