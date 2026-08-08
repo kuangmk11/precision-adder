@@ -517,6 +517,61 @@ def check_function():
     return fails
 
 
+# Taiway's contact table for the ON-ON-ON, position by position. Variant 1 is
+# the published MDP-6 sequence; variant 2 is the other way the centre detent
+# can resolve, kept so the wiring can be switched if a different part is used.
+CONTACTS = {
+    1: [[(2, 3), (5, 6)], [(2, 3), (5, 4)], [(2, 1), (5, 4)]],
+    2: [[(2, 3), (5, 6)], [(2, 1), (5, 6)], [(2, 1), (5, 4)]],
+}
+
+
+def check_selector():
+    """Simulate each selector through its three positions from the contact
+    table, and confirm the output lands on the intended tap - exactly one tap,
+    never two shorted together.
+
+    This is what makes the cascaded-pole trick trustworthy: the wiring is not
+    obviously right by inspection, and getting it wrong shorts two points of a
+    resistor ladder rather than failing loudly.
+    """
+    fails = []
+    for st in STAGES:
+        if st["detent"] is None:
+            continue
+        n = st["n"]
+        sw = next((p for p in parts if p["ref"] == f"SW{n}B"), None)
+        if sw is None:
+            fails.append(f"stage {n} has no selector")
+            continue
+        pin_net = {int(k): v for k, v in sw["conns"].items()}
+        taps = {st["up"], st["detent"], st["down"]}
+        want = [st["up"], st["detent"], st["down"]]
+
+        for pos, closed in enumerate(CONTACTS[ONONON_VARIANT]):
+            group = {2}                       # pole A common is the output
+            for _ in range(len(closed)):      # propagate through the cascade
+                for a, b in closed:
+                    na, nb = pin_net.get(a), pin_net.get(b)
+                    if a in group or b in group or (na and na == pin_net.get(
+                            next(iter(group)))):
+                        group |= {a, b} if (a in group or b in group) else set()
+                # a pin links to another pin sharing its net (the pole link)
+                for p1 in list(group):
+                    for p2, nn in pin_net.items():
+                        if nn == pin_net.get(p1) and p2 not in group:
+                            group.add(p2)
+
+            reached = {pin_net[p] for p in group if pin_net.get(p) in taps}
+            if len(reached) != 1:
+                fails.append(f"stage {n} position {pos + 1} reaches "
+                             f"{sorted(reached) or 'no tap'}; wants exactly one")
+            elif reached != {want[pos]}:
+                fails.append(f"stage {n} position {pos + 1} selects "
+                             f"{reached.pop()}, wants {want[pos]}")
+    return fails
+
+
 def check_panel_agreement():
     """The silkscreen and the wiring must say the same thing.
 
@@ -813,7 +868,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators() + check_function() + check_panel_agreement()
+    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector()
 
     print("design")
     for line in report:

@@ -262,19 +262,27 @@ throws is a tap outright, the other feeds pole B's common, and pole B picks betw
 remaining two. Tying the commons together instead would short two ladder taps in every
 position.
 
-**One thing to measure before ordering a board.** Taiway's datasheet documents `MDP-1` to
-`MDP-5` only — `MDP-6` is a custom code and its contact sequence is not published. Two
-sequences are possible:
+`MDP-6`'s contact sequence, from Taiway:
 
-```
-variant 1   up: 2-3, 5-6    centre: 2-3, 5-4    down: 2-1, 5-4
-variant 2   up: 2-3, 5-6    centre: 2-1, 5-6    down: 2-1, 5-4
-```
+| Position | Contacts |
+|---|---|
+| 1 | `2-3, 5-6` |
+| 2 (centre) | `2-3, 5-4` |
+| 3 | `2-1, 5-4` |
 
-They differ in which pole moves at which detent, and so in which of pins 1/3 carries a tap
-and which links to pole B. Put a meter on continuity from pin 2 to pins 1 and 3 through the
-three positions; it takes under a minute. Then set `ONONON_VARIANT` in
-`tools/gen_schematic.py` — currently **1** — and regenerate.
+`ONONON_VARIANT = 1` in `tools/gen_schematic.py` encodes exactly this. `check_selector()`
+walks each selector through all three positions from that table and asserts the output
+reaches the intended tap and **exactly one** tap — the property that makes the cascade
+trustworthy, since getting it wrong shorts two points of a resistor ladder rather than
+failing loudly. Setting the variant to 2 makes it fail at the centre detent, as it should.
+
+PC-mount terminals are on a **5.08 × 2.54 mm** grid, six pins, numbered 6‑5‑4 down one
+column and 3‑2‑1 down the other.
+
+The one thing still worth a bench check is *orientation*: which physical lever position is
+the table's position 1 depends on how the switch sits in its footprint. If up and down come
+out reversed, rotate the part 180° or swap `up` and `down` for that stage — the panel
+cross-check will keep the silkscreen honest either way.
 
 The generator additionally checks, before writing: every `lib_id` resolves as a full
 `library:name` string and every instantiated unit has a matching body; every pin coordinate
