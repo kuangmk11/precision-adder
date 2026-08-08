@@ -159,6 +159,18 @@ def rounded_box(x0, y0, x1, y1, r, gaps=()):
     silk_arcs.append((x0 + r, y1 - r, r, 90, 180, LINE_W))
 
 
+def centre_mark(glyph, col, x, y, x0, x1):
+    """A three-position toggle's centre value, in the strip between its nut and
+    the box's inboard edge - about 1.2 mm, the only clear width at that height.
+    One character fits, two do not, which is why the centre values are single
+    glyphs. Kept inside the box so it belongs to a group unambiguously."""
+    if col == "L":
+        lo, hi = x + TOGGLE_NUT / 2, x1 - LINE_W / 2
+    else:
+        lo, hi = x0 + LINE_W / 2, x - TOGGLE_NUT / 2
+    text(glyph, (lo + hi) / 2, y + DETENT_SIZE / 2, DETENT_SIZE, PITCH_DETENT)
+
+
 def arrow(pts, head=0.9):
     """Polyline with a chevron head at the last point. 0/90/45 segments only."""
     for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
@@ -227,9 +239,13 @@ def build():
         cuts_circles.append((x, t2, TOGGLE_D / 2))
         cuts_circles.append((x, jy, JACK_D / 2))
 
-        # polarity: + above, - below. Centre detent is off and unmarked.
+        # Polarity: + above, - below, 0 at the centre detent. The 0 is not
+        # decoration - the selector shows a value at all times, so without it
+        # the panel reads as though a stage adds its interval even when the
+        # stage is switched off.
         text("+", x, t1 - MARK_UP, LABEL_SIZE, PITCH_LABEL)
         text("−", x, t1 + MARK_DOWN, LABEL_SIZE, PITCH_LABEL)
+        centre_mark("0", g["col"], x, t1, x0, x1)
 
         # selector: value at each throw
         text(g["up"], x, t2 - MARK_UP, LABEL_SIZE, PITCH_LABEL)
@@ -247,18 +263,12 @@ def build():
         if g["row"] == 0 and g["col"] == "R":
             gaps.append(("bottom", x - 0.7, x + 0.7))
 
-        # The centre detent's value goes between the toggle nut and the box's
-        # inboard edge - the only clear width left at that height, and about
-        # 1.2 mm of it. It stays *inside* the box: straddling the edge put the
-        # two columns' marks 1.6 mm apart across the centre line, where "4" and
-        # "5" read as the number 45 and neither belongs to a group.
+        # The selector's centre value, same strip. Marks stayed inside the box
+        # rather than straddling its edge: straddling put the two columns' marks
+        # 1.6 mm apart across the centre line, where "4" and "5" read as the
+        # number 45 and neither belonged to a group.
         if g["detent"]:
-            if g["col"] == "L":
-                lo, hi = x + TOGGLE_NUT / 2, x1 - LINE_W / 2
-            else:
-                lo, hi = x0 + LINE_W / 2, x - TOGGLE_NUT / 2
-            text(g["detent"], (lo + hi) / 2, t2 + DETENT_SIZE / 2,
-                 DETENT_SIZE, PITCH_DETENT)
+            centre_mark(g["detent"], g["col"], x, t2, x0, x1)
 
         rounded_box(x0, top, x1, top + BOX_H, BOX_R, gaps)
         text(g["name"], x, top + LABEL_SIZE / 2, LABEL_SIZE, PITCH_LABEL)

@@ -165,6 +165,15 @@ is reused; only the two third values are new.
   the bottom pair. The middle leg is a dogleg rather than a diagonal — 4 mm of band
   against 10.8 mm of column pitch is a 15° line, and house routing is 0/90/45.
 
+  **The polarity centre is marked `0`,** added after the panel was otherwise settled. The
+  centre was originally left blank on the grounds that an unmarked detent reads as "off".
+  It does not: a selector displays a value at all times, so a stage whose selector rests on
+  the 4th reads as adding a fourth even with its polarity centred. The author misread his
+  own panel that way, which is about as clear a test result as this kind of question gets.
+  One rule now covers both toggles in a group — a three-position toggle's centre value goes
+  in the strip between its nut and the box edge — and `OCT`'s two-position magnitude switch
+  correctly has none.
+
   **Still to check:** the two toggles in a group are 13.0 mm apart, leaving 5.5 mm
   between nuts — better than the 4.9 mm of the row-based draft, still unproven here since
   v2.2 stacks no toggles. 1:1 print and a finger test before any fab order. And no DRC

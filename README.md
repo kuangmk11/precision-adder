@@ -127,8 +127,19 @@ stage it belongs to, and the style guide's rule against a second closed circle i
 keeps `SUM`'s ring meaningful. If you would rather every output ring, it is one line in the
 generator.
 
-Within a group: `+` above the polarity toggle and `−` below it, centre detent off. The
-selector's two throws are labelled above and below it the same way.
+Within a group: `+` above the polarity toggle, `−` below it, and **`0` beside its centre
+detent**. The selector's two throws are labelled above and below it the same way.
+
+That `0` matters more than it looks. A selector displays a value at all times, so without
+it the panel reads as though a stage adds its interval even when the stage is switched off
+— and the polarity toggle's centre, not the selector's, is what turns a stage off. One rule
+covers both toggles now: **a three-position toggle's centre value is marked in the strip
+between its nut and the box edge.** `OCT`'s magnitude switch is two-position and has no
+centre, so it carries no such mark.
+
+It is also why a plain fifth is one flip. At rest every polarity toggle is centred and the
+module passes through untouched, whatever the selectors show; move stage 4's polarity to
+`+` and its selector is already sitting on the `5`.
 
 **The selector's centre detent carries the stage's odd interval** — the 4th on the two
 `3RD` stages, the 5th on `5TH` — and the two throws are the two thirds, `MAJ` and `MIN`.

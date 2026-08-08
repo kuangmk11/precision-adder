@@ -132,6 +132,7 @@
       <text x="17.1" y="35.15" font-size="1.6">M</text>
       <text x="4.6" y="40.55" font-size="1.6">+</text>
       <text x="4.6" y="50.65" font-size="1.6">&#8722;</text>
+      <text x="8.9125" y="45.3" font-size="1.0">0</text>
       <text x="4.6" y="53.55" font-size="1.6">1</text>
       <text x="4.6" y="63.65" font-size="1.6">2</text>
       <text x="2.05" y="74.95" font-size="1.6">O</text>
@@ -143,6 +144,7 @@
       <text x="6.3" y="37.6" font-size="1.6">T</text>
       <text x="15.4" y="40.55" font-size="1.6">+</text>
       <text x="15.4" y="50.65" font-size="1.6">&#8722;</text>
+      <text x="11.0875" y="45.3" font-size="1.0">0</text>
       <text x="13.7" y="53.55" font-size="1.6">M</text>
       <text x="15.4" y="53.55" font-size="1.6">A</text>
       <text x="17.1" y="53.55" font-size="1.6">J</text>
@@ -159,6 +161,7 @@
       <text x="17.1" y="37.6" font-size="1.6">D</text>
       <text x="4.6" y="83.75" font-size="1.6">+</text>
       <text x="4.6" y="93.85" font-size="1.6">&#8722;</text>
+      <text x="8.9125" y="88.5" font-size="1.0">0</text>
       <text x="2.9" y="96.75" font-size="1.6">M</text>
       <text x="4.6" y="96.75" font-size="1.6">A</text>
       <text x="6.3" y="96.75" font-size="1.6">J</text>
@@ -175,6 +178,7 @@
       <text x="6.3" y="80.8" font-size="1.6">D</text>
       <text x="15.4" y="83.75" font-size="1.6">+</text>
       <text x="15.4" y="93.85" font-size="1.6">&#8722;</text>
+      <text x="11.0875" y="88.5" font-size="1.0">0</text>
       <text x="13.7" y="96.75" font-size="1.6">M</text>
       <text x="15.4" y="96.75" font-size="1.6">A</text>
       <text x="17.1" y="96.75" font-size="1.6">J</text>
