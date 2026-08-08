@@ -24,6 +24,7 @@ import uuid
 SHEET_UUID = "8f1c0b1e-0000-4000-8000-000000000001"
 PROJECT = "v3-adder"
 PAPER = "A2"
+LIB = "adder"      # library prefix; lib_symbols entries must carry it too
 
 # --------------------------------------------------------------------------
 # symbol definitions -- deliberately plain bodies; pins are what matter
@@ -32,42 +33,81 @@ PAPER = "A2"
 # and (x, y) is the electrical connection point. `angle` points from that
 # connection point *into* the body.
 
+# "art" is a list of (kind, *args) in symbol space:
+#   ("rect", x0, y0, x1, y1) / ("poly", [(x, y), ...]) / ("circle", cx, cy, r)
+# A pin's (x, y) is its connection point and `angle` points into the body, so a
+# pin of length 2.54 at (-3.81, 0, 0) has its body end at (-1.27, 0).
+
+def _dot(x, y):
+    return ("circle", x, y, 0.508)
+
+
 SYMS = {
-    "R": dict(rect=(-1.016, -2.54, 1.016, 2.54), ref="R",
+    "R": dict(ref="R", hide_names=True,
+              art=[("rect", -1.016, -2.54, 1.016, 2.54)],
               pins=[("1", "~", 0, 3.81, 270, "passive"),
                     ("2", "~", 0, -3.81, 90, "passive")]),
-    "C": dict(caps=True, ref="C",
+    "C": dict(ref="C", hide_names=True,
+              art=[("poly", [(-2.54, 0.762), (2.54, 0.762)]),
+                   ("poly", [(-2.54, -0.762), (2.54, -0.762)])],
               pins=[("1", "~", 0, 3.81, 270, "passive"),
                     ("2", "~", 0, -3.81, 90, "passive")]),
-    "POT": dict(rect=(-1.016, -2.54, 1.016, 2.54), ref="VR",
+    "POT": dict(ref="VR",
+                art=[("rect", -1.016, -2.54, 1.016, 2.54),
+                     ("poly", [(1.27, 0), (2.54, 0.762), (2.54, -0.762),
+                               (1.27, 0)])],
                 pins=[("1", "~", 0, 3.81, 270, "passive"),
                       ("2", "W", 3.81, 0, 180, "passive"),
                       ("3", "~", 0, -3.81, 90, "passive")]),
-    "D": dict(rect=(-1.27, -1.27, 1.27, 1.27), ref="D",
+    # cathode bar on the left, so pin 1 (K) is the barred end
+    "D": dict(ref="D", hide_names=True,
+              art=[("poly", [(1.27, 1.27), (1.27, -1.27), (-1.27, 0),
+                             (1.27, 1.27)]),
+                   ("poly", [(-1.27, 1.27), (-1.27, -1.27)])],
               pins=[("1", "K", -3.81, 0, 0, "passive"),
                     ("2", "A", 3.81, 0, 180, "passive")]),
-    "FB": dict(rect=(-2.54, -1.27, 2.54, 1.27), ref="FB",
+    "FB": dict(ref="FB", hide_names=True,
+               art=[("rect", -2.54, -1.27, 2.54, 1.27),
+                    ("poly", [(-2.54, 0), (2.54, 0)])],
                pins=[("1", "~", -5.08, 0, 0, "passive"),
                      ("2", "~", 5.08, 0, 180, "passive")]),
-    "REG": dict(rect=(-5.08, -5.08, 5.08, 5.08), ref="U",
+    "REG": dict(ref="U",
+                art=[("rect", -5.08, -5.08, 5.08, 5.08)],
                 pins=[("1", "IN", -7.62, 2.54, 0, "power_in"),
                       ("2", "GND", 0, -7.62, 90, "power_in"),
                       ("3", "OUT", 7.62, 2.54, 180, "power_out")]),
-    "JACK": dict(rect=(-2.54, -3.81, 2.54, 3.81), ref="J",
+    # a jack: sleeve bar down the left, tip contact springing off it
+    "JACK": dict(ref="J",
+                 art=[("poly", [(-2.54, 3.81), (-2.54, -3.81)]),
+                      ("poly", [(-2.54, 2.54), (0, 2.54), (1.27, 3.302)]),
+                      ("poly", [(-2.54, -2.54), (1.27, -2.54)]),
+                      ("poly", [(1.27, -1.778), (2.54, -2.54),
+                                (1.27, -3.302)])],
                  pins=[("1", "T", -5.08, 2.54, 0, "passive"),
                        ("2", "S", -5.08, -2.54, 0, "passive")]),
-    "SW_ONOFFON": dict(rect=(-2.54, -5.08, 2.54, 5.08), ref="SW",
+    # lever drawn resting on throw A; the centre position is open
+    "SW_ONOFFON": dict(ref="SW",
+                       art=[_dot(-2.54, 2.54), _dot(-2.54, -2.54),
+                            _dot(2.54, 0),
+                            ("poly", [(2.54, 0), (-2.032, 2.032)])],
                        pins=[("1", "A", -5.08, 2.54, 0, "passive"),
                              ("2", "COM", 5.08, 0, 180, "passive"),
                              ("3", "B", -5.08, -2.54, 0, "passive")]),
-    "SW_1P3T": dict(rect=(-2.54, -6.35, 2.54, 6.35), ref="SW",
+    "SW_1P3T": dict(ref="SW",
+                    art=[_dot(-2.54, 3.81), _dot(-2.54, 0), _dot(-2.54, -3.81),
+                         _dot(2.54, 0),
+                         ("poly", [(2.54, 0), (-2.032, 3.048)])],
                     pins=[("1", "A", -5.08, 3.81, 0, "passive"),
                           ("2", "B", -5.08, 0, 0, "passive"),
                           ("3", "C", -5.08, -3.81, 0, "passive"),
                           ("4", "COM", 5.08, 0, 180, "passive")]),
-    "HDR2x5": dict(rect=(-2.54, -12.7, 2.54, 12.7), ref="P",
-                   pins=[(str(i + 1), f"P{i+1}", -5.08, 10.16 - 2.54 * i, 0,
-                          "passive") for i in range(10)]),
+    # laid out as the physical 2x5: odd pins down the left, even down the right
+    "HDR2x5": dict(ref="P",
+                   art=[("rect", -2.54, -6.35, 2.54, 6.35)],
+                   pins=[(str(2 * r + 1), f"P{2*r+1}", -5.08, 5.08 - 2.54 * r,
+                          0, "passive") for r in range(5)]
+                        + [(str(2 * r + 2), f"P{2*r+2}", 5.08, 5.08 - 2.54 * r,
+                            180, "passive") for r in range(5)]),
 }
 
 # 4-channel op-amp: units 1-4 are amplifiers, unit 5 carries the supply pins.
@@ -385,24 +425,42 @@ def eff(hide=False, size=1.27):
     return f'(effects (font (size {size} {size}))' + (' hide' if hide else '') + ')'
 
 
+STROKE = "(stroke (width 0.254) (type default)) (fill (type none))"
+
+
+def art_sexpr(item):
+    kind = item[0]
+    if kind == "rect":
+        _, x0, y0, x1, y1 = item
+        return f'        (rectangle (start {x0} {y0}) (end {x1} {y1}) {STROKE})'
+    if kind == "circle":
+        _, cx, cy, r = item
+        return f'        (circle (center {cx} {cy}) (radius {r}) {STROKE})'
+    pts = " ".join(f"(xy {x} {y})" for x, y in item[1])
+    return f'        (polyline (pts {pts}) {STROKE})'
+
+
 def sym_body(name):
-    """lib_symbols entry."""
-    o = [f'    (symbol "{name}" (pin_names (offset 0.254)) (in_bom yes) (on_board yes)']
-    o.append(f'      (property "Reference" "{SYMS[name]["ref"]}" (at 0 5.08 0) {eff()})')
+    """lib_symbols entry.
+
+    The entry is named with the FULL lib_id, "adder:R" and not "R" - KiCad keys
+    lib_symbols on the whole LIBRARY:NAME string, and a bare name leaves every
+    instance unresolved and drawn as a box with "??" in it.
+    """
+    d = SYMS[name]
+    # two-pin passives hide both, as the stock KiCad symbols do
+    plain = d.get("hide_names")
+    names = " hide" if plain else ""
+    numbers = "(pin_numbers hide) " if plain else ""
+    o = [f'    (symbol "{LIB}:{name}" {numbers}(pin_names (offset 0.254){names}) '
+         '(in_bom yes) (on_board yes)']
+    o.append(f'      (property "Reference" "{d["ref"]}" (at 0 5.08 0) {eff()})')
     o.append(f'      (property "Value" "{name}" (at 0 -5.08 0) {eff()})')
     o.append(f'      (property "Footprint" "" (at 0 0 0) {eff(True)})')
     o.append(f'      (property "Datasheet" "~" (at 0 0 0) {eff(True)})')
     o.append(f'      (symbol "{name}_0_1"')
-    d = SYMS[name]
-    if d.get("caps"):
-        o.append('        (polyline (pts (xy -2.54 0.762) (xy 2.54 0.762)) '
-                 '(stroke (width 0.508) (type default)) (fill (type none)))')
-        o.append('        (polyline (pts (xy -2.54 -0.762) (xy 2.54 -0.762)) '
-                 '(stroke (width 0.508) (type default)) (fill (type none)))')
-    else:
-        x0, y0, x1, y1 = d["rect"]
-        o.append(f'        (rectangle (start {x0} {y0}) (end {x1} {y1}) '
-                 '(stroke (width 0.254) (type default)) (fill (type none)))')
+    for item in d["art"]:
+        o.append(art_sexpr(item))
     o.append('      )')
     o.append(f'      (symbol "{name}_1_1"')
     for num, pname, px, py, ang, et in d["pins"]:
@@ -414,7 +472,8 @@ def sym_body(name):
 
 
 def opamp_body():
-    o = ['    (symbol "OPA4196" (pin_names (offset 0.254)) (in_bom yes) (on_board yes)',
+    o = [f'    (symbol "{LIB}:OPA4196" (pin_names (offset 0.254)) '
+         '(in_bom yes) (on_board yes)',
          f'      (property "Reference" "U" (at 0 7.62 0) {eff()})',
          f'      (property "Value" "OPA4196" (at 0 -7.62 0) {eff()})',
          f'      (property "Footprint" "" (at 0 0 0) {eff(True)})',
@@ -463,7 +522,7 @@ def write(path):
     o.append('  )')
 
     for p in parts:
-        lib = "adder:OPA4196" if p["sym"] == "OPA4196" else f'adder:{p["sym"]}'
+        lib = f'{LIB}:{p["sym"]}'
         o.append(f'  (symbol (lib_id "{lib}") (at {p["x"]} {p["y"]} 0) '
                  f'(unit {p["unit"]}) (in_bom yes) (on_board yes) (dnp no)')
         o.append(f'    (uuid "{uid()}")')

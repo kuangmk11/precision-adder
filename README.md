@@ -226,9 +226,11 @@ trimmer take up the difference. What does matter is the ratio between the small 
 (1k, 3k, 12k), and that is where hand-matched parts earn their keep.
 
 What is verified: the file parses and re-serialises through an independent KiCad s-expression
-library; every `lib_id` resolves; no pin is unconnected; no net has fewer than two
-connections; no reference is used twice and no pin appears on two nets; and every ladder tap
-computes to its interval voltage exactly with the trimmer centred.
+library; every `lib_id` resolves **as a full `library:name` string**, and every instantiated
+unit has a matching body; all 267 pin coordinates, read back out of the written file, land
+exactly on a wire endpoint, so the label stubs really do attach; no pin is unconnected; no
+net has fewer than two connections; no reference is used twice and no pin appears on two
+nets; and every ladder tap computes to its interval voltage exactly with the trimmer centred.
 
 What is **not** verified: no ERC has been run and nothing has opened this file in KiCad,
 because KiCad is not installed on the machine that generated it. Open it and run ERC before
