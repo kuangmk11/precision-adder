@@ -63,11 +63,13 @@ SUBTITLE_Y = 11.6
 ROW_IN = [16.6, 28.6]                  # IN1/IN2, IN3/SUM
 
 # SUM is an output, so it takes the ring. The ring has to clear the 8 mm nut to
-# be visible at all, which at this column leaves it 0.6 mm from the cut on the
-# outboard side - so it is drawn as an arc with a gap there rather than a full
-# circle. A 20 mm panel carrying two 8 mm nuts has 4 mm of slack in total; a
-# ring bigger than a nut does not fit in it.
+# be visible at all, and a 20 mm panel carrying two 8 mm nuts has 4 mm of slack
+# in total, so at r 4.4 it comes within 0.2 mm of the cut on the outboard side -
+# inside the board, but inside EDGE_MARGIN too. Drawn closed anyway, by
+# decision: a broken ring is a worse mark than a clipped one. Expect the fab to
+# trim the outer edge of it.
 RING_R = 4.4
+RING_BREAKS_EDGE_MARGIN = True
 
 BOX_X = {"L": (0.6, 9.6), "R": (10.4, 19.4)}
 BOX_R = 1.0
@@ -97,7 +99,7 @@ INPUTS = [("IN1", "L", 0, False), ("IN2", "R", 0, False),
 # character fits and two do not. The two throws are then the two thirds, which
 # is also the pair you reach for most.
 GROUPS = [
-    dict(name="OCT", col="L", row=0, out="OUT1", up="2",   detent=None, down="1"),
+    dict(name="OCT", col="L", row=0, out="OUT1", up="1",   detent=None, down="2"),
     dict(name="3RD", col="R", row=0, out="OUT2", up="MAJ", detent="4",  down="MIN"),
     dict(name="3RD", col="L", row=1, out="OUT3", up="MAJ", detent="4",  down="MIN"),
     dict(name="5TH", col="R", row=1, out="OUT4", up="MAJ", detent="5",  down="MIN"),
@@ -109,6 +111,7 @@ GROUPS = [
 
 silk_lines = []    # (x0, y0, x1, y1, width)
 silk_arcs = []     # (cx, cy, r, start_angle, end_angle, width) degrees, Y down
+silk_circles = []  # (cx, cy, r, width, exempt_from_edge_margin)
 cuts_circles = []  # (cx, cy, r)
 cuts_lines = []    # (x0, y0, x1, y1)
 cuts_arcs = []     # (cx, cy, r, start_angle, end_angle)
@@ -210,10 +213,7 @@ def build():
             x = COL_L if col == "L" else COL_R
             cuts_circles.append((x, y, JACK_D / 2))
             if ring:
-                # gap the arc where a full circle would breach EDGE_MARGIN
-                reach = PANEL_W - EDGE_MARGIN - x
-                half = math.degrees(math.acos(min(1.0, reach / RING_R))) + 1.5
-                silk_arcs.append((x, y, RING_R, half, 360 - half, LINE_W))
+                silk_circles.append((x, y, RING_R, LINE_W, RING_BREAKS_EDGE_MARGIN))
             text(name, x, y + stand + NAME_GAP, LABEL_SIZE, PITCH_LABEL)
 
     # stage groups
@@ -378,17 +378,50 @@ def check():
                              f"({x0}, {y0})-({x1}, {y1}): {d:.2f} mm")
     report.append(f"text to silk line    {worst_ts[0]:6.2f} mm   {worst_ts[1]}")
 
-    # silkscreen to the board edge
-    worst_edge = (99, None)
+    # text against the SUM ring, which its label is measured from
+    if silk_circles:
+        worst_ring = (99, None)
+        for label, (bx0, by0, bx1, by1) in items:
+            for cx, cy, r, w, _ in silk_circles:
+                nx, ny = min(max(cx, bx0), bx1), min(max(cy, by0), by1)
+                far = max(math.hypot(cx - px, cy - py)
+                          for px in (bx0, bx1) for py in (by0, by1))
+                near = math.hypot(cx - nx, cy - ny)
+                d = (near - r - w / 2) if near > r else (r - w / 2 - far)
+                if d < worst_ring[0]:
+                    worst_ring = (d, f"{label!r} vs ring at ({cx}, {cy})")
+                if d < 0:
+                    fails.append(f"text {label!r} crosses the ring at ({cx}, {cy}): "
+                                 f"{d:.2f} mm")
+        report.append(f"text to ring         {worst_ring[0]:6.2f} mm   {worst_ring[1]}")
+
+    # silkscreen to the board edge. Arcs and circles are checked too - they were
+    # not, and a closed ring is exactly the shape that reaches the cut.
+    worst_edge, exceptions = (99, None), []
+    def edge_gap(m, what, exempt=False):
+        nonlocal worst_edge
+        if exempt:
+            exceptions.append(f"{what} at {m:.2f} mm (allowed by decision)")
+            return
+        if m < worst_edge[0]:
+            worst_edge = (m, what)
+
     for label, (bx0, by0, bx1, by1) in items:
-        m = min(bx0, PANEL_W - bx1, by0, PANEL_H - by1)
-        if m < worst_edge[0]:
-            worst_edge = (m, repr(label))
+        edge_gap(min(bx0, PANEL_W - bx1, by0, PANEL_H - by1), repr(label))
     for x0, y0, x1, y1, _ in silk_lines:
-        m = min(x0, x1, PANEL_W - x0, PANEL_W - x1, y0, y1, PANEL_H - y0, PANEL_H - y1)
-        if m < worst_edge[0]:
-            worst_edge = (m, "silk line")
+        edge_gap(min(x0, x1, PANEL_W - x0, PANEL_W - x1,
+                     y0, y1, PANEL_H - y0, PANEL_H - y1), "silk line")
+    for cx, cy, r, a0, a1, w in silk_arcs:
+        pts = [arc_points(cx, cy, r, a0, a1)[i] for i in (0, 1, 2)]
+        edge_gap(min(min(px, PANEL_W - px, py, PANEL_H - py) for px, py in pts),
+                 "silk arc")
+    for cx, cy, r, w, exempt in silk_circles:
+        edge_gap(min(cx - r, PANEL_W - cx - r, cy - r, PANEL_H - cy - r) - w / 2,
+                 f"ring at ({cx}, {cy})", exempt)
+
     report.append(f"silk to board edge   {worst_edge[0]:6.2f} mm   {worst_edge[1]}")
+    for e in exceptions:
+        report.append(f"  edge-margin exception: {e}")
     if worst_edge[0] < EDGE_MARGIN - 1e-9:
         fails.append(f"silkscreen {worst_edge[1]} is {worst_edge[0]:.2f} mm from the cut "
                      f"(EDGE_MARGIN {EDGE_MARGIN})")
@@ -483,6 +516,10 @@ def kicad(path):
         out.append(f'  (gr_arc (start {X(s[0])} {Y(s[1])}) (mid {X(m[0])} {Y(m[1])}) '
                    f'(end {X(e[0])} {Y(e[1])}) (stroke (width {w}) (type solid)) '
                    f'(layer "F.SilkS") {tid()})')
+    for cx, cy, r, w, _ in silk_circles:
+        out.append(f'  (gr_circle (center {X(cx)} {Y(cy)}) (end {X(cx + r)} {Y(cy)}) '
+                   f'(stroke (width {w}) (type solid)) (fill none) '
+                   f'(layer "F.SilkS") {tid()})')
     for ch, cx, baseline, size in chars:
         thick = round(max(0.15, size * 0.15), 3)
         glyph = ch.replace("−", "-")
@@ -538,6 +575,8 @@ def svg(path):
         large = 1 if abs(a1 - a0) > 180 else 0     # SUM's ring is a 300+ deg sweep
         o.append(f'      <path d="M {r4(s[0])} {r4(s[1])} A {r} {r} 0 {large} 1 '
                  f'{r4(e[0])} {r4(e[1])}" stroke-width="{w}"/>')
+    for cx, cy, r, w, _ in silk_circles:
+        o.append(f'      <circle cx="{cx}" cy="{cy}" r="{r}" stroke-width="{w}"/>')
     o.append('    </g>')
 
     o.append('    <g text-anchor="middle">')

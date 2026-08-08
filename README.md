@@ -107,7 +107,11 @@ Conventions — lettering, marks, label placement, mounting — are in
 
 Four jacks at the top: three summed inputs and `SUM`, the buffered sum that `PT` becomes.
 `SUM` is an output, so it carries the ring — the panel's only closed circle, which is what
-lets direction read at a glance. Below them, **four boxed groups, one per stage — polarity
+lets direction read at a glance. The ring has to clear the 8 mm nut to be visible at all,
+and a 20 mm panel carrying two 8 mm nuts has 4 mm of slack in total, so at r 4.4 it ends up
+0.07 mm from the cut on the outboard side. Still on the board, but well inside the 0.6 mm
+edge margin, and a fab may trim the outer edge of it. Taken deliberately: a broken ring
+reads worse than a clipped one. Below them, **four boxed groups, one per stage — polarity
 switch, selector switch, that stage's output.** Each stage now owns its output, which the
 old shared-row layout could not manage.
 
@@ -147,7 +151,7 @@ Origin top-left, millimetres, Y down — the drawing's own frame, not the old ge
 | 28.60 | 15.40 | 6.0 | SUM (output, ringed) |
 | 44.80 | 4.60 | 5.0 | OCT polarity +/o/− |
 | 44.80 | 15.40 | 5.0 | 3RD polarity +/o/− |
-| 57.80 | 4.60 | 5.0 | OCT select 2/1 |
+| 57.80 | 4.60 | 5.0 | OCT select 1/2 |
 | 57.80 | 15.40 | 5.0 | 3RD select MAJ/MIN (detent 4) |
 | 68.80 | 4.60 | 6.0 | OUT1 |
 | 68.80 | 15.40 | 6.0 | OUT2 |
@@ -167,8 +171,10 @@ pivot on a single screw per rail. v2.2's round Ø3.2 holes do not carry over.
 
 `gen_panel.py` refuses to write if anything overlaps, and reports the tightest clearance in
 each category. Currently: **0.25 mm** text-to-nut, **0.64 mm** text-to-text, **0.25 mm**
-text-to-silk, **0.60 mm** silk-to-edge, **1.40 mm** of material at the worst hole, and
-**2.80 mm** between the closest two nuts.
+text-to-silk, **0.42 mm** text-to-ring, **0.60 mm** silk-to-edge, **1.40 mm** of material
+at the worst hole, and **2.80 mm** between the closest two nuts. `SUM`'s ring is exempted
+from the edge margin and reported separately, so the exception stays visible instead of
+being absorbed into a looser rule.
 
 Those come from a stroke-glyph model that assumes ink fills 0.62 em of each character
 cell. It is conservative for the KiCad stroke font but it is still a model, and no DRC has
@@ -187,7 +193,7 @@ marked: the two throws are the thirds, the detent is the stage's odd interval.
 
 | Stage | Panel group | Control | Selects — up / _detent_ / down | Values | Volts |
 |---|---|---|---|---|---|
-| 1 | `OCT` | on-off-on + `2/1` on-on | 2 oct / — / 1 oct | ±24, ±12 st | 2.000000 / 1.000000 |
+| 1 | `OCT` | on-off-on + `1/2` on-on | 1 oct / — / 2 oct | ±12, ±24 st | 1.000000 / 2.000000 |
 | 2 | `3RD` | on-off-on + quality on-on-on | M3 / _4th_ / m3 | ±4, ±5, ±3 st | 0.333333 / 0.416667 / 0.250000 |
 | 3 | `3RD` | on-off-on + quality on-on-on | M3 / _4th_ / m3 | ±4, ±5, ±3 st | 0.333333 / 0.416667 / 0.250000 |
 | 4 | `5TH` | on-off-on + quality on-on-on | M3 / _**5th**_ / m3 | ±4, ±7, ±3 st | 0.333333 / 0.583333 / 0.250000 |

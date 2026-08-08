@@ -92,7 +92,6 @@
       <line x1="7.025" y1="122.7" x2="7.025" y2="120.3" stroke-width="0.25"/>
       <line x1="5.225" y1="121.5" x2="7.025" y2="121.5" stroke-width="0.25"/>
       <line x1="12.975" y1="121.5" x2="14.775" y2="121.5" stroke-width="0.25"/>
-      <path d="M 19.3506 30.5371 A 4.4 4.4 0 1 1 19.3506 26.6629" stroke-width="0.25"/>
       <path d="M 0.6 37.8 A 1.0 1.0 0 0 1 1.6 36.8" stroke-width="0.25"/>
       <path d="M 8.6 36.8 A 1.0 1.0 0 0 1 9.6 37.8" stroke-width="0.25"/>
       <path d="M 9.6 74.95 A 1.0 1.0 0 0 1 8.6 75.95" stroke-width="0.25"/>
@@ -109,6 +108,7 @@
       <path d="M 18.4 80.0 A 1.0 1.0 0 0 1 19.4 81.0" stroke-width="0.25"/>
       <path d="M 19.4 118.15 A 1.0 1.0 0 0 1 18.4 119.15" stroke-width="0.25"/>
       <path d="M 11.4 119.15 A 1.0 1.0 0 0 1 10.4 118.15" stroke-width="0.25"/>
+      <circle cx="15.4" cy="28.6" r="4.4" stroke-width="0.25"/>
     </g>
     <g text-anchor="middle">
       <text x="3.2" y="8.5" font-size="3.2">A</text>
@@ -132,8 +132,8 @@
       <text x="17.1" y="35.15" font-size="1.6">M</text>
       <text x="4.6" y="40.55" font-size="1.6">+</text>
       <text x="4.6" y="50.65" font-size="1.6">&#8722;</text>
-      <text x="4.6" y="53.55" font-size="1.6">2</text>
-      <text x="4.6" y="63.65" font-size="1.6">1</text>
+      <text x="4.6" y="53.55" font-size="1.6">1</text>
+      <text x="4.6" y="63.65" font-size="1.6">2</text>
       <text x="2.05" y="74.95" font-size="1.6">O</text>
       <text x="3.75" y="74.95" font-size="1.6">U</text>
       <text x="5.45" y="74.95" font-size="1.6">T</text>

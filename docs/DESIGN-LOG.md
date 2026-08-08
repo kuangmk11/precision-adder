@@ -149,13 +149,17 @@ is reused; only the two third values are new.
   The divider above the stages came out — four boxed groups already separate themselves
   from the input block, and the rule was doing the job twice.
 
-  **`SUM`'s ring does not close.** It is an output, so it takes the ring, but a ring is
-  only visible if it clears the 8 mm nut, and a 20 mm panel carrying two 8 mm nuts has
-  4 mm of slack in total. At r 4.4 the ring reaches 0.6 mm from the cut on the outboard
-  side, so it is drawn as a ~310° arc with the gap there. Moving the columns inboard to
-  fit a full circle would shrink the detent strip below what a character needs, so the
-  arc is the cheaper compromise. `OUT1`-`OUT4` get no ring at all: each is inside a named
-  box, and a second closed circle would cost `SUM`'s ring its meaning.
+  **`SUM`'s ring runs off the edge margin, closed anyway.** It is an output, so it takes
+  the ring, but a ring is only visible if it clears the 8 mm nut, and a 20 mm panel
+  carrying two 8 mm nuts has 4 mm of slack in total. At r 4.4 it ends up 0.07 mm from the
+  cut on the outboard side — on the board, but well inside the 0.6 mm margin, and a fab
+  may trim it. Two alternatives were drawn and dropped: a ~310° arc with the gap at the
+  outboard side, which reads as a broken mark rather than a ring, and moving the columns
+  inboard to make room, which shrinks the detent strip below what one character needs.
+  The clipped circle is the least-bad of the three. It is recorded as a named exception
+  in the generator's clearance report rather than by loosening `EDGE_MARGIN`, so it stays
+  visible. `OUT1`-`OUT4` get no ring at all: each is inside a named box, and a second
+  closed circle would cost `SUM`'s ring its meaning.
 
   The cascade arrows run across the top pair, down into the bottom-left group, and across
   the bottom pair. The middle leg is a dogleg rather than a diagonal — 4 mm of band
