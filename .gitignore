@@ -11,3 +11,6 @@ docs/*.jsonl
 
 # KiCad ERC/DRC output from tools/kicad-check.sh
 .kicadcheck/
+
+# KiCad per-user local project state
+*.kicad_prl

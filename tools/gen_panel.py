@@ -487,7 +487,14 @@ def kicad(path):
     ox, oy = ORIGIN
     def X(v): return round(v + ox, 4)
     def Y(v): return round(v + oy, 4)
-    def tid(): return f'(tstamp {uuid.uuid4()})'
+    # Deterministic, so regenerating an unchanged panel is a no-op diff rather
+    # than rewriting every line with fresh random ids.
+    ns = uuid.UUID("6f1a2c30-0000-4000-8000-000000000001")
+    n = [0]
+
+    def tid():
+        n[0] += 1
+        return f'(tstamp {uuid.uuid5(ns, str(n[0]))})'
 
     out = ['(kicad_pcb (version 20221018) (generator "gen_panel.py")',
            '  (general (thickness 1.6))',

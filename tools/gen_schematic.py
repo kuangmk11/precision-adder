@@ -469,8 +469,18 @@ def check():
 # .kicad_sch output
 # --------------------------------------------------------------------------
 
+_NS = uuid.UUID("6f1a2c30-0000-4000-8000-000000000000")
+_uid_n = [0]
+
+
 def uid():
-    return str(uuid.uuid4())
+    """Deterministic ids, so regenerating an unchanged design is a no-op diff.
+
+    Random uuid4s meant every run rewrote every line of the file and `git diff`
+    could not show what actually changed.
+    """
+    _uid_n[0] += 1
+    return str(uuid.uuid5(_NS, f"{PROJECT}:{_uid_n[0]}"))
 
 
 def eff(hide=False, size=1.27):
