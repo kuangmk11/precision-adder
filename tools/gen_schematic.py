@@ -101,6 +101,12 @@ SYMS = {
                           ("2", "B", -5.08, 0, 0, "passive"),
                           ("3", "C", -5.08, -3.81, 0, "passive"),
                           ("4", "COM", 5.08, 0, 180, "passive")]),
+    # a bare power-output pin, so KiCad sees +12V / -12V / GND as driven
+    "PWR_FLAG": dict(ref="#FLG", hide_names=True,
+                     art=[("poly", [(0, 0), (0, 1.27)]),
+                          ("poly", [(0, 1.27), (-1.016, 2.032),
+                                    (0, 2.794), (1.016, 2.032), (0, 1.27)])],
+                     pins=[("1", "pwr", 0, 0, 90, "power_out")]),
     # laid out as the physical 2x5: odd pins down the left, even down the right
     "HDR2x5": dict(ref="P",
                    art=[("rect", -2.54, -6.35, 2.54, 6.35)],
@@ -130,104 +136,149 @@ OPAMP_UNITS = {
 parts = []          # (ref, sym, value, unit, x, y, {pin: net}, footprint)
 _seq = {}
 
+# Placement is on a 25.4 mm lattice, one part per cell. That is wide enough for
+# the largest symbol plus its label stubs, which is the point: hand-placed
+# coordinates let two parts' stubs overlap, and overlapping stubs are a short.
+# 25.4 is also 20 x 1.27, so every pin lands on KiCad's connection grid.
+CELL = 25.4
+ORIGIN = (38.1, 38.1)
+ROWS = 13
+_cur = dict(col=0, row=0)
+
+# Stock KiCad footprints where they exist, so the links resolve on any install.
+# The custom ones (Thonkiconn, trimmer, Eurorack header) are left as bare names
+# on purpose - they are yours to supply, and a name that does not resolve is a
+# more honest placeholder than a wrong one that does.
+FOOTPRINTS = {"R": "Resistor_SMD:R_0805_2012Metric",
+              "C": "Capacitor_SMD:C_0805_2012Metric"}
+
+
+def new_block():
+    """Start the next block in a fresh column."""
+    if _cur["row"]:
+        _cur["col"] += 1
+        _cur["row"] = 0
+
+
+def next_pos():
+    x = ORIGIN[0] + _cur["col"] * CELL
+    y = ORIGIN[1] + _cur["row"] * CELL
+    _cur["row"] += 1
+    if _cur["row"] >= ROWS:
+        _cur["row"] = 0
+        _cur["col"] += 1
+    return x, y
+
 
 def ref_for(prefix):
     _seq[prefix] = _seq.get(prefix, 0) + 1
     return f"{prefix}{_seq[prefix]}"
 
 
-def add(sym, value, x, y, conns, ref=None, unit=1, fp=""):
+def add(sym, value, conns, ref=None, unit=1, fp=None):
     r = ref or ref_for(SYMS[sym]["ref"] if sym in SYMS else "U")
+    x, y = next_pos()
     parts.append(dict(ref=r, sym=sym, value=value, unit=unit, x=x, y=y,
-                      conns=conns, fp=fp))
+                      conns=conns, fp=fp if fp is not None
+                      else FOOTPRINTS.get(sym, "")))
     return r
 
 
-def res(value, x, y, a, b):
-    return add("R", value, x, y, {"1": a, "2": b})
+def res(value, a, b):
+    return add("R", value, {"1": a, "2": b})
 
 
-def cap(value, x, y, a, b):
-    return add("C", value, x, y, {"1": a, "2": b})
+def cap(value, a, b):
+    return add("C", value, {"1": a, "2": b})
 
 
-def opamp(ref, unit, x, y, plus, minus, out):
+def cap_tht(value, a, b):
+    """Bulk electrolytics are through-hole, not 0805."""
+    return add("C", value, {"1": a, "2": b},
+               fp="Capacitor_THT:CP_Radial_D5.0mm_P2.00mm")
+
+
+def opamp(ref, unit, plus, minus, out):
+    x, y = next_pos()
     parts.append(dict(ref=ref, sym="OPA4196", value="OPA4196", unit=unit,
-                      x=x, y=y, fp="",
+                      x=x, y=y, fp="Package_SO:SOIC-14_3.9x8.7mm_P1.27mm",
                       conns=dict(zip([p[0] for p in OPAMP_UNITS[unit]],
                                      [plus, minus, out]))))
 
 
-COL = 63.5      # block column pitch
-ROW = 25.4
+def pwr_flag(net):
+    """KiCad wants every power net driven by a power-output pin somewhere."""
+    add("PWR_FLAG", "PWR_FLAG", {"1": net}, ref=ref_for("#FLG"), fp="")
 
 
 def build():
     # ---------------- power input ------------------------------------------
-    x = 40
-    add("HDR2x5", "Eurorack 2x5", x, 60,
+    new_block()
+    add("HDR2x5", "Eurorack 2x5",
         {"1": "N12_RAW", "2": "N12_RAW", "3": "GND", "4": "GND", "5": "GND",
          "6": "GND", "7": "GND", "8": "GND", "9": "P12_RAW", "10": "P12_RAW"},
         ref="P1", fp="EURO_PWR_HEADER_LOCK")
-    add("FB", "Ferrite", x + 30, 40, {"1": "P12_RAW", "2": "P12_F"}, fp="7MM_RESISTOR")
-    add("D", "1N5819", x + 50, 40, {"1": "+12V", "2": "P12_F"}, fp="DO-41")
-    add("FB", "Ferrite", x + 30, 85, {"1": "N12_RAW", "2": "N12_F"}, fp="7MM_RESISTOR")
-    add("D", "1N5819", x + 50, 85, {"1": "N12_F", "2": "-12V"}, fp="DO-41")
-    cap("10uF", x + 70, 40, "+12V", "GND")
-    cap("100pF", x + 82, 40, "+12V", "GND")
-    cap("10uF", x + 70, 85, "-12V", "GND")
-    cap("100pF", x + 82, 85, "-12V", "GND")
+    add("FB", "Ferrite", {"1": "P12_RAW", "2": "P12_F"}, fp="7MM_RESISTOR")
+    add("D", "1N5819", {"1": "+12V", "2": "P12_F"}, fp="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+    add("FB", "Ferrite", {"1": "N12_RAW", "2": "N12_F"}, fp="7MM_RESISTOR")
+    add("D", "1N5819", {"1": "N12_F", "2": "-12V"}, fp="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+    cap_tht("10uF", "+12V", "GND")
+    cap("100pF", "+12V", "GND")
+    cap_tht("10uF", "-12V", "GND")
+    cap("100pF", "-12V", "GND")
+    for net in ("+12V", "-12V", "GND"):
+        pwr_flag(net)
 
     # ---------------- +/-5 V ------------------------------------------------
-    x = 160
+    new_block()
     # U1-U3 are the op-amp packages, so the regulators take U4/U5 explicitly.
-    add("REG", "L78L05", x, 40, {"1": "+12V", "2": "GND", "3": "+5V"},
-        ref="U4", fp="TO-92-3_L4.8-W3.7-P2.54-L")
-    cap("0.33uF", x - 20, 40, "+12V", "GND")
-    cap("0.01uF", x + 20, 40, "+5V", "GND")
-    add("REG", "L79L05", x, 85, {"1": "-12V", "2": "GND", "3": "-5V"},
-        ref="U5", fp="TO-92-3_L4.8-W3.7-P2.54-L")
-    cap("0.33uF", x - 20, 85, "-12V", "GND")
-    cap("0.1uF", x + 20, 85, "-5V", "GND")
+    add("REG", "L78L05", {"1": "+12V", "2": "GND", "3": "+5V"},
+        ref="U4", fp="Package_TO_SOT_THT:TO-92_Inline")
+    cap("0.33uF", "+12V", "GND")
+    cap("0.01uF", "+5V", "GND")
+    add("REG", "L79L05", {"1": "-12V", "2": "GND", "3": "-5V"},
+        ref="U5", fp="Package_TO_SOT_THT:TO-92_Inline")
+    cap("0.33uF", "-12V", "GND")
+    cap("0.1uF", "-5V", "GND")
 
     # ---------------- +/-2.5 V references -----------------------------------
     # Only precision source on the board; every stage scales down from these.
-    x = 240
-    res("50k", x, 30, "+5V", "REFP_TOP")
-    add("POT", "50k", x, 45, {"1": "REFP_TOP", "2": "REFP_W", "3": "REFP_BOT"},
+    new_block()
+    res("50k", "+5V", "REFP_TOP")
+    add("POT", "50k", {"1": "REFP_TOP", "2": "REFP_W", "3": "REFP_BOT"},
         ref="VR5", fp="PV36W-MULTITURN-TRIMMER")   # VR1-VR4 are the stage trims
-    res("50k", x, 60, "REFP_BOT", "GND")
-    opamp("U3", 3, x + 30, 40, "REFP_W", "VREF_P", "VREF_P")
-    cap("10uF", x + 55, 40, "VREF_P", "GND")
+    res("50k", "REFP_BOT", "GND")
+    opamp("U3", 3, "REFP_W", "VREF_P", "VREF_P")
+    cap_tht("10uF", "VREF_P", "GND")
 
-    res("50k", x, 85, "-5V", "REFN_TOP")
-    add("POT", "50k", x, 100, {"1": "REFN_TOP", "2": "REFN_W", "3": "REFN_BOT"},
+    res("50k", "-5V", "REFN_TOP")
+    add("POT", "50k", {"1": "REFN_TOP", "2": "REFN_W", "3": "REFN_BOT"},
         ref="VR6", fp="PV36W-MULTITURN-TRIMMER")
-    res("50k", x, 115, "REFN_BOT", "GND")
-    opamp("U3", 4, x + 30, 95, "REFN_W", "VREF_N", "VREF_N")
-    cap("10uF", x + 55, 95, "VREF_N", "GND")
+    res("50k", "REFN_BOT", "GND")
+    opamp("U3", 4, "REFN_W", "VREF_N", "VREF_N")
+    cap_tht("10uF", "VREF_N", "GND")
 
     # op-amp supply pins (unit 5 of each package) and the spare channel
+    new_block()
     for u in ("U1", "U2", "U3"):
         opamp_supply(u)
-    opamp("U3", 2, 240, 140, "GND", "U3B_OUT", "U3B_OUT")   # spare, tied off
+    opamp("U3", 2, "GND", "U3B_OUT", "U3B_OUT")     # spare, tied off
 
     # ---------------- input summer -----------------------------------------
     # Three inputs at unity: equal resistors average them onto the + input,
     # then a gain of 3 undoes the averaging. Same trick as v2.2's adder, which
     # averages two and takes a gain of 2.
-    x = 40
+    new_block()
     for n in (1, 2, 3):
-        y = 140 + (n - 1) * 20
-        add("JACK", "Thonkiconn", x, y, {"1": f"IN{n}", "2": "GND"},
+        add("JACK", "Thonkiconn", {"1": f"IN{n}", "2": "GND"},
             ref=f"J{n}", fp="THONKICONN-TIGHT")
-        res("100k", x + 25, y, f"IN{n}", "GND")        # unpatched input = 0 V
-        res("10k", x + 45, y, f"IN{n}", "SUMNODE")
-    opamp("U1", 1, x + 80, 160, "SUMNODE", "SUMFB", "SUM_BUS")
-    res("20k", x + 110, 150, "SUM_BUS", "SUMFB")
-    res("10k", x + 110, 175, "SUMFB", "GND")
-    res("1k", x + 110, 200, "SUM_BUS", "SUM_JACK")
-    add("JACK", "Thonkiconn", x + 135, 200, {"1": "SUM_JACK", "2": "GND"},
+        res("100k", f"IN{n}", "GND")               # unpatched input = 0 V
+        res("10k", f"IN{n}", "SUMNODE")
+    opamp("U1", 1, "SUMNODE", "SUMFB", "SUM_BUS")
+    res("20k", "SUM_BUS", "SUMFB")
+    res("10k", "SUMFB", "GND")
+    res("1k", "SUM_BUS", "SUM_JACK")
+    add("JACK", "Thonkiconn", {"1": "SUM_JACK", "2": "GND"},
         ref="J4", fp="THONKICONN-TIGHT")
 
     # ---------------- the four stages ---------------------------------------
@@ -236,8 +287,9 @@ def build():
 
 
 def opamp_supply(ref):
+    x, y = next_pos()
     parts.append(dict(ref=ref, sym="OPA4196", value="OPA4196", unit=5,
-                      x=300 + 30 * int(ref[-1]), y=140, fp="SOIC-14_150MIL",
+                      x=x, y=y, fp="Package_SO:SOIC-14_3.9x8.7mm_P1.27mm",
                       conns={"4": "+12V", "11": "-12V"}))
 
 
@@ -248,38 +300,39 @@ def opamp_supply(ref):
 VREF = 2.5
 
 STAGES = [
-    dict(n=1, name="OCT", amp=("U1", 2), out=("U1", 3), y=250, src="SUM_BUS",
+    dict(n=1, name="OCT", amp=("U1", 2), out=("U1", 3), src="SUM_BUS",
          segs=[(12, "OCT_1V"), (12, "OCT_2V"), (6, None)],
          sel=["OCT_1V", "OCT_2V"],
          want={"OCT_1V": 1.0, "OCT_2V": 2.0}),
-    dict(n=2, name="3RD", amp=("U1", 4), out=("U2", 1), y=330, src="OUT1",
-         segs=[(3, "S2_m3"), (1, "S2_M3"), (1, "S2_4th"), (25, None)],
-         sel=["S2_m3", "S2_M3", "S2_4th"],
-         want={"S2_m3": 0.25, "S2_M3": 1 / 3, "S2_4th": 5 / 12}),
-    dict(n=3, name="3RD", amp=("U2", 2), out=("U2", 3), y=410, src="OUT2",
-         segs=[(3, "S3_m3"), (1, "S3_M3"), (1, "S3_4th"), (25, None)],
-         sel=["S3_m3", "S3_M3", "S3_4th"],
-         want={"S3_m3": 0.25, "S3_M3": 1 / 3, "S3_4th": 5 / 12}),
-    dict(n=4, name="5TH", amp=("U2", 4), out=("U3", 1), y=490, src="OUT3",
-         segs=[(3, "S4_m3"), (1, "S4_M3"), (3, "S4_5th"), (23, None)],
-         sel=["S4_m3", "S4_M3", "S4_5th"],
-         want={"S4_m3": 0.25, "S4_M3": 1 / 3, "S4_5th": 7 / 12}),
+    dict(n=2, name="3RD", amp=("U1", 4), out=("U2", 1), src="OUT1",
+         segs=[(3, "S2_MIN3"), (1, "S2_MAJ3"), (1, "S2_4th"), (25, None)],
+         sel=["S2_MIN3", "S2_MAJ3", "S2_4th"],
+         want={"S2_MIN3": 0.25, "S2_MAJ3": 1 / 3, "S2_4th": 5 / 12}),
+    dict(n=3, name="3RD", amp=("U2", 2), out=("U2", 3), src="OUT2",
+         segs=[(3, "S3_MIN3"), (1, "S3_MAJ3"), (1, "S3_4th"), (25, None)],
+         sel=["S3_MIN3", "S3_MAJ3", "S3_4th"],
+         want={"S3_MIN3": 0.25, "S3_MAJ3": 1 / 3, "S3_4th": 5 / 12}),
+    dict(n=4, name="5TH", amp=("U2", 4), out=("U3", 1), src="OUT3",
+         segs=[(3, "S4_MIN3"), (1, "S4_MAJ3"), (3, "S4_5th"), (23, None)],
+         sel=["S4_MIN3", "S4_MAJ3", "S4_5th"],
+         want={"S4_MIN3": 0.25, "S4_MAJ3": 1 / 3, "S4_5th": 7 / 12}),
 ]
 
 
 def stage(st):
-    n, y = st["n"], st["y"]
+    n = st["n"]
+    new_block()
 
     # polarity: +2.5 V ref, open, -2.5 V ref. Open leaves the ladder pulled to
     # GND through its own bottom segment, so the stage contributes exactly 0.
-    add("SW_ONOFFON", "SUBMINI ON-OFF-ON", 40, y,
+    add("SW_ONOFFON", "SUBMINI ON-OFF-ON",
         {"1": "VREF_P", "3": "VREF_N", "2": f"LAD{n}_TOP"},
         ref=f"SW{n}A", fp="SUBMINI_TOGGLE")
     # Trimmer as a rheostat in series at the top of the chain. The top fixed
     # resistor is 0.5k light, so the chain is nominal with the wiper centred
     # and trims about +/-1.7% either way.
-    add("POT", "1k", 70, y, {"1": f"LAD{n}_TOP", "2": f"LAD{n}_TRIM",
-                             "3": f"LAD{n}_TRIM"},
+    add("POT", "1k", {"1": f"LAD{n}_TOP", "2": f"LAD{n}_TRIM",
+                      "3": f"LAD{n}_TRIM"},
         ref=f"VR{n}", fp="PV36W-MULTITURN-TRIMMER")
 
     # Ladder, built GND upward. Each entry is (value, tap at the TOP of that
@@ -288,38 +341,37 @@ def stage(st):
     for i, (value, tap) in enumerate(st["segs"]):
         top = i == len(st["segs"]) - 1
         upper = f"LAD{n}_TRIM" if top else tap
-        res(f"{value - 0.5:g}k" if top else f"{value:g}k",
-            95, y - 20 + i * 10, node, upper)
+        res(f"{value - 0.5:g}k" if top else f"{value:g}k", node, upper)
         node = upper
 
     # selector: 2-position on the octave stage, 3-position on the others
     taps = st["sel"]
     if len(taps) == 2:
-        add("SW_ONOFFON", "SUBMINI ON-ON", 125, y,
+        add("SW_ONOFFON", "SUBMINI ON-ON",
             {"1": taps[0], "3": taps[1], "2": f"BIAS{n}_SEL"},
             ref=f"SW{n}B", fp="SUBMINI_TOGGLE")
     else:
-        add("SW_1P3T", "SUBMINI ON-ON-ON", 125, y,
+        add("SW_1P3T", "SUBMINI ON-ON-ON",
             {"1": taps[2], "2": taps[1], "3": taps[0], "4": f"BIAS{n}_SEL"},
             ref=f"SW{n}B", fp="SUBMINI_TOGGLE")
 
     # bias buffer, with v2.2's compensation cap and output snubber
     amp_ref, amp_unit = st["amp"]
-    opamp(amp_ref, amp_unit, 165, y, f"BIAS{n}_SEL", f"BIAS{n}", f"BIAS{n}")
-    cap("22pF", 165, y + 14, f"BIAS{n}", f"BIAS{n}_SEL")
-    res("619R", 195, y + 14, f"BIAS{n}", f"BIAS{n}_SNUB")
-    cap("330pF", 215, y + 14, f"BIAS{n}_SNUB", "GND")
+    opamp(amp_ref, amp_unit, f"BIAS{n}_SEL", f"BIAS{n}", f"BIAS{n}")
+    cap("22pF", f"BIAS{n}", f"BIAS{n}_SEL")
+    res("619R", f"BIAS{n}", f"BIAS{n}_SNUB")
+    cap("330pF", f"BIAS{n}_SNUB", "GND")
 
     # summing node: stage input and bias averaged, then a gain of 2
-    res("10k", 210, y - 8, st["src"], f"SUM{n}")
-    res("10k", 210, y + 4, f"BIAS{n}", f"SUM{n}")
+    res("10k", st["src"], f"SUM{n}")
+    res("10k", f"BIAS{n}", f"SUM{n}")
     out_ref, out_unit = st["out"]
-    opamp(out_ref, out_unit, 245, y, f"SUM{n}", f"FB{n}", f"OUT{n}")
-    res("10k", 275, y - 10, f"OUT{n}", f"FB{n}")
-    res("10k", 275, y + 10, f"FB{n}", "GND")
+    opamp(out_ref, out_unit, f"SUM{n}", f"FB{n}", f"OUT{n}")
+    res("10k", f"OUT{n}", f"FB{n}")
+    res("10k", f"FB{n}", "GND")
 
-    res("1k", 300, y, f"OUT{n}", f"OUT{n}_JACK")
-    add("JACK", "Thonkiconn", 325, y, {"1": f"OUT{n}_JACK", "2": "GND"},
+    res("1k", f"OUT{n}", f"OUT{n}_JACK")
+    add("JACK", "Thonkiconn", {"1": f"OUT{n}_JACK", "2": "GND"},
         ref=f"J{4 + n}", fp="THONKICONN-TIGHT")
 
 
@@ -566,6 +618,34 @@ def write(path):
         f.write("\n".join(o) + "\n")
 
 
+def write_library(path):
+    """The same symbols as a standalone .kicad_sym, so the schematic's library
+    resolves instead of warning once per symbol."""
+    o = ['(kicad_symbol_lib (version 20231120) (generator "gen_schematic.py")']
+    for name in SYMS:
+        o.append(sym_body(name))
+    o.append(opamp_body())
+    o.append(')')
+    with open(path, "w") as f:
+        f.write("\n".join(o) + "\n")
+
+
+def write_project(docs):
+    """Minimal project plus a sym-lib-table pointing at the local library."""
+    with open(os.path.join(docs, "sym-lib-table"), "w") as f:
+        f.write('(sym_lib_table\n  (version 7)\n'
+                f'  (lib (name "{LIB}")(type "KiCad")'
+                f'(uri "${{KIPRJMOD}}/{LIB}.kicad_sym")(options "")(descr ""))\n)\n')
+    with open(os.path.join(docs, f"{PROJECT}.kicad_pro"), "w") as f:
+        f.write('{\n  "board": {},\n  "libraries": {\n'
+                '    "pinned_footprint_libs": [],\n'
+                '    "pinned_symbol_libs": []\n  },\n'
+                '  "meta": { "filename": "%s.kicad_pro", "version": 1 },\n'
+                '  "schematic": {},\n'
+                '  "sheets": [ [ "%s", "Root" ] ],\n'
+                '  "text_variables": {}\n}\n' % (PROJECT, SHEET_UUID))
+
+
 def main():
     build()
     nets, report, fails = check()
@@ -585,9 +665,12 @@ def main():
         return 1
 
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    out = os.path.join(here, "docs", "v3-adder.kicad_sch")
-    write(out)
-    print(f"\nwrote docs/v3-adder.kicad_sch")
+    docs = os.path.join(here, "docs")
+    write(os.path.join(docs, f"{PROJECT}.kicad_sch"))
+    write_library(os.path.join(docs, f"{LIB}.kicad_sym"))
+    write_project(docs)
+    print(f"\nwrote docs/{PROJECT}.kicad_sch, {LIB}.kicad_sym, "
+          f"{PROJECT}.kicad_pro, sym-lib-table")
 
     if "--bom" in sys.argv:
         print("\n| Value | Designators | Qty | Footprint |")

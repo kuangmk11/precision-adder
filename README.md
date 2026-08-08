@@ -188,9 +188,9 @@ from the edge margin and reported separately, so the exception stays visible ins
 being absorbed into a looser rule.
 
 Those come from a stroke-glyph model that assumes ink fills 0.62 em of each character
-cell. It is conservative for the KiCad stroke font but it is still a model, and no DRC has
-been run — KiCad is not installed here. **Open KiCad and run `kicad-cli pcb drc` before
-ordering.**
+cell — conservative for the KiCad stroke font, but still a model. **KiCad's own DRC passes
+with 0 violations and 0 unconnected items** (`tools/kicad-check.sh`), and the board plots
+correctly from KiCad, mounting slots and all.
 
 The two toggles in a group are 13.0 mm apart, leaving 5.5 mm between their nuts — up from
 4.9 mm in the row-based draft, but still unproven on this hardware, since v2.2 stacks no
@@ -225,16 +225,28 @@ the top segment's absolute value is absorbed by trimming — which is why the BO
 trimmer take up the difference. What does matter is the ratio between the small segments
 (1k, 3k, 12k), and that is where hand-matched parts earn their keep.
 
-What is verified: the file parses and re-serialises through an independent KiCad s-expression
-library; every `lib_id` resolves **as a full `library:name` string**, and every instantiated
-unit has a matching body; all 267 pin coordinates, read back out of the written file, land
-exactly on a wire endpoint, so the label stubs really do attach; no pin is unconnected; no
-net has fewer than two connections; no reference is used twice and no pin appears on two
-nets; and every ladder tap computes to its interval voltage exactly with the trimmer centred.
+Alongside the schematic the generator writes `adder.kicad_sym`, `v3-adder.kicad_pro` and a
+`sym-lib-table`, so the project opens with its symbol library resolved rather than warning
+once per symbol.
 
-What is **not** verified: no ERC has been run and nothing has opened this file in KiCad,
-because KiCad is not installed on the machine that generated it. Open it and run ERC before
-trusting it.
+**KiCad's own ERC passes with 0 errors.** Run it yourself:
+
+```sh
+KICAD_CLI="/path/to/kicad-cli" tools/kicad-check.sh    # ERC, DRC and plots into .kicadcheck/
+```
+
+The 23 remaining ERC warnings are all `footprint_link_issues` on the custom parts — jacks,
+toggles, trimmers, ferrites, the Eurorack header. Those footprints are yours to supply, and
+a name that does not resolve is a more honest placeholder than a wrong one that does. Stock
+KiCad footprints are used everywhere they exist, so the passives, op-amps, regulators and
+diodes resolve on any install.
+
+The generator additionally checks, before writing: every `lib_id` resolves as a full
+`library:name` string and every instantiated unit has a matching body; every pin coordinate
+read back out of the written file lands on a wire endpoint, so the label stubs really do
+attach; no pin is unconnected; no net has fewer than two connections; no reference is used
+twice and no pin appears on two nets; and every ladder tap computes to its interval voltage
+exactly with the trimmer centred.
 
 ### Stages
 

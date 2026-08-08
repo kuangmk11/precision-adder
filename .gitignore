@@ -8,3 +8,6 @@ docs/*.jsonl
 
 # VS Code Local History
 .history/
+
+# KiCad ERC/DRC output from tools/kicad-check.sh
+.kicadcheck/
