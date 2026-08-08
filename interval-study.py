@@ -170,3 +170,70 @@ for (a,b), name in TRIAD.items():
         row += "  " + " ".join(PCN[x % 12] for x in v).ljust(16)
     print(row)
 print("  " + " "*11 + "  " + "st4=m3".ljust(18) + "st4=M3".ljust(18) + "st4=5th")
+
+# --- chart 9: what stage 3 should be, and what the pass-throughs are worth ----
+#
+# Movement cost is counted from the panel's rest state: every polarity toggle
+# centred, every 3-position selector on its detent.  A contributing stage costs
+# 1 for its polarity toggle, plus 1 more if the selector has to leave the
+# detent.  Which value sits on the detent therefore matters, and on this panel
+# it is the odd interval - the 4th, or the 5th on stage 4 - not the middle of
+# the sorted list.
+print("\n### chart 9 - stage 3 candidates (stages 1, 2 and 4 held fixed)")
+
+def opts(values, detent, passthru=True):
+    o = [(0, 0)] if passthru else []
+    for v in values:
+        o += [(v, 1 + (v != detent)), (-v, 1 + (v != detent))]
+    return o
+
+OCT_S = ([12, 24], 12)          # 2-position magnitude, rests on 1 oct
+ST2 = ([3, 4, 5], 5)            # throws m3 / M3, detent 4th
+ST4 = ([3, 4, 7], 7)            # throws m3 / M3, detent 5th
+
+def cheapest(stages, passthru=True):
+    best = {}
+    for combo in product(*[opts(v, d, passthru) for v, d in stages]):
+        t, c = sum(x for x, _ in combo), sum(m for _, m in combo)
+        if t not in best or c < best[t]:
+            best[t] = c
+    return best
+
+TRIADS = {(0,4,7):"major", (0,3,7):"minor", (0,3,6):"dim", (0,4,8):"aug"}
+
+def chord_count(st3):
+    tri, tet = set(), set()
+    for (a,_),(b,_),(c,_) in product(opts(*ST2), opts(*st3), opts(*ST4)):
+        v = tuple(sorted({0, a, a+b}))
+        if len(v) == 3:
+            n = tuple(sorted((x - v[0]) % 12 for x in v))
+            if n in TRIADS: tri.add(TRIADS[n])
+        q = {0, a % 12, (a+b) % 12, (a+b+c) % 12}
+        if len(q) == 4: tet.add(tuple(sorted(q)))
+    return tri, len(tet)
+
+CAND = (("A current  m3/M3, detent 4th", ([3,4,5], 5)),
+        ("B          M3/5th, detent 4th", ([4,5,7], 5)),
+        ("C          m3/5th, detent 4th", ([3,5,7], 5)),
+        ("D          pure 4th",           ([5],    5)),
+        ("E          4th/5th, 2-position",([5,7],  5)))
+print("  candidate                      distinct chromatic  pc  triads tetrads  5th")
+for lbl, st3 in CAND:
+    R = cheapest([OCT_S, ST2, st3, ST4])
+    n = 0
+    while (n+1) in R and -(n+1) in R: n += 1
+    tri, tet = chord_count(st3)
+    print(f"  {lbl:<30} {len(R):>7}  +/-{n:<6} {len({x%12 for x in R}):>2}/12"
+          f" {len(tri):>6} {tet:>7} {R[7]:>4}   {', '.join(sorted(tri)) or 'none'}")
+
+print("\n  what the pass-throughs are worth, on candidate A")
+for pt in (True, False):
+    R = cheapest([OCT_S, ST2, ([3,4,5],5), ST4], pt)
+    n = 0
+    while (n+1) in R and -(n+1) in R: n += 1
+    tag = "centre-off" if pt else "no centre-off"
+    print(f"    {tag:<14} 5th costs {R[7]} movements, chromatic +/-{n}, {len(R)} distinct")
+print("    The 5th survives either way, but only by cancelling two stages against")
+print("    each other, which costs 5 movements and leaves OUT1-OUT3 carrying")
+print("    unrelated intervals. With centre-off it is one flip and OUT1-OUT3 sit")
+print("    on the root.")
