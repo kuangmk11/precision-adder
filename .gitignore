@@ -5,3 +5,6 @@ docs/*.jsonl
 
 # machine-local Claude Code settings
 .claude/settings.local.json
+
+# VS Code Local History
+.history/
