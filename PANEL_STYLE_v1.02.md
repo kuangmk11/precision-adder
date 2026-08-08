@@ -1,6 +1,6 @@
 # Front panel style
 
-**Version 1.01.**
+**Version 1.02.**
 
 House style for my module front panels — what marks go on them, what each one means, and
 where it sits. It is a drawing spec, not a program: a panel is in the style if it satisfies
@@ -127,8 +127,19 @@ stopping short of what it joins and breaking around any label it passes under. R
 
 ## Layout
 
-Labels go **above** jacks and LEDs, **below** pots and switches, measured from whatever is
-drawn around the hole — a pot's travel ring, an output's ring — not from the hole itself.
+**A name goes below the thing it names.** Every jack, every LED, every pot, every switch —
+one rule, no exceptions, measured from whatever is drawn around the hole (a pot's travel
+ring, an output's ring) and not from the hole itself. A panel where some names sit above
+and some below makes the reader work out which each time.
+
+**A mark that means a position goes where that position is.** Travel dots ring the pot,
+`+` and `−` straddle a toggle, selector values stack beside the throws they select. These
+are not names and the rule above does not apply to them — a `+` under a switch is wrong
+however consistent it looks.
+
+That leaves the case where a switch needs a name *and* position marks. The name takes the
+baseline of the topmost position mark, off to one side of it. It must not sit directly
+outboard of a `+` on the same baseline, or the two read as one word — `+OCTAVE`.
 
 Three things adjust themselves and should not be fought:
 
@@ -249,14 +260,14 @@ Then, in this order, however the panel was made:
 
 ## Versioning
 
-**Any change to this document increments the version by one hundredth** — v1.01 → v1.02 →
-v1.03, and so on. There is no distinction between a typo and a new rule; every edit is a
+**Any change to this document increments the version by one hundredth** — v1.02 → v1.03 →
+v1.04, and so on. There is no distinction between a typo and a new rule; every edit is a
 bump.
 
 Two things move together, and a change that touches only one of them is incomplete:
 
 1. the version line at the top of this file;
-2. the filename — `PANEL_STYLE_v1.01.md` → `PANEL_STYLE_v1.02.md`. Rename with `git mv` so
+2. the filename — `PANEL_STYLE_v1.02.md` → `PANEL_STYLE_v1.03.md`. Rename with `git mv` so
    the history follows the file.
 
 Then update anything pointing at the old filename (`README.md`).

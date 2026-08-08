@@ -77,43 +77,47 @@
     </g>
 
     <!-- ================= silkscreen ================= -->
-    <text x="10" y="8.8" font-size="2.9" letter-spacing="0.4" text-anchor="middle">ADDER</text>
+    <text x="10" y="8.4" font-size="2.9" letter-spacing="0.4" text-anchor="middle">ADDER</text>
+    <text x="10" y="10.8" font-size="1.4" letter-spacing="0.2" text-anchor="middle" fill="#cfcfcf">v3</text>
 
-    <!-- inputs: names below the jack -->
+    <!-- jack names, always below the jack. Baseline = nut bottom + 2.15 for every one
+         of the eight, so the rule holds with no exceptions. -->
     <g font-size="1.6" letter-spacing="0.15" text-anchor="middle">
-      <text x="4.699"  y="21.9">IN 1</text>
-      <text x="15.299" y="21.9">IN 2</text>
-      <text x="4.699"  y="34.3">IN 3</text>
-      <text x="15.299" y="34.3">SUM</text>
+      <text x="4.699"  y="21.5">IN 1</text>
+      <text x="15.299" y="21.5">IN 2</text>
+      <text x="4.699"  y="33.9">IN 3</text>
+      <text x="15.299" y="33.9">SUM</text>
+      <text x="4.699"  y="78.2">OUT 1</text>
+      <text x="15.299" y="78.2">OUT 2</text>
+      <text x="4.699"  y="119.2">OUT 3</text>
+      <text x="15.299" y="119.2">OUT 4</text>
     </g>
 
-    <!-- outputs: names above the jack -->
-    <g font-size="1.6" letter-spacing="0.15" text-anchor="middle">
-      <text x="4.699"  y="67.7">OUT 1</text>
-      <text x="15.299" y="67.7">OUT 2</text>
-      <text x="4.699"  y="108.7">OUT 3</text>
-      <text x="15.299" y="108.7">OUT 4</text>
+    <!-- stage names. Baseline = row - 4.20, the same line as that row's "+" mark: above
+         a row neither nut circle reaches past 3.75, so the full panel width is clear
+         there. That is what frees the inter-row gaps for the jack names below the output
+         rows. Centred on 11.4, not 10, to clear the polarity marks on the left column -
+         at 10 they read as "+OCTAVE". -->
+    <g text-anchor="middle" fill="#cfcfcf" font-size="1.5" letter-spacing="0.25">
+      <text x="11.4" y="39.55">OCTAVE</text>
+      <text x="11.4" y="51.95">3rd</text>
+      <text x="11.4" y="80.25">3rd</text>
+      <text x="11.4" y="96.45">5th/EXT</text>
     </g>
 
-    <!-- stage names, above each switch row. Centred on 11.4, not 10, to clear the
-         polarity marks on the left column - at 10 they read as "+OCTAVE". -->
-    <g text-anchor="middle" fill="#cfcfcf">
-      <text x="11.4" y="38.3" font-size="1.75" letter-spacing="0.35">OCTAVE</text>
-      <text x="11.4" y="50.6" font-size="1.5"  letter-spacing="0.25">3rd</text>
-      <text x="11.4" y="78.6" font-size="1.5"  letter-spacing="0.25">3rd</text>
-      <text x="11.4" y="94.9" font-size="1.75" letter-spacing="0.35">5th/EXT</text>
-    </g>
-
-    <!-- polarity, left column: + above the nut, - below, centre detent = off -->
+    <!-- polarity, left column: + above the nut, - below, centre detent = off.
+         Baselines are row - 4.20 and row + 5.85, which is 0.45 / 0.50 clear of the
+         7.5 mm nut. The two are not symmetric about the row because one is measured
+         to a cap top and the other to a baseline. -->
     <g font-size="1.6" text-anchor="middle">
-      <text x="4.699" y="39.9">+</text>
-      <text x="4.699" y="48.9">&#8722;</text>
-      <text x="4.699" y="52.3">+</text>
-      <text x="4.699" y="61.3">&#8722;</text>
-      <text x="4.699" y="80.6">+</text>
-      <text x="4.699" y="89.6">&#8722;</text>
-      <text x="4.699" y="96.8">+</text>
-      <text x="4.699" y="105.8">&#8722;</text>
+      <text x="4.699" y="39.55">+</text>
+      <text x="4.699" y="49.60">&#8722;</text>
+      <text x="4.699" y="51.95">+</text>
+      <text x="4.699" y="62.00">&#8722;</text>
+      <text x="4.699" y="80.25">+</text>
+      <text x="4.699" y="90.30">&#8722;</text>
+      <text x="4.699" y="96.45">+</text>
+      <text x="4.699" y="106.50">&#8722;</text>
     </g>
 
     <!-- selector marks, right column: stacked in the centre channel -->
@@ -133,7 +137,6 @@
       <text x="11.3" y="103.7">m3</text>
     </g>
 
-    <text x="10" y="119.6" font-size="1.4" letter-spacing="0.2" text-anchor="middle" fill="#cfcfcf">v3</text>
     <text x="10" y="122.8" font-size="1.9" letter-spacing="0.3" text-anchor="middle">508</text>
 
   </g>

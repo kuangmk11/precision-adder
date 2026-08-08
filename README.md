@@ -83,7 +83,7 @@ The grey rings are hardware footprints — 8 mm Thonkiconn nut, 7.5 mm toggle nu
 for clearance checking, not artwork.
 
 Panel drawing conventions — lettering, marks, label placement, mounting — are in
-[`PANEL_STYLE_v1.01.md`](PANEL_STYLE_v1.01.md).
+[`PANEL_STYLE_v1.02.md`](PANEL_STYLE_v1.02.md).
 
 **The 16 hole positions are v2.2's, unchanged.** The built panel already has 8 rows x 2
 columns, which is exactly what v3 needs, so the outline, the mounting holes and every
@@ -112,10 +112,15 @@ summed at the front.
 
 The layout is constrained by where text can physically go. A 6 mm jack in a 10.6 mm
 column pitch leaves 0.7 mm to the panel edge, so no silkscreen fits outboard of either
-column — every label lives in the centre channel or in the vertical gaps. That is why
-input names sit below their jacks, output names above theirs (the gap below `OUT1`/`OUT2`
-is needed by the next stage's label), and stage names sit slightly right of centre,
-clear of the polarity marks.
+column — every label lives in the centre channel or in the vertical gaps.
+
+**Every jack name sits below its jack**, at nut bottom + 2.15 mm, with no exceptions. That
+costs something below the output rows, where only 4.65 mm separates the jack nut from the
+next toggle's, and it will not hold a jack name, a stage name and a polarity mark. The
+stage name is what moves: it shares the baseline of its row's `+` mark, 4.20 mm above the
+row, where neither nut circle reaches and the full panel width is clear. Stage names stay
+centred on 11.4 rather than 10, so they do not read as `+OCTAVE` alongside the polarity
+mark in the left column.
 
 **One thing the drawing cannot settle:** rows 3-4 and 6-7 put two toggles 12.4 mm apart
 vertically. v2.2 has no two toggles stacked, so this spacing is unproven on this
