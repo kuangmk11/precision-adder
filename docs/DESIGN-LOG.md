@@ -112,23 +112,43 @@ is reused; only the two third values are new.
   ±12 V supply. The worst case for the intended sources has not been worked.
 - **Input summing resistor matching.** This is where 1V/oct accuracy is spent once
   there are three inputs. Doepfer specs 0.1% for the same reason. Not yet specified here.
-- ~~**Panel layout.**~~ **Resolved** — drawn in [`v3-panel.svg`](v3-panel.svg), 1:1.
-  The v2.2 panel is already 8 rows x 2 columns = 16 positions, so v3 reuses the outline,
-  the mounting holes and every hole *position* from
-  `Gerber_precision-adder-new-better-panel`; only the diameter at each position is
-  reassigned between 6 mm jack and 5 mm toggle (8 of 18 change, 10 do not). Layout and
-  hole table are in the README's Panel section.
+- ~~**Panel layout.**~~ **Resolved twice.** Layout and hole table are in the README's
+  Panel section; both outputs come from [`../tools/gen_panel.py`](../tools/gen_panel.py).
 
-  Two things fell out of drawing it. First, the silkscreen is the binding constraint,
-  not the holes: a 6 mm jack in a 10.6 mm column pitch leaves 0.7 mm to the panel edge,
-  so nothing can be labelled outboard of either column and every mark has to live in the
-  3.1 mm centre channel or in the vertical gaps. Second, the grouping is forced — three
-  summed inputs have to sit together, which means some rows carry two toggles, which
-  means the stage's `OUT` cannot share its row. Outputs therefore land in pairs, row 5
-  serving the two switch rows above it and row 8 the two above it.
+  *First attempt — inherited holes.* The v2.2 panel is already 8 rows x 2 columns = 16
+  positions, so v3 reused every hole *position* from
+  `Gerber_precision-adder-new-better-panel` and only reassigned diameters between 6 mm
+  jack and 5 mm toggle (8 of 18 changed). Two things fell out of drawing it. The
+  silkscreen is the binding constraint, not the holes: a 6 mm jack in a 10.6 mm column
+  pitch leaves 0.7 mm to the panel edge, so nothing can be labelled outboard of either
+  column and every mark has to live in the centre channel or the vertical gaps. And the
+  grouping was forced — three summed inputs sit together, so some rows carry two toggles,
+  so a stage's `OUT` could not share its row. Outputs landed in pairs, row 5 serving the
+  two switch rows above it and row 8 the two above it. Legible, but the panel could not
+  say which output belonged to which stage.
 
-  **Still to check:** rows 3-4 and 6-7 place two toggles 12.4 mm apart vertically. v2.2
-  never stacked toggles, so that spacing is unproven here — 1:1 print and a finger test
-  before any fab order.
+  *Second — grouped, on new holes.* One box per stage: polarity switch, selector switch,
+  that stage's own output. Six evenly spaced rows below the inputs, which the inherited
+  pitches (12.4 / 15.9 / 16.2 / 12.4 mm) could not give, so the positions were refitted.
+  The v3 main board is new anyway, and the style guide's inherit rule covers this case —
+  positions are fitted once when the board is laid out, and inherited from then on. These
+  are now that datum.
+
+  What the grouping cost: a three-position selector needs a mark at its centre detent,
+  and the only clear width at that height is the ~1.2 mm strip between the toggle nut and
+  the box edge. One character fits there, two do not. So the detent carries the stage's
+  odd interval — the 4th, or the 5th on stage 4 — and the two throws carry `MAJ` and
+  `MIN`. It reads well, since the thirds are the pair you reach for, but it was a
+  constraint before it was a preference. That mark is set at 1.0 mm against a house
+  minimum of 1.6, and is the panel's one deliberate exception.
+
+  Marks straddling the box edge were tried first and rejected: the two columns' detent
+  marks ended up 1.6 mm apart across the centre line, where `4` and `5` read as the
+  number 45 and neither belonged to a group. Inside its own box, each is unambiguous.
+
+  **Still to check:** the two toggles in a group are 13.0 mm apart, leaving 5.5 mm
+  between nuts — better than the 4.9 mm of the row-based draft, still unproven here since
+  v2.2 stacks no toggles. 1:1 print and a finger test before any fab order. And no DRC
+  has been run: KiCad is not installed on the machine that generated the board.
 - **`ON-ON-ON` variant.** Type 1 vs Type 2 differ in which pole combinations the
   three positions produce. Not yet pinned down for the quality switches.
