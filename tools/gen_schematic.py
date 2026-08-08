@@ -102,21 +102,28 @@ SYMS = {
                           ("2", "S", -5.08, -2.54, 0, "passive"),
                           ("3", "N", -5.08, 0, 0, "passive")]),
     # lever drawn resting on throw A; the centre position is open
-    "SW_ONOFFON": dict(ref="SW",
+    "SW_ONON": dict(ref="SW",
                        art=[_dot(-2.54, 2.54), _dot(-2.54, -2.54),
                             _dot(2.54, 0),
                             ("poly", [(2.54, 0), (-2.032, 2.032)])],
                        pins=[("1", "A", -5.08, 2.54, 0, "passive"),
                              ("2", "COM", 5.08, 0, 180, "passive"),
                              ("3", "B", -5.08, -2.54, 0, "passive")]),
-    "SW_1P3T": dict(ref="SW",
-                    art=[_dot(-2.54, 3.81), _dot(-2.54, 0), _dot(-2.54, -3.81),
-                         _dot(2.54, 0),
-                         ("poly", [(2.54, 0), (-2.032, 3.048)])],
-                    pins=[("1", "A", -5.08, 3.81, 0, "passive"),
-                          ("2", "B", -5.08, 0, 0, "passive"),
-                          ("3", "C", -5.08, -3.81, 0, "passive"),
-                          ("4", "COM", 5.08, 0, 180, "passive")]),
+    # Taiway series 200 DPDT: pins 1-2-3 are pole A with 2 common, 4-5-6 are
+    # pole B with 5 common. Cascading the poles is what turns a DPDT ON-ON-ON
+    # into a 1-of-3 selector without ever shorting two ladder taps together.
+    "SW_DPDT": dict(ref="SW",
+                    art=[("rect", -2.54, -7.62, 2.54, 7.62),
+                         _dot(-2.54, 6.35), _dot(-2.54, 3.81), _dot(-2.54, 1.27),
+                         _dot(-2.54, -1.27), _dot(-2.54, -3.81), _dot(-2.54, -6.35),
+                         ("poly", [(-2.032, 3.81), (1.27, 5.588)]),
+                         ("poly", [(-2.032, -3.81), (1.27, -2.032)])],
+                    pins=[("1", "1", -5.08, 6.35, 0, "passive"),
+                          ("2", "2com", -5.08, 3.81, 0, "passive"),
+                          ("3", "3", -5.08, 1.27, 0, "passive"),
+                          ("4", "4", -5.08, -1.27, 0, "passive"),
+                          ("5", "5com", -5.08, -3.81, 0, "passive"),
+                          ("6", "6", -5.08, -6.35, 0, "passive")]),
     # a bare power-output pin, so KiCad sees +12V / -12V / GND as driven
     "PWR_FLAG": dict(ref="#FLG", hide_names=True,
                      art=[("poly", [(0, 0), (0, 1.27)]),
@@ -322,21 +329,54 @@ VREF = 2.5
 STAGES = [
     dict(n=1, name="OCT", amp=("U1", 2), out=("U1", 3), src="SUM_BUS",
          segs=[(12, "OCT_1V"), (12, "OCT_2V"), (6, None)],
-         sel=["OCT_1V", "OCT_2V"],
+         up="OCT_1V", detent=None, down="OCT_2V",
          want={"OCT_1V": 1.0, "OCT_2V": 2.0}),
     dict(n=2, name="3RD", amp=("U1", 4), out=("U2", 1), src="OUT1",
          segs=[(3, "S2_MIN3"), (1, "S2_MAJ3"), (1, "S2_4th"), (25, None)],
-         sel=["S2_MIN3", "S2_MAJ3", "S2_4th"],
+         up="S2_MAJ3", detent="S2_4th", down="S2_MIN3",
          want={"S2_MIN3": 0.25, "S2_MAJ3": 1 / 3, "S2_4th": 5 / 12}),
     dict(n=3, name="3RD", amp=("U2", 2), out=("U2", 3), src="OUT2",
          segs=[(3, "S3_MIN3"), (1, "S3_MAJ3"), (1, "S3_4th"), (25, None)],
-         sel=["S3_MIN3", "S3_MAJ3", "S3_4th"],
+         up="S3_MAJ3", detent="S3_4th", down="S3_MIN3",
          want={"S3_MIN3": 0.25, "S3_MAJ3": 1 / 3, "S3_4th": 5 / 12}),
     dict(n=4, name="5TH", amp=("U2", 4), out=("U3", 1), src="OUT3",
          segs=[(3, "S4_MIN3"), (1, "S4_MAJ3"), (3, "S4_5th"), (23, None)],
-         sel=["S4_MIN3", "S4_MAJ3", "S4_5th"],
+         up="S4_MAJ3", detent="S4_5th", down="S4_MIN3",
          want={"S4_MIN3": 0.25, "S4_MAJ3": 1 / 3, "S4_5th": 7 / 12}),
 ]
+
+
+# Which pole of the ON-ON-ON moves at which detent. Taiway's series 200 sheet
+# documents MDP-1..MDP-5 only; MDP-6 (ON-ON-ON) is a custom code and its
+# contact sequence is not published, and the two possibilities are:
+#
+#   variant 1   up: 2-3, 5-6    centre: 2-3, 5-4    down: 2-1, 5-4
+#   variant 2   up: 2-3, 5-6    centre: 2-1, 5-6    down: 2-1, 5-4
+#
+# i.e. pole A moves at the upper detent in one and the lower detent in the
+# other. MEASURE BEFORE ORDERING A BOARD - continuity from pin 2 to pins 1/3
+# through the three positions settles it in under a minute. The two wirings
+# differ only in which of pins 1/3 carries a tap and which links to pole B.
+ONONON_VARIANT = 1
+
+
+def selector_3(n, up, mid, dn):
+    """1-of-3 tap selection from a DPDT ON-ON-ON, by cascading the poles.
+
+    Pole A's common is the output. One of its throws is a tap outright; the
+    other feeds pole B's common, and pole B picks between the remaining two.
+    Nothing ever shorts two taps together, which a tied-commons arrangement
+    would do in every position.
+    """
+    link = f"SW{n}B_POLE"
+    if ONONON_VARIANT == 1:
+        conns = {"2": f"BIAS{n}_SEL", "3": link, "5": link,
+                 "6": up, "4": mid, "1": dn}
+    else:
+        conns = {"2": f"BIAS{n}_SEL", "1": link, "5": link,
+                 "3": up, "6": mid, "4": dn}
+    add("SW_DPDT", "200-MDP6 (DPDT ON-ON-ON)", conns,
+        ref=f"SW{n}B", fp="TAIWAY_200_DP_M2")
 
 
 def stage(st):
@@ -345,9 +385,9 @@ def stage(st):
 
     # polarity: +2.5 V ref, open, -2.5 V ref. Open leaves the ladder pulled to
     # GND through its own bottom segment, so the stage contributes exactly 0.
-    add("SW_ONOFFON", "SUBMINI ON-OFF-ON",
+    add("SW_ONON", "200-MSP3 (SPDT ON-OFF-ON)",
         {"1": "VREF_P", "3": "VREF_N", "2": f"LAD{n}_TOP"},
-        ref=f"SW{n}A", fp="SUBMINI_TOGGLE")
+        ref=f"SW{n}A", fp="TAIWAY_200_SP_M2")
     # Trimmer as a rheostat in series at the top of the chain. The top fixed
     # resistor is 0.5k light, so the chain is nominal with the wiper centred
     # and trims about +/-1.7% either way.
@@ -365,15 +405,12 @@ def stage(st):
         node = upper
 
     # selector: 2-position on the octave stage, 3-position on the others
-    taps = st["sel"]
-    if len(taps) == 2:
-        add("SW_ONOFFON", "SUBMINI ON-ON",
-            {"1": taps[0], "3": taps[1], "2": f"BIAS{n}_SEL"},
-            ref=f"SW{n}B", fp="SUBMINI_TOGGLE")
+    if st["detent"] is None:
+        add("SW_ONON", "200-MSP1 (SPDT ON-ON)",
+            {"1": st["up"], "3": st["down"], "2": f"BIAS{n}_SEL"},
+            ref=f"SW{n}B", fp="TAIWAY_200_SP_M2")
     else:
-        add("SW_1P3T", "SUBMINI ON-ON-ON",
-            {"1": taps[2], "2": taps[1], "3": taps[0], "4": f"BIAS{n}_SEL"},
-            ref=f"SW{n}B", fp="SUBMINI_TOGGLE")
+        selector_3(n, st["up"], st["detent"], st["down"])
 
     # Bias buffer and v2.2's output snubber. v2.2 also has a 22pF across its
     # follower's feedback, but that feedback is a plain wire, so the cap sits
@@ -477,6 +514,48 @@ def check_function():
         if len(near) < len(packages):
             fails.append(f"{len(near)} x 0.1uF on {rail} for {len(packages)} "
                          f"op-amp packages; wants one each")
+    return fails
+
+
+def check_panel_agreement():
+    """The silkscreen and the wiring must say the same thing.
+
+    The panel is the reference: whatever is printed next to a throw is what
+    that throw has to select. These drifted apart once already - the schematic
+    had the 4th on the up throw while the panel printed MAJ there, which would
+    have shipped a module whose front lied about its own switches.
+    """
+    import importlib.util
+    here = os.path.dirname(os.path.abspath(__file__))
+    spec = importlib.util.spec_from_file_location(
+        "gen_panel", os.path.join(here, "gen_panel.py"))
+    panel = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(panel)
+
+    suffix = {"MAJ": "MAJ3", "MIN": "MIN3", "4": "4th", "5": "5th",
+              "1": "1V", "2": "2V"}
+    fails = []
+    if len(panel.GROUPS) != len(STAGES):
+        return [f"panel has {len(panel.GROUPS)} groups, schematic has "
+                f"{len(STAGES)} stages"]
+
+    for g, st in zip(panel.GROUPS, STAGES):
+        if g["out"] != f"OUT{st['n']}":
+            fails.append(f"panel group {g['name']} drives {g['out']}, "
+                         f"schematic stage {st['n']} drives OUT{st['n']}")
+        for throw in ("up", "detent", "down"):
+            printed, wired = g[throw], st[throw]
+            if printed is None or wired is None:
+                if (printed is None) != (wired is None):
+                    fails.append(f"stage {st['n']} {throw}: panel says "
+                                 f"{printed!r}, schematic says {wired!r}")
+                continue
+            want = suffix.get(printed)
+            if want is None:
+                fails.append(f"panel label {printed!r} has no known tap")
+            elif not wired.endswith(want):
+                fails.append(f"stage {st['n']} {throw}: panel prints "
+                             f"{printed!r}, schematic wires {wired!r}")
     return fails
 
 
@@ -734,7 +813,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators() + check_function()
+    fails += tap_fails + check_designators() + check_function() + check_panel_agreement()
 
     print("design")
     for line in report:

@@ -241,12 +241,40 @@ a name that does not resolve is a more honest placeholder than a wrong one that 
 KiCad footprints are used everywhere they exist, so the passives, op-amps, regulators and
 diodes resolve on any install.
 
-**Settle before laying out a board:** the three-position selectors are drawn as an ideal
-1-pole-3-throw with four pins. A subminiature `ON-ON-ON` toggle is physically a **six-pin
-DPDT** whose three positions come from combining its two poles, and Type 1 and Type 2
-differ in which combinations you get. The symbol, the footprint and the tap wiring all
-depend on which variant you buy, so that choice has to come first. Everything else in the
-schematic is independent of it.
+#### Switches
+
+Taiway series 200 subminiature throughout — `T1` actuator, `B1` bushing, `M2` PC thru-hole,
+`Q` silver, `E` epoxy:
+
+| Function | Part | Used for |
+|---|---|---|
+| SPDT ON-OFF-ON | `200-MSP3-T1B1M2QE` | polarity, ×4 |
+| SPDT ON-ON | `200-MSP1-T1B1M2QE` | `OCT` magnitude, ×1 |
+| DPDT ON-ON-ON | `200-MDP6-T1B1M2QE` | quality selectors, ×3 |
+
+The `B1` bushing is **10-48 UNS, Ø4.80** and Taiway's recommended panel hole is **Ø4.95** —
+the panel's Ø5.0 is right. There is also an optional 4.55 mm flat in the hole for
+anti-rotation, which the panel does not cut, so the switches are held by nut torque alone.
+
+**A DPDT ON-ON-ON is a 1-of-3 selector only if you cascade its poles.** Pins 1‑2‑3 are pole
+A with 2 common, 4‑5‑6 are pole B with 5 common. Pole A's common is the output; one of its
+throws is a tap outright, the other feeds pole B's common, and pole B picks between the
+remaining two. Tying the commons together instead would short two ladder taps in every
+position.
+
+**One thing to measure before ordering a board.** Taiway's datasheet documents `MDP-1` to
+`MDP-5` only — `MDP-6` is a custom code and its contact sequence is not published. Two
+sequences are possible:
+
+```
+variant 1   up: 2-3, 5-6    centre: 2-3, 5-4    down: 2-1, 5-4
+variant 2   up: 2-3, 5-6    centre: 2-1, 5-6    down: 2-1, 5-4
+```
+
+They differ in which pole moves at which detent, and so in which of pins 1/3 carries a tap
+and which links to pole B. Put a meter on continuity from pin 2 to pins 1 and 3 through the
+three positions; it takes under a minute. Then set `ONONON_VARIANT` in
+`tools/gen_schematic.py` — currently **1** — and regenerate.
 
 The generator additionally checks, before writing: every `lib_id` resolves as a full
 `library:name` string and every instantiated unit has a matching body; every pin coordinate
