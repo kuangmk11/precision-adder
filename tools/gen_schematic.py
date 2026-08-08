@@ -526,6 +526,28 @@ CONTACTS = {
 }
 
 
+def check_rotation_symmetry():
+    """Fitting the switch 180 degrees round must change nothing.
+
+    The body is symmetric, so rotating it swaps diagonally opposite pads
+    (6<->1, 5<->2, 4<->3) and reverses the lever. Those two cancel: the
+    sequence read against the board's own pad numbers, from lever-up to
+    lever-down, comes out the same. So the pin numbers are wrong on a rotated
+    part and the behaviour is not, and neither the footprint nor the panel
+    needs to care which way it goes in.
+    """
+    rot = {1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6: 1}
+    table = CONTACTS[ONONON_VARIANT]
+    rotated = [{frozenset(rot[a] for a in pair) for pair in pos}
+               for pos in reversed(table)]
+    fails = []
+    for i, (orig, rt) in enumerate(zip(table, rotated), 1):
+        if {frozenset(p) for p in orig} != rt:
+            fails.append(f"ON-ON-ON position {i} is not rotation-symmetric; "
+                         f"orientation would matter after all")
+    return fails
+
+
 def check_selector():
     """Simulate each selector through its three positions from the contact
     table, and confirm the output lands on the intended tap - exactly one tap,
@@ -868,7 +890,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector()
+    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector() + check_rotation_symmetry()
 
     print("design")
     for line in report:

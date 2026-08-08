@@ -279,10 +279,12 @@ failing loudly. Setting the variant to 2 makes it fail at the centre detent, as 
 PC-mount terminals are on a **5.08 × 2.54 mm** grid, six pins, numbered 6‑5‑4 down one
 column and 3‑2‑1 down the other.
 
-The one thing still worth a bench check is *orientation*: which physical lever position is
-the table's position 1 depends on how the switch sits in its footprint. If up and down come
-out reversed, rotate the part 180° or swap `up` and `down` for that stage — the panel
-cross-check will keep the silkscreen honest either way.
+**Orientation does not matter.** The body is symmetric, so fitting it 180° round swaps
+diagonally opposite pads (6↔1, 5↔2, 4↔3) *and* reverses the lever — and those two cancel
+exactly. Read against the board's own pad numbers from lever-up to lever-down, the sequence
+is unchanged. The pin numbers on a reversed part are wrong; its behaviour is not.
+`check_rotation_symmetry()` asserts this against the contact table, so it stays true if the
+table is ever edited.
 
 The generator additionally checks, before writing: every `lib_id` resolves as a full
 `library:name` string and every instantiated unit has a matching body; every pin coordinate
