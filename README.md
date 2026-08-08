@@ -82,6 +82,9 @@ Same density as the board already built. No rotary, no new mechanical problem.
 The grey rings are hardware footprints — 8 mm Thonkiconn nut, 7.5 mm toggle nut — shown
 for clearance checking, not artwork.
 
+Panel drawing conventions — lettering, marks, label placement, mounting — are in
+[`PANEL_STYLE_v1.00.md`](PANEL_STYLE_v1.00.md).
+
 **The 16 hole positions are v2.2's, unchanged.** The built panel already has 8 rows x 2
 columns, which is exactly what v3 needs, so the outline, the mounting holes and every
 hole *position* carry over; only the diameter at each position is reassigned between
