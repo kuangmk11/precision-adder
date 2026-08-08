@@ -61,11 +61,17 @@ MOUNTS = [(PANEL_W - 7.5, 3.0), (7.5, PANEL_H - 3.0)]   # top-right, bottom-left
 TITLE_Y = 8.5
 SUBTITLE_Y = 11.6
 ROW_IN = [16.6, 28.6]                  # IN1/IN2, IN3/SUM
-DIVIDER_Y = 36.25
+
+# SUM is an output, so it takes the ring. The ring has to clear the 8 mm nut to
+# be visible at all, which at this column leaves it 0.6 mm from the cut on the
+# outboard side - so it is drawn as an arc with a gap there rather than a full
+# circle. A 20 mm panel carrying two 8 mm nuts has 4 mm of slack in total; a
+# ring bigger than a nut does not fit in it.
+RING_R = 4.4
 
 BOX_X = {"L": (0.6, 9.6), "R": (10.4, 19.4)}
 BOX_R = 1.0
-BOX_TOP = [37.75, 79.4]                # top edge of each group row
+BOX_TOP = [36.8, 80.0]                 # top edge of each group row
 
 SW1_DY = 8.0                           # polarity toggle below the box top edge
 SW2_DY = 21.0                          # selector toggle below the box top edge
@@ -78,7 +84,8 @@ LOGO_Y = 121.5                         # wordmark centre, = height - 7.0
 # what is on the panel
 # --------------------------------------------------------------------------
 
-INPUTS = [("IN1", "L", 0), ("IN2", "R", 0), ("IN3", "L", 1), ("SUM", "R", 1)]
+INPUTS = [("IN1", "L", 0, False), ("IN2", "R", 0, False),
+          ("IN3", "L", 1, False), ("SUM", "R", 1, True)]   # last field: ringed
 
 # Each group is one stage: polarity toggle, selector toggle, output jack.
 # Reading order is across then down, so the cascade zig-zags and OUT1-OUT4
@@ -149,13 +156,28 @@ def rounded_box(x0, y0, x1, y1, r, gaps=()):
     silk_arcs.append((x0 + r, y1 - r, r, 90, 180, LINE_W))
 
 
+def arrow(pts, head=0.9):
+    """Polyline with a chevron head at the last point. 0/90/45 segments only."""
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        silk_lines.append((x0, y0, x1, y1, LINE_W))
+    (px, py), (tx, ty) = pts[-2], pts[-1]
+    a = math.atan2(ty - py, tx - px)
+    for barb in (math.radians(150), math.radians(-150)):
+        silk_lines.append((tx, ty,
+                           tx + head * math.cos(a + barb),
+                           ty + head * math.sin(a + barb), LINE_W))
+
+
 def obround(cx, cy, length, height):
     """Stadium slot on Edge.Cuts: two semicircles joined by two straights."""
     r = height / 2
     dx = length / 2 - r
     cuts_lines.append((cx - dx, cy - r, cx + dx, cy - r))
     cuts_lines.append((cx - dx, cy + r, cx + dx, cy + r))
-    cuts_arcs.append((cx + dx, cy, r, 270, 90))
+    # Both caps bulge outward. The right one has to be swept as -90 -> +90 so
+    # its midpoint lands at 0 degrees (the outboard point); 270 -> 90 puts the
+    # midpoint at 180 and turns the cap inside out.
+    cuts_arcs.append((cx + dx, cy, r, -90, 90))
     cuts_arcs.append((cx - dx, cy, r, 90, 270))
 
 
@@ -178,14 +200,21 @@ def build():
     text("ADDER", PANEL_W / 2, TITLE_Y, TITLE_SIZE, PITCH_TITLE)
     text("V3", PANEL_W / 2, SUBTITLE_Y, LABEL_SIZE, PITCH_LABEL)
 
-    # inputs, names below their jacks
-    for name, col, row in INPUTS:
-        x = COL_L if col == "L" else COL_R
-        y = ROW_IN[row]
-        cuts_circles.append((x, y, JACK_D / 2))
-        text(name, x, y + JACK_NUT / 2 + NAME_GAP, LABEL_SIZE, PITCH_LABEL)
-
-    silk_lines.append((2.0, DIVIDER_Y, PANEL_W - 2.0, DIVIDER_Y, RULE_W))
+    # inputs and SUM. A name is measured from whatever is drawn around the hole,
+    # so a ringed jack pushes its whole row's baseline down - both labels move,
+    # not just the ringed one.
+    for row, y in enumerate(ROW_IN):
+        ringed = [i for i in INPUTS if i[2] == row and i[3]]
+        stand = RING_R if ringed else JACK_NUT / 2
+        for name, col, r, ring in [i for i in INPUTS if i[2] == row]:
+            x = COL_L if col == "L" else COL_R
+            cuts_circles.append((x, y, JACK_D / 2))
+            if ring:
+                # gap the arc where a full circle would breach EDGE_MARGIN
+                reach = PANEL_W - EDGE_MARGIN - x
+                half = math.degrees(math.acos(min(1.0, reach / RING_R))) + 1.5
+                silk_arcs.append((x, y, RING_R, half, 360 - half, LINE_W))
+            text(name, x, y + stand + NAME_GAP, LABEL_SIZE, PITCH_LABEL)
 
     # stage groups
     for g in GROUPS:
@@ -212,6 +241,12 @@ def build():
         half = len(g["name"]) * PITCH_LABEL / 2
         gaps = [("top", x - half - 0.3, x + half + 0.3)]
 
+        # the cascade arrows cross these edges; break them rather than draw over
+        ay = out_arrow_y(g["row"])
+        gaps.append(("right" if g["col"] == "L" else "left", ay - 0.7, ay + 0.7))
+        if g["row"] == 0 and g["col"] == "R":
+            gaps.append(("bottom", x - 0.7, x + 0.7))
+
         # The centre detent's value goes between the toggle nut and the box's
         # inboard edge - the only clear width left at that height, and about
         # 1.2 mm of it. It stays *inside* the box: straddling the edge put the
@@ -228,7 +263,43 @@ def build():
         rounded_box(x0, top, x1, top + BOX_H, BOX_R, gaps)
         text(g["name"], x, top + LABEL_SIZE / 2, LABEL_SIZE, PITCH_LABEL)
 
+    cascade_arrows()
     wordmark()
+
+
+def out_label_y(row):
+    return BOX_TOP[row] + OUT_DY + JACK_NUT / 2 + NAME_GAP
+
+
+def out_arrow_y(row):
+    """Arrows run at the OUT labels' mid-cap height, so they read as one line."""
+    return out_label_y(row) - LABEL_SIZE / 2
+
+
+def cascade_arrows():
+    """The signal path through the four stages: across, down, across.
+
+    OUT1 -> OUT2 -> down into the 3RD group -> across to 5TH. The middle leg
+    cannot be a straight diagonal: 4 mm of clear band between the two box rows
+    against 10.8 mm of column pitch would need a 15-degree line, and the house
+    routing is 0, 90 and 45 only. So it drops, takes a 45-degree knee, runs the
+    band, and turns down into the group it feeds.
+    """
+    inset = len("OUT1") * PITCH_LABEL / 2 + 0.4      # clear of the OUT labels
+
+    for row in (0, 1):
+        y = out_arrow_y(row)
+        arrow([(COL_L + inset, y), (COL_R - inset, y)])
+
+    tip = BOX_TOP[1] - LABEL_SIZE / 2 - 0.5           # just above the 3RD name
+    band = tip - 1.5                                  # 0.8 of knee, 0.7 of run-in
+    assert band > BOX_TOP[0] + BOX_H + 0.5, "no clear band between the box rows"
+    arrow([(COL_R, out_label_y(0) + 0.5),
+           (COL_R, band - 0.8),
+           (COL_R - 0.8, band),
+           (COL_L + 0.8, band),
+           (COL_L, band + 0.8),
+           (COL_L, tip)])
 
 
 def wordmark():
@@ -464,7 +535,8 @@ def svg(path):
                  f'stroke-width="{w}"/>')
     for cx, cy, r, a0, a1, w in silk_arcs:
         s, _, e = arc_points(cx, cy, r, a0, a1)
-        o.append(f'      <path d="M {r4(s[0])} {r4(s[1])} A {r} {r} 0 0 1 '
+        large = 1 if abs(a1 - a0) > 180 else 0     # SUM's ring is a 300+ deg sweep
+        o.append(f'      <path d="M {r4(s[0])} {r4(s[1])} A {r} {r} 0 {large} 1 '
                  f'{r4(e[0])} {r4(e[1])}" stroke-width="{w}"/>')
     o.append('    </g>')
 
@@ -491,8 +563,9 @@ def hole_table():
     """Markdown hole schedule, so the README cannot drift from the drawing."""
     rows = [("Y (mm)", "X (mm)", "Ø", "What")]
     named = []
-    for name, col, row in INPUTS:
-        named.append((ROW_IN[row], COL_L if col == "L" else COL_R, JACK_D, name))
+    for name, col, row, ring in INPUTS:
+        named.append((ROW_IN[row], COL_L if col == "L" else COL_R, JACK_D,
+                      f"{name} (output, ringed)" if ring else name))
     for g in GROUPS:
         x = COL_L if g["col"] == "L" else COL_R
         top = BOX_TOP[g["row"]]

@@ -146,6 +146,21 @@ is reused; only the two third values are new.
   marks ended up 1.6 mm apart across the centre line, where `4` and `5` read as the
   number 45 and neither belonged to a group. Inside its own box, each is unambiguous.
 
+  The divider above the stages came out — four boxed groups already separate themselves
+  from the input block, and the rule was doing the job twice.
+
+  **`SUM`'s ring does not close.** It is an output, so it takes the ring, but a ring is
+  only visible if it clears the 8 mm nut, and a 20 mm panel carrying two 8 mm nuts has
+  4 mm of slack in total. At r 4.4 the ring reaches 0.6 mm from the cut on the outboard
+  side, so it is drawn as a ~310° arc with the gap there. Moving the columns inboard to
+  fit a full circle would shrink the detent strip below what a character needs, so the
+  arc is the cheaper compromise. `OUT1`-`OUT4` get no ring at all: each is inside a named
+  box, and a second closed circle would cost `SUM`'s ring its meaning.
+
+  The cascade arrows run across the top pair, down into the bottom-left group, and across
+  the bottom pair. The middle leg is a dogleg rather than a diagonal — 4 mm of band
+  against 10.8 mm of column pitch is a 15° line, and house routing is 0/90/45.
+
   **Still to check:** the two toggles in a group are 13.0 mm apart, leaving 5.5 mm
   between nuts — better than the 4.9 mm of the row-based draft, still unproven here since
   v2.2 stacks no toggles. 1:1 print and a finger test before any fab order. And no DRC

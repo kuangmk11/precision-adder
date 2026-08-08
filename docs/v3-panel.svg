@@ -12,18 +12,18 @@
       <circle cx="15.4" cy="16.6" r="4.0"/>
       <circle cx="4.6" cy="28.6" r="4.0"/>
       <circle cx="15.4" cy="28.6" r="4.0"/>
-      <circle cx="4.6" cy="45.75" r="3.75"/>
-      <circle cx="4.6" cy="58.75" r="3.75"/>
-      <circle cx="4.6" cy="69.75" r="4.0"/>
-      <circle cx="15.4" cy="45.75" r="3.75"/>
-      <circle cx="15.4" cy="58.75" r="3.75"/>
-      <circle cx="15.4" cy="69.75" r="4.0"/>
-      <circle cx="4.6" cy="87.4" r="3.75"/>
-      <circle cx="4.6" cy="100.4" r="3.75"/>
-      <circle cx="4.6" cy="111.4" r="4.0"/>
-      <circle cx="15.4" cy="87.4" r="3.75"/>
-      <circle cx="15.4" cy="100.4" r="3.75"/>
-      <circle cx="15.4" cy="111.4" r="4.0"/>
+      <circle cx="4.6" cy="44.8" r="3.75"/>
+      <circle cx="4.6" cy="57.8" r="3.75"/>
+      <circle cx="4.6" cy="68.8" r="4.0"/>
+      <circle cx="15.4" cy="44.8" r="3.75"/>
+      <circle cx="15.4" cy="57.8" r="3.75"/>
+      <circle cx="15.4" cy="68.8" r="4.0"/>
+      <circle cx="4.6" cy="88.0" r="3.75"/>
+      <circle cx="4.6" cy="101.0" r="3.75"/>
+      <circle cx="4.6" cy="112.0" r="4.0"/>
+      <circle cx="15.4" cy="88.0" r="3.75"/>
+      <circle cx="15.4" cy="101.0" r="3.75"/>
+      <circle cx="15.4" cy="112.0" r="4.0"/>
     </g>
     <!-- drilled holes and mounting slots -->
     <g fill="#000000">
@@ -31,66 +31,84 @@
       <circle cx="15.4" cy="16.6" r="3.0"/>
       <circle cx="4.6" cy="28.6" r="3.0"/>
       <circle cx="15.4" cy="28.6" r="3.0"/>
-      <circle cx="4.6" cy="45.75" r="2.5"/>
-      <circle cx="4.6" cy="58.75" r="2.5"/>
-      <circle cx="4.6" cy="69.75" r="3.0"/>
-      <circle cx="15.4" cy="45.75" r="2.5"/>
-      <circle cx="15.4" cy="58.75" r="2.5"/>
-      <circle cx="15.4" cy="69.75" r="3.0"/>
-      <circle cx="4.6" cy="87.4" r="2.5"/>
-      <circle cx="4.6" cy="100.4" r="2.5"/>
-      <circle cx="4.6" cy="111.4" r="3.0"/>
-      <circle cx="15.4" cy="87.4" r="2.5"/>
-      <circle cx="15.4" cy="100.4" r="2.5"/>
-      <circle cx="15.4" cy="111.4" r="3.0"/>
+      <circle cx="4.6" cy="44.8" r="2.5"/>
+      <circle cx="4.6" cy="57.8" r="2.5"/>
+      <circle cx="4.6" cy="68.8" r="3.0"/>
+      <circle cx="15.4" cy="44.8" r="2.5"/>
+      <circle cx="15.4" cy="57.8" r="2.5"/>
+      <circle cx="15.4" cy="68.8" r="3.0"/>
+      <circle cx="4.6" cy="88.0" r="2.5"/>
+      <circle cx="4.6" cy="101.0" r="2.5"/>
+      <circle cx="4.6" cy="112.0" r="3.0"/>
+      <circle cx="15.4" cy="88.0" r="2.5"/>
+      <circle cx="15.4" cy="101.0" r="2.5"/>
+      <circle cx="15.4" cy="112.0" r="3.0"/>
       <rect x="9.3" y="1.4" width="6.4" height="3.2" rx="1.6"/>
       <rect x="4.3" y="123.9" width="6.4" height="3.2" rx="1.6"/>
     </g>
     <!-- silkscreen -->
     <g stroke="#e8e8e8" fill="none" stroke-linecap="round">
-      <line x1="2.0" y1="36.25" x2="18.0" y2="36.25" stroke-width="0.2"/>
-      <line x1="1.6" y1="37.75" x2="1.75" y2="37.75" stroke-width="0.25"/>
-      <line x1="7.45" y1="37.75" x2="8.6" y2="37.75" stroke-width="0.25"/>
-      <line x1="1.6" y1="76.9" x2="8.6" y2="76.9" stroke-width="0.25"/>
-      <line x1="0.6" y1="38.75" x2="0.6" y2="75.9" stroke-width="0.25"/>
-      <line x1="9.6" y1="38.75" x2="9.6" y2="75.9" stroke-width="0.25"/>
-      <line x1="11.4" y1="37.75" x2="12.55" y2="37.75" stroke-width="0.25"/>
-      <line x1="18.25" y1="37.75" x2="18.4" y2="37.75" stroke-width="0.25"/>
-      <line x1="11.4" y1="76.9" x2="18.4" y2="76.9" stroke-width="0.25"/>
-      <line x1="10.4" y1="38.75" x2="10.4" y2="75.9" stroke-width="0.25"/>
-      <line x1="19.4" y1="38.75" x2="19.4" y2="75.9" stroke-width="0.25"/>
-      <line x1="1.6" y1="79.4" x2="1.75" y2="79.4" stroke-width="0.25"/>
-      <line x1="7.45" y1="79.4" x2="8.6" y2="79.4" stroke-width="0.25"/>
-      <line x1="1.6" y1="118.55" x2="8.6" y2="118.55" stroke-width="0.25"/>
-      <line x1="0.6" y1="80.4" x2="0.6" y2="117.55" stroke-width="0.25"/>
-      <line x1="9.6" y1="80.4" x2="9.6" y2="117.55" stroke-width="0.25"/>
-      <line x1="11.4" y1="79.4" x2="12.55" y2="79.4" stroke-width="0.25"/>
-      <line x1="18.25" y1="79.4" x2="18.4" y2="79.4" stroke-width="0.25"/>
-      <line x1="11.4" y1="118.55" x2="18.4" y2="118.55" stroke-width="0.25"/>
-      <line x1="10.4" y1="80.4" x2="10.4" y2="117.55" stroke-width="0.25"/>
-      <line x1="19.4" y1="80.4" x2="19.4" y2="117.55" stroke-width="0.25"/>
+      <line x1="1.6" y1="36.8" x2="1.75" y2="36.8" stroke-width="0.25"/>
+      <line x1="7.45" y1="36.8" x2="8.6" y2="36.8" stroke-width="0.25"/>
+      <line x1="1.6" y1="75.95" x2="8.6" y2="75.95" stroke-width="0.25"/>
+      <line x1="0.6" y1="37.8" x2="0.6" y2="74.95" stroke-width="0.25"/>
+      <line x1="9.6" y1="37.8" x2="9.6" y2="73.45" stroke-width="0.25"/>
+      <line x1="9.6" y1="74.85" x2="9.6" y2="74.95" stroke-width="0.25"/>
+      <line x1="11.4" y1="36.8" x2="12.55" y2="36.8" stroke-width="0.25"/>
+      <line x1="18.25" y1="36.8" x2="18.4" y2="36.8" stroke-width="0.25"/>
+      <line x1="11.4" y1="75.95" x2="14.7" y2="75.95" stroke-width="0.25"/>
+      <line x1="16.1" y1="75.95" x2="18.4" y2="75.95" stroke-width="0.25"/>
+      <line x1="10.4" y1="37.8" x2="10.4" y2="73.45" stroke-width="0.25"/>
+      <line x1="10.4" y1="74.85" x2="10.4" y2="74.95" stroke-width="0.25"/>
+      <line x1="19.4" y1="37.8" x2="19.4" y2="74.95" stroke-width="0.25"/>
+      <line x1="1.6" y1="80.0" x2="1.75" y2="80.0" stroke-width="0.25"/>
+      <line x1="7.45" y1="80.0" x2="8.6" y2="80.0" stroke-width="0.25"/>
+      <line x1="1.6" y1="119.15" x2="8.6" y2="119.15" stroke-width="0.25"/>
+      <line x1="0.6" y1="81.0" x2="0.6" y2="118.15" stroke-width="0.25"/>
+      <line x1="9.6" y1="81.0" x2="9.6" y2="116.65" stroke-width="0.25"/>
+      <line x1="9.6" y1="118.05" x2="9.6" y2="118.15" stroke-width="0.25"/>
+      <line x1="11.4" y1="80.0" x2="12.55" y2="80.0" stroke-width="0.25"/>
+      <line x1="18.25" y1="80.0" x2="18.4" y2="80.0" stroke-width="0.25"/>
+      <line x1="11.4" y1="119.15" x2="18.4" y2="119.15" stroke-width="0.25"/>
+      <line x1="10.4" y1="81.0" x2="10.4" y2="116.65" stroke-width="0.25"/>
+      <line x1="10.4" y1="118.05" x2="10.4" y2="118.15" stroke-width="0.25"/>
+      <line x1="19.4" y1="81.0" x2="19.4" y2="118.15" stroke-width="0.25"/>
+      <line x1="8.4" y1="74.15" x2="11.6" y2="74.15" stroke-width="0.25"/>
+      <line x1="11.6" y1="74.15" x2="10.8206" y2="74.6" stroke-width="0.25"/>
+      <line x1="11.6" y1="74.15" x2="10.8206" y2="73.7" stroke-width="0.25"/>
+      <line x1="8.4" y1="117.35" x2="11.6" y2="117.35" stroke-width="0.25"/>
+      <line x1="11.6" y1="117.35" x2="10.8206" y2="117.8" stroke-width="0.25"/>
+      <line x1="11.6" y1="117.35" x2="10.8206" y2="116.9" stroke-width="0.25"/>
+      <line x1="15.4" y1="75.45" x2="15.4" y2="76.4" stroke-width="0.25"/>
+      <line x1="15.4" y1="76.4" x2="14.6" y2="77.2" stroke-width="0.25"/>
+      <line x1="14.6" y1="77.2" x2="5.4" y2="77.2" stroke-width="0.25"/>
+      <line x1="5.4" y1="77.2" x2="4.6" y2="78.0" stroke-width="0.25"/>
+      <line x1="4.6" y1="78.0" x2="4.6" y2="78.7" stroke-width="0.25"/>
+      <line x1="4.6" y1="78.7" x2="4.15" y2="77.9206" stroke-width="0.25"/>
+      <line x1="4.6" y1="78.7" x2="5.05" y2="77.9206" stroke-width="0.25"/>
       <line x1="7.025" y1="120.3" x2="12.975" y2="120.3" stroke-width="0.25"/>
       <line x1="12.975" y1="120.3" x2="12.975" y2="122.7" stroke-width="0.25"/>
       <line x1="12.975" y1="122.7" x2="7.025" y2="122.7" stroke-width="0.25"/>
       <line x1="7.025" y1="122.7" x2="7.025" y2="120.3" stroke-width="0.25"/>
       <line x1="5.225" y1="121.5" x2="7.025" y2="121.5" stroke-width="0.25"/>
       <line x1="12.975" y1="121.5" x2="14.775" y2="121.5" stroke-width="0.25"/>
-      <path d="M 0.6 38.75 A 1.0 1.0 0 0 1 1.6 37.75" stroke-width="0.25"/>
-      <path d="M 8.6 37.75 A 1.0 1.0 0 0 1 9.6 38.75" stroke-width="0.25"/>
-      <path d="M 9.6 75.9 A 1.0 1.0 0 0 1 8.6 76.9" stroke-width="0.25"/>
-      <path d="M 1.6 76.9 A 1.0 1.0 0 0 1 0.6 75.9" stroke-width="0.25"/>
-      <path d="M 10.4 38.75 A 1.0 1.0 0 0 1 11.4 37.75" stroke-width="0.25"/>
-      <path d="M 18.4 37.75 A 1.0 1.0 0 0 1 19.4 38.75" stroke-width="0.25"/>
-      <path d="M 19.4 75.9 A 1.0 1.0 0 0 1 18.4 76.9" stroke-width="0.25"/>
-      <path d="M 11.4 76.9 A 1.0 1.0 0 0 1 10.4 75.9" stroke-width="0.25"/>
-      <path d="M 0.6 80.4 A 1.0 1.0 0 0 1 1.6 79.4" stroke-width="0.25"/>
-      <path d="M 8.6 79.4 A 1.0 1.0 0 0 1 9.6 80.4" stroke-width="0.25"/>
-      <path d="M 9.6 117.55 A 1.0 1.0 0 0 1 8.6 118.55" stroke-width="0.25"/>
-      <path d="M 1.6 118.55 A 1.0 1.0 0 0 1 0.6 117.55" stroke-width="0.25"/>
-      <path d="M 10.4 80.4 A 1.0 1.0 0 0 1 11.4 79.4" stroke-width="0.25"/>
-      <path d="M 18.4 79.4 A 1.0 1.0 0 0 1 19.4 80.4" stroke-width="0.25"/>
-      <path d="M 19.4 117.55 A 1.0 1.0 0 0 1 18.4 118.55" stroke-width="0.25"/>
-      <path d="M 11.4 118.55 A 1.0 1.0 0 0 1 10.4 117.55" stroke-width="0.25"/>
+      <path d="M 19.3506 30.5371 A 4.4 4.4 0 1 1 19.3506 26.6629" stroke-width="0.25"/>
+      <path d="M 0.6 37.8 A 1.0 1.0 0 0 1 1.6 36.8" stroke-width="0.25"/>
+      <path d="M 8.6 36.8 A 1.0 1.0 0 0 1 9.6 37.8" stroke-width="0.25"/>
+      <path d="M 9.6 74.95 A 1.0 1.0 0 0 1 8.6 75.95" stroke-width="0.25"/>
+      <path d="M 1.6 75.95 A 1.0 1.0 0 0 1 0.6 74.95" stroke-width="0.25"/>
+      <path d="M 10.4 37.8 A 1.0 1.0 0 0 1 11.4 36.8" stroke-width="0.25"/>
+      <path d="M 18.4 36.8 A 1.0 1.0 0 0 1 19.4 37.8" stroke-width="0.25"/>
+      <path d="M 19.4 74.95 A 1.0 1.0 0 0 1 18.4 75.95" stroke-width="0.25"/>
+      <path d="M 11.4 75.95 A 1.0 1.0 0 0 1 10.4 74.95" stroke-width="0.25"/>
+      <path d="M 0.6 81.0 A 1.0 1.0 0 0 1 1.6 80.0" stroke-width="0.25"/>
+      <path d="M 8.6 80.0 A 1.0 1.0 0 0 1 9.6 81.0" stroke-width="0.25"/>
+      <path d="M 9.6 118.15 A 1.0 1.0 0 0 1 8.6 119.15" stroke-width="0.25"/>
+      <path d="M 1.6 119.15 A 1.0 1.0 0 0 1 0.6 118.15" stroke-width="0.25"/>
+      <path d="M 10.4 81.0 A 1.0 1.0 0 0 1 11.4 80.0" stroke-width="0.25"/>
+      <path d="M 18.4 80.0 A 1.0 1.0 0 0 1 19.4 81.0" stroke-width="0.25"/>
+      <path d="M 19.4 118.15 A 1.0 1.0 0 0 1 18.4 119.15" stroke-width="0.25"/>
+      <path d="M 11.4 119.15 A 1.0 1.0 0 0 1 10.4 118.15" stroke-width="0.25"/>
     </g>
     <g text-anchor="middle">
       <text x="3.2" y="8.5" font-size="3.2">A</text>
@@ -106,71 +124,71 @@
       <text x="13.7" y="22.75" font-size="1.6">I</text>
       <text x="15.4" y="22.75" font-size="1.6">N</text>
       <text x="17.1" y="22.75" font-size="1.6">2</text>
-      <text x="2.9" y="34.75" font-size="1.6">I</text>
-      <text x="4.6" y="34.75" font-size="1.6">N</text>
-      <text x="6.3" y="34.75" font-size="1.6">3</text>
-      <text x="13.7" y="34.75" font-size="1.6">S</text>
-      <text x="15.4" y="34.75" font-size="1.6">U</text>
-      <text x="17.1" y="34.75" font-size="1.6">M</text>
-      <text x="4.6" y="41.5" font-size="1.6">+</text>
-      <text x="4.6" y="51.6" font-size="1.6">&#8722;</text>
-      <text x="4.6" y="54.5" font-size="1.6">2</text>
-      <text x="4.6" y="64.6" font-size="1.6">1</text>
-      <text x="2.05" y="75.9" font-size="1.6">O</text>
-      <text x="3.75" y="75.9" font-size="1.6">U</text>
-      <text x="5.45" y="75.9" font-size="1.6">T</text>
-      <text x="7.15" y="75.9" font-size="1.6">1</text>
-      <text x="2.9" y="38.55" font-size="1.6">O</text>
-      <text x="4.6" y="38.55" font-size="1.6">C</text>
-      <text x="6.3" y="38.55" font-size="1.6">T</text>
-      <text x="15.4" y="41.5" font-size="1.6">+</text>
-      <text x="15.4" y="51.6" font-size="1.6">&#8722;</text>
-      <text x="13.7" y="54.5" font-size="1.6">M</text>
-      <text x="15.4" y="54.5" font-size="1.6">A</text>
-      <text x="17.1" y="54.5" font-size="1.6">J</text>
-      <text x="13.7" y="64.6" font-size="1.6">M</text>
-      <text x="15.4" y="64.6" font-size="1.6">I</text>
-      <text x="17.1" y="64.6" font-size="1.6">N</text>
-      <text x="12.85" y="75.9" font-size="1.6">O</text>
-      <text x="14.55" y="75.9" font-size="1.6">U</text>
-      <text x="16.25" y="75.9" font-size="1.6">T</text>
-      <text x="17.95" y="75.9" font-size="1.6">2</text>
-      <text x="11.0875" y="59.25" font-size="1.0">4</text>
-      <text x="13.7" y="38.55" font-size="1.6">3</text>
-      <text x="15.4" y="38.55" font-size="1.6">R</text>
-      <text x="17.1" y="38.55" font-size="1.6">D</text>
-      <text x="4.6" y="83.15" font-size="1.6">+</text>
-      <text x="4.6" y="93.25" font-size="1.6">&#8722;</text>
-      <text x="2.9" y="96.15" font-size="1.6">M</text>
-      <text x="4.6" y="96.15" font-size="1.6">A</text>
-      <text x="6.3" y="96.15" font-size="1.6">J</text>
-      <text x="2.9" y="106.25" font-size="1.6">M</text>
-      <text x="4.6" y="106.25" font-size="1.6">I</text>
-      <text x="6.3" y="106.25" font-size="1.6">N</text>
-      <text x="2.05" y="117.55" font-size="1.6">O</text>
-      <text x="3.75" y="117.55" font-size="1.6">U</text>
-      <text x="5.45" y="117.55" font-size="1.6">T</text>
-      <text x="7.15" y="117.55" font-size="1.6">3</text>
-      <text x="8.9125" y="100.9" font-size="1.0">4</text>
-      <text x="2.9" y="80.2" font-size="1.6">3</text>
-      <text x="4.6" y="80.2" font-size="1.6">R</text>
-      <text x="6.3" y="80.2" font-size="1.6">D</text>
-      <text x="15.4" y="83.15" font-size="1.6">+</text>
-      <text x="15.4" y="93.25" font-size="1.6">&#8722;</text>
-      <text x="13.7" y="96.15" font-size="1.6">M</text>
-      <text x="15.4" y="96.15" font-size="1.6">A</text>
-      <text x="17.1" y="96.15" font-size="1.6">J</text>
-      <text x="13.7" y="106.25" font-size="1.6">M</text>
-      <text x="15.4" y="106.25" font-size="1.6">I</text>
-      <text x="17.1" y="106.25" font-size="1.6">N</text>
-      <text x="12.85" y="117.55" font-size="1.6">O</text>
-      <text x="14.55" y="117.55" font-size="1.6">U</text>
-      <text x="16.25" y="117.55" font-size="1.6">T</text>
-      <text x="17.95" y="117.55" font-size="1.6">4</text>
-      <text x="11.0875" y="100.9" font-size="1.0">5</text>
-      <text x="13.7" y="80.2" font-size="1.6">5</text>
-      <text x="15.4" y="80.2" font-size="1.6">T</text>
-      <text x="17.1" y="80.2" font-size="1.6">H</text>
+      <text x="2.9" y="35.15" font-size="1.6">I</text>
+      <text x="4.6" y="35.15" font-size="1.6">N</text>
+      <text x="6.3" y="35.15" font-size="1.6">3</text>
+      <text x="13.7" y="35.15" font-size="1.6">S</text>
+      <text x="15.4" y="35.15" font-size="1.6">U</text>
+      <text x="17.1" y="35.15" font-size="1.6">M</text>
+      <text x="4.6" y="40.55" font-size="1.6">+</text>
+      <text x="4.6" y="50.65" font-size="1.6">&#8722;</text>
+      <text x="4.6" y="53.55" font-size="1.6">2</text>
+      <text x="4.6" y="63.65" font-size="1.6">1</text>
+      <text x="2.05" y="74.95" font-size="1.6">O</text>
+      <text x="3.75" y="74.95" font-size="1.6">U</text>
+      <text x="5.45" y="74.95" font-size="1.6">T</text>
+      <text x="7.15" y="74.95" font-size="1.6">1</text>
+      <text x="2.9" y="37.6" font-size="1.6">O</text>
+      <text x="4.6" y="37.6" font-size="1.6">C</text>
+      <text x="6.3" y="37.6" font-size="1.6">T</text>
+      <text x="15.4" y="40.55" font-size="1.6">+</text>
+      <text x="15.4" y="50.65" font-size="1.6">&#8722;</text>
+      <text x="13.7" y="53.55" font-size="1.6">M</text>
+      <text x="15.4" y="53.55" font-size="1.6">A</text>
+      <text x="17.1" y="53.55" font-size="1.6">J</text>
+      <text x="13.7" y="63.65" font-size="1.6">M</text>
+      <text x="15.4" y="63.65" font-size="1.6">I</text>
+      <text x="17.1" y="63.65" font-size="1.6">N</text>
+      <text x="12.85" y="74.95" font-size="1.6">O</text>
+      <text x="14.55" y="74.95" font-size="1.6">U</text>
+      <text x="16.25" y="74.95" font-size="1.6">T</text>
+      <text x="17.95" y="74.95" font-size="1.6">2</text>
+      <text x="11.0875" y="58.3" font-size="1.0">4</text>
+      <text x="13.7" y="37.6" font-size="1.6">3</text>
+      <text x="15.4" y="37.6" font-size="1.6">R</text>
+      <text x="17.1" y="37.6" font-size="1.6">D</text>
+      <text x="4.6" y="83.75" font-size="1.6">+</text>
+      <text x="4.6" y="93.85" font-size="1.6">&#8722;</text>
+      <text x="2.9" y="96.75" font-size="1.6">M</text>
+      <text x="4.6" y="96.75" font-size="1.6">A</text>
+      <text x="6.3" y="96.75" font-size="1.6">J</text>
+      <text x="2.9" y="106.85" font-size="1.6">M</text>
+      <text x="4.6" y="106.85" font-size="1.6">I</text>
+      <text x="6.3" y="106.85" font-size="1.6">N</text>
+      <text x="2.05" y="118.15" font-size="1.6">O</text>
+      <text x="3.75" y="118.15" font-size="1.6">U</text>
+      <text x="5.45" y="118.15" font-size="1.6">T</text>
+      <text x="7.15" y="118.15" font-size="1.6">3</text>
+      <text x="8.9125" y="101.5" font-size="1.0">4</text>
+      <text x="2.9" y="80.8" font-size="1.6">3</text>
+      <text x="4.6" y="80.8" font-size="1.6">R</text>
+      <text x="6.3" y="80.8" font-size="1.6">D</text>
+      <text x="15.4" y="83.75" font-size="1.6">+</text>
+      <text x="15.4" y="93.85" font-size="1.6">&#8722;</text>
+      <text x="13.7" y="96.75" font-size="1.6">M</text>
+      <text x="15.4" y="96.75" font-size="1.6">A</text>
+      <text x="17.1" y="96.75" font-size="1.6">J</text>
+      <text x="13.7" y="106.85" font-size="1.6">M</text>
+      <text x="15.4" y="106.85" font-size="1.6">I</text>
+      <text x="17.1" y="106.85" font-size="1.6">N</text>
+      <text x="12.85" y="118.15" font-size="1.6">O</text>
+      <text x="14.55" y="118.15" font-size="1.6">U</text>
+      <text x="16.25" y="118.15" font-size="1.6">T</text>
+      <text x="17.95" y="118.15" font-size="1.6">4</text>
+      <text x="11.0875" y="101.5" font-size="1.0">5</text>
+      <text x="13.7" y="80.8" font-size="1.6">5</text>
+      <text x="15.4" y="80.8" font-size="1.6">T</text>
+      <text x="17.1" y="80.8" font-size="1.6">H</text>
       <text x="8.55" y="122.15" font-size="1.3">5</text>
       <text x="10.0" y="122.15" font-size="1.3">0</text>
       <text x="11.45" y="122.15" font-size="1.3">8</text>

@@ -106,9 +106,22 @@ Conventions — lettering, marks, label placement, mounting — are in
 #### How it reads
 
 Four jacks at the top: three summed inputs and `SUM`, the buffered sum that `PT` becomes.
-A rule under them, and then **four boxed groups, one per stage — polarity switch, selector
-switch, that stage's output.** Each stage now owns its output, which the old shared-row
-layout could not manage.
+`SUM` is an output, so it carries the ring — the panel's only closed circle, which is what
+lets direction read at a glance. Below them, **four boxed groups, one per stage — polarity
+switch, selector switch, that stage's output.** Each stage now owns its output, which the
+old shared-row layout could not manage.
+
+**Arrows trace the cascade** across the top pair, down into the bottom-left group, and
+across the bottom pair — the order the stages actually sum in. The middle leg cannot be a
+straight diagonal: about 4 mm of clear band between the box rows against a 10.8 mm column
+pitch would need a 15° line, and the house routing is 0°, 90° and 45° only. So it drops,
+takes a 45° knee, runs the band and turns down into the group it feeds. Where an arrow
+crosses a box outline the outline is broken, the same way a group name breaks it.
+
+`OUT1`–`OUT4` do not repeat the ring. Each already sits inside a named box that says which
+stage it belongs to, and the style guide's rule against a second closed circle is what
+keeps `SUM`'s ring meaningful. If you would rather every output ring, it is one line in the
+generator.
 
 Within a group: `+` above the polarity toggle and `−` below it, centre detent off. The
 selector's two throws are labelled above and below it the same way.
@@ -131,19 +144,19 @@ Origin top-left, millimetres, Y down — the drawing's own frame, not the old ge
 | 16.60 | 4.60 | 6.0 | IN1 |
 | 16.60 | 15.40 | 6.0 | IN2 |
 | 28.60 | 4.60 | 6.0 | IN3 |
-| 28.60 | 15.40 | 6.0 | SUM |
-| 45.75 | 4.60 | 5.0 | OCT polarity +/o/− |
-| 45.75 | 15.40 | 5.0 | 3RD polarity +/o/− |
-| 58.75 | 4.60 | 5.0 | OCT select 2/1 |
-| 58.75 | 15.40 | 5.0 | 3RD select MAJ/MIN (detent 4) |
-| 69.75 | 4.60 | 6.0 | OUT1 |
-| 69.75 | 15.40 | 6.0 | OUT2 |
-| 87.40 | 4.60 | 5.0 | 3RD polarity +/o/− |
-| 87.40 | 15.40 | 5.0 | 5TH polarity +/o/− |
-| 100.40 | 4.60 | 5.0 | 3RD select MAJ/MIN (detent 4) |
-| 100.40 | 15.40 | 5.0 | 5TH select MAJ/MIN (detent 5) |
-| 111.40 | 4.60 | 6.0 | OUT3 |
-| 111.40 | 15.40 | 6.0 | OUT4 |
+| 28.60 | 15.40 | 6.0 | SUM (output, ringed) |
+| 44.80 | 4.60 | 5.0 | OCT polarity +/o/− |
+| 44.80 | 15.40 | 5.0 | 3RD polarity +/o/− |
+| 57.80 | 4.60 | 5.0 | OCT select 2/1 |
+| 57.80 | 15.40 | 5.0 | 3RD select MAJ/MIN (detent 4) |
+| 68.80 | 4.60 | 6.0 | OUT1 |
+| 68.80 | 15.40 | 6.0 | OUT2 |
+| 88.00 | 4.60 | 5.0 | 3RD polarity +/o/− |
+| 88.00 | 15.40 | 5.0 | 5TH polarity +/o/− |
+| 101.00 | 4.60 | 5.0 | 3RD select MAJ/MIN (detent 4) |
+| 101.00 | 15.40 | 5.0 | 5TH select MAJ/MIN (detent 5) |
+| 112.00 | 4.60 | 6.0 | OUT3 |
+| 112.00 | 15.40 | 6.0 | OUT4 |
 | 125.50 | 7.50 | 6.4×3.2 | mounting slot, obround |
 
 Mounting follows the style guide's ≤ 6 HP rule: one 6.4 × 3.2 mm horizontal slot top-right
