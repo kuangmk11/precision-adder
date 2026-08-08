@@ -71,11 +71,20 @@ SYMS = {
                     ("poly", [(-2.54, 0), (2.54, 0)])],
                pins=[("1", "~", -5.08, 0, 0, "passive"),
                      ("2", "~", 5.08, 0, 180, "passive")]),
-    "REG": dict(ref="U",
-                art=[("rect", -5.08, -5.08, 5.08, 5.08)],
-                pins=[("1", "IN", -7.62, 2.54, 0, "power_in"),
-                      ("2", "GND", 0, -7.62, 90, "power_in"),
-                      ("3", "OUT", 7.62, 2.54, 180, "power_out")]),
+    # The 78L05 and the 79L05 do NOT share a pinout in TO-92, which is the
+    # classic way to destroy one. Both are drawn here with their real pin
+    # numbers, taken off the v2.2 schematic, and everything wires them by pin
+    # NAME so the numbering cannot be got the wrong way round.
+    "REG_POS": dict(ref="U",                      # 78L05: 3 in, 2 gnd, 1 out
+                    art=[("rect", -5.08, -5.08, 5.08, 5.08)],
+                    pins=[("3", "IN", -7.62, 2.54, 0, "power_in"),
+                          ("2", "GND", 0, -7.62, 90, "power_in"),
+                          ("1", "OUT", 7.62, 2.54, 180, "power_out")]),
+    "REG_NEG": dict(ref="U",                      # 79L05: 2 in, 1 gnd, 3 out
+                    art=[("rect", -5.08, -5.08, 5.08, 5.08)],
+                    pins=[("2", "IN", -7.62, 2.54, 0, "power_in"),
+                          ("1", "GND", 0, -7.62, 90, "power_in"),
+                          ("3", "OUT", 7.62, 2.54, 180, "power_out")]),
     # a jack: sleeve bar down the left, tip contact springing off it
     "JACK": dict(ref="J",
                  art=[("poly", [(-2.54, 3.81), (-2.54, -3.81)]),
@@ -229,6 +238,39 @@ def opamp(ref, unit, plus, minus, out):
                                      [plus, minus, out]))))
 
 
+REGULATORS = {}
+
+
+def add_reg(ref, sym, value, IN, OUT):
+    """Wire a regulator by pin function, never by pin number.
+
+    The 78L05 and 79L05 differ in TO-92 - 3/2/1 is in/gnd/out on one and
+    2/1/3 in/gnd/out on the other - so a shared symbol silently puts the
+    supply on an output pin. Looking the numbers up from the symbol's own pin
+    names removes the chance to get it backwards.
+    """
+    nets = {"IN": IN, "OUT": OUT, "GND": "GND"}
+    conns = {num: nets[pname] for num, pname, *_ in SYMS[sym]["pins"]}
+    REGULATORS[ref] = dict(sym=sym, **nets)
+    add(sym, value, conns, ref=ref, fp="Package_TO_SOT_THT:TO-92_Inline")
+
+
+def check_regulators():
+    """Each regulator's IN/OUT/GND pins must carry the right rails."""
+    fails = []
+    for ref, want in REGULATORS.items():
+        part = next((p for p in parts if p["ref"] == ref), None)
+        if part is None:
+            fails.append(f"regulator {ref} missing")
+            continue
+        for num, pname, *_ in SYMS[part["sym"]]["pins"]:
+            got = part["conns"].get(num)
+            if got != want[pname]:
+                fails.append(f"{ref} pin {num} ({pname}) is on {got!r}, "
+                             f"wants {want[pname]!r}")
+    return fails
+
+
 def pwr_flag(net):
     """KiCad wants every power net driven by a power-output pin somewhere."""
     add("PWR_FLAG", "PWR_FLAG", {"1": net}, ref=ref_for("#FLG"), fp="")
@@ -255,12 +297,10 @@ def build():
     # ---------------- +/-5 V ------------------------------------------------
     new_block()
     # U1-U3 are the op-amp packages, so the regulators take U4/U5 explicitly.
-    add("REG", "L78L05", {"1": "+12V", "2": "GND", "3": "+5V"},
-        ref="U4", fp="Package_TO_SOT_THT:TO-92_Inline")
+    add_reg("U4", "REG_POS", "L78L05", IN="+12V", OUT="+5V")
     cap("0.33uF", "+12V", "GND")
     cap("0.01uF", "+5V", "GND")
-    add("REG", "L79L05", {"1": "-12V", "2": "GND", "3": "-5V"},
-        ref="U5", fp="Package_TO_SOT_THT:TO-92_Inline")
+    add_reg("U5", "REG_NEG", "L79L05", IN="-12V", OUT="-5V")
     cap("0.33uF", "-12V", "GND")
     cap("0.1uF", "-5V", "GND")
 
@@ -890,7 +930,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector() + check_rotation_symmetry()
+    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector() + check_rotation_symmetry() + check_regulators()
 
     print("design")
     for line in report:
