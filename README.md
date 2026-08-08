@@ -241,6 +241,13 @@ a name that does not resolve is a more honest placeholder than a wrong one that 
 KiCad footprints are used everywhere they exist, so the passives, op-amps, regulators and
 diodes resolve on any install.
 
+**Settle before laying out a board:** the three-position selectors are drawn as an ideal
+1-pole-3-throw with four pins. A subminiature `ON-ON-ON` toggle is physically a **six-pin
+DPDT** whose three positions come from combining its two poles, and Type 1 and Type 2
+differ in which combinations you get. The symbol, the footprint and the tap wiring all
+depend on which variant you buy, so that choice has to come first. Everything else in the
+schematic is independent of it.
+
 The generator additionally checks, before writing: every `lib_id` resolves as a full
 `library:name` string and every instantiated unit has a matching body; every pin coordinate
 read back out of the written file lands on a wire endpoint, so the label stubs really do

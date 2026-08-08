@@ -85,6 +85,22 @@ SYMS = {
                                 (1.27, -3.302)])],
                  pins=[("1", "T", -5.08, 2.54, 0, "passive"),
                        ("2", "S", -5.08, -2.54, 0, "passive")]),
+    # Thonkiconn with its normalling contact. The switch shorts tip to pin 3
+    # when no plug is in, so wiring pin 3 to GND holds an unused input at a
+    # hard 0 V - which the passive summing network requires. A pulldown will
+    # not do: 100k in series with the 10k summing resistor re-weights the
+    # average and the gain goes wrong as soon as an input is left unpatched.
+    "JACK_SW": dict(ref="J",
+                    art=[("poly", [(-2.54, 3.81), (-2.54, -3.81)]),
+                         ("poly", [(-2.54, 2.54), (0, 2.54), (1.27, 3.302)]),
+                         ("poly", [(-2.54, -2.54), (1.27, -2.54)]),
+                         ("poly", [(1.27, -1.778), (2.54, -2.54),
+                                   (1.27, -3.302)]),
+                         ("poly", [(-2.54, 0), (0.5, 0.9)]),
+                         _dot(-2.54, 0)],
+                    pins=[("1", "T", -5.08, 2.54, 0, "passive"),
+                          ("2", "S", -5.08, -2.54, 0, "passive"),
+                          ("3", "N", -5.08, 0, 0, "passive")]),
     # lever drawn resting on throw A; the centre position is open
     "SW_ONOFFON": dict(ref="SW",
                        art=[_dot(-2.54, 2.54), _dot(-2.54, -2.54),
@@ -262,6 +278,9 @@ def build():
     new_block()
     for u in ("U1", "U2", "U3"):
         opamp_supply(u)
+        # local decoupling at each package, as v2.2 has on every quad
+        cap("0.1uF", "+12V", "GND")
+        cap("0.1uF", "-12V", "GND")
     opamp("U3", 2, "GND", "U3B_OUT", "U3B_OUT")     # spare, tied off
 
     # ---------------- input summer -----------------------------------------
@@ -270,9 +289,10 @@ def build():
     # averages two and takes a gain of 2.
     new_block()
     for n in (1, 2, 3):
-        add("JACK", "Thonkiconn", {"1": f"IN{n}", "2": "GND"},
+        # pin 3 to GND: the jack's own switch grounds the tip when unpatched,
+        # which is what keeps the summing ratios right with 1 or 2 inputs in use
+        add("JACK_SW", "Thonkiconn", {"1": f"IN{n}", "2": "GND", "3": "GND"},
             ref=f"J{n}", fp="THONKICONN-TIGHT")
-        res("100k", f"IN{n}", "GND")               # unpatched input = 0 V
         res("10k", f"IN{n}", "SUMNODE")
     opamp("U1", 1, "SUMNODE", "SUMFB", "SUM_BUS")
     res("20k", "SUM_BUS", "SUMFB")
@@ -355,10 +375,11 @@ def stage(st):
             {"1": taps[2], "2": taps[1], "3": taps[0], "4": f"BIAS{n}_SEL"},
             ref=f"SW{n}B", fp="SUBMINI_TOGGLE")
 
-    # bias buffer, with v2.2's compensation cap and output snubber
+    # Bias buffer and v2.2's output snubber. v2.2 also has a 22pF across its
+    # follower's feedback, but that feedback is a plain wire, so the cap sits
+    # across a short and does nothing - not reproduced here.
     amp_ref, amp_unit = st["amp"]
     opamp(amp_ref, amp_unit, f"BIAS{n}_SEL", f"BIAS{n}", f"BIAS{n}")
-    cap("22pF", f"BIAS{n}", f"BIAS{n}_SEL")
     res("619R", f"BIAS{n}", f"BIAS{n}_SNUB")
     cap("330pF", f"BIAS{n}_SNUB", "GND")
 
@@ -404,6 +425,59 @@ def check_ladders():
             if err > 1e-9:
                 fails.append(f"{tap} is {got:.6f} V, wants {want:.6f} V")
     return out, fails
+
+
+def check_function():
+    """Assert the things that make the circuit do its job.
+
+    These are the properties a netlist check cannot see, because a wrong value
+    still connects. Each one here is a bug that was actually present at some
+    point: an unpatched input that did not sum to zero, a missing decoupling
+    cap, a gain that no longer matched the divider in front of it.
+    """
+    fails = []
+    on_net = {}
+    for p in parts:
+        for pin, n in p["conns"].items():
+            on_net.setdefault(n, []).append((p, pin))
+
+    def parts_on(net, sym="R"):
+        return [p for p, _ in on_net.get(net, []) if p["sym"] == sym]
+
+    # A stage adds input and bias through two equal resistors and then takes a
+    # gain of 2, so the divide-by-two is undone exactly.
+    for st in STAGES:
+        n = st["n"]
+        summing = [p["value"] for p in parts_on(f"SUM{n}")]
+        if sorted(summing) != ["10k", "10k"]:
+            fails.append(f"stage {n} summing node has {summing}, wants two 10k")
+        fb = [p["value"] for p in parts_on(f"FB{n}")]
+        if len(fb) != 2 or fb[0] != fb[1]:
+            fails.append(f"stage {n} gain network is {fb}, wants two equal")
+
+    # Three inputs averaged then multiplied by three.
+    ins = sorted(p["value"] for p in parts_on("SUMNODE"))
+    if ins != ["10k"] * 3:
+        fails.append(f"input summer has {ins}, wants three 10k")
+    gain = [p["value"] for p in parts_on("SUMFB")]
+    if sorted(gain) != ["10k", "20k"]:
+        fails.append(f"input summer gain network is {gain}, wants 10k and 20k")
+
+    # An unpatched input must be a hard 0 V, not a pulldown, or the passive
+    # averager re-weights itself and the gain goes wrong.
+    for p in parts:
+        if p["sym"] == "JACK_SW" and p["conns"].get("3") != "GND":
+            fails.append(f"{p['ref']} switch pin is not grounded; an unpatched "
+                         f"input will not sum to zero")
+
+    # Local decoupling on every op-amp package.
+    packages = {p["ref"] for p in parts if p["sym"] == "OPA4196"}
+    for rail in ("+12V", "-12V"):
+        near = [p for p in parts_on(rail, "C") if p["value"] == "0.1uF"]
+        if len(near) < len(packages):
+            fails.append(f"{len(near)} x 0.1uF on {rail} for {len(packages)} "
+                         f"op-amp packages; wants one each")
+    return fails
 
 
 def check_designators():
@@ -660,7 +734,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators()
+    fails += tap_fails + check_designators() + check_function()
 
     print("design")
     for line in report:
