@@ -181,8 +181,10 @@ _cur = dict(col=0, row=0)
 # The custom ones (Thonkiconn, trimmer, Eurorack header) are left as bare names
 # on purpose - they are yours to supply, and a name that does not resolve is a
 # more honest placeholder than a wrong one that does.
-FOOTPRINTS = {"R": "Resistor_SMD:R_0805_2012Metric",
-              "C": "Capacitor_SMD:C_0805_2012Metric"}
+# 1206 everywhere an SMD part is used: the largest size these values are
+# commonly stocked in, and the practical limit for comfortable hand soldering.
+FOOTPRINTS = {"R": "Resistor_SMD:R_1206_3216Metric",
+              "C": "Capacitor_SMD:C_1206_3216Metric"}
 
 
 def new_block():
@@ -283,9 +285,9 @@ def build():
         {"1": "N12_RAW", "2": "N12_RAW", "3": "GND", "4": "GND", "5": "GND",
          "6": "GND", "7": "GND", "8": "GND", "9": "P12_RAW", "10": "P12_RAW"},
         ref="P1", fp="EURO_PWR_HEADER_LOCK")
-    add("FB", "Ferrite", {"1": "P12_RAW", "2": "P12_F"}, fp="7MM_RESISTOR")
+    add("FB", "Ferrite", {"1": "P12_RAW", "2": "P12_F"}, fp="Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     add("D", "1N5819", {"1": "+12V", "2": "P12_F"}, fp="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
-    add("FB", "Ferrite", {"1": "N12_RAW", "2": "N12_F"}, fp="7MM_RESISTOR")
+    add("FB", "Ferrite", {"1": "N12_RAW", "2": "N12_F"}, fp="Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     add("D", "1N5819", {"1": "N12_F", "2": "-12V"}, fp="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
     cap_tht("10uF", "+12V", "GND")
     cap("100pF", "+12V", "GND")
@@ -307,17 +309,17 @@ def build():
     # ---------------- +/-2.5 V references -----------------------------------
     # Only precision source on the board; every stage scales down from these.
     new_block()
-    res("50k", "+5V", "REFP_TOP")
+    res("49.9k", "+5V", "REFP_TOP")
     add("POT", "50k", {"1": "REFP_TOP", "2": "REFP_W", "3": "REFP_BOT"},
-        ref="VR5", fp="PV36W-MULTITURN-TRIMMER")   # VR1-VR4 are the stage trims
-    res("50k", "REFP_BOT", "GND")
+        ref="VR5", fp="Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical")   # VR1-VR4 are the stage trims
+    res("49.9k", "REFP_BOT", "GND")
     opamp("U3", 3, "REFP_W", "VREF_P", "VREF_P")
     cap_tht("10uF", "VREF_P", "GND")
 
-    res("50k", "-5V", "REFN_TOP")
+    res("49.9k", "-5V", "REFN_TOP")
     add("POT", "50k", {"1": "REFN_TOP", "2": "REFN_W", "3": "REFN_BOT"},
-        ref="VR6", fp="PV36W-MULTITURN-TRIMMER")
-    res("50k", "REFN_BOT", "GND")
+        ref="VR6", fp="Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical")
+    res("49.9k", "REFN_BOT", "GND")
     opamp("U3", 4, "REFN_W", "VREF_N", "VREF_N")
     cap_tht("10uF", "VREF_N", "GND")
 
@@ -340,11 +342,11 @@ def build():
         # which is what keeps the summing ratios right with 1 or 2 inputs in use
         add("JACK_SW", "Thonkiconn", {"1": f"IN{n}", "2": "GND", "3": "GND"},
             ref=f"J{n}", fp="THONKICONN-TIGHT")
-        res("10k", f"IN{n}", "SUMNODE")
+        res("10.0k", f"IN{n}", "SUMNODE")
     opamp("U1", 1, "SUMNODE", "SUMFB", "SUM_BUS")
-    res("20k", "SUM_BUS", "SUMFB")
-    res("10k", "SUMFB", "GND")
-    res("1k", "SUM_BUS", "SUM_JACK")
+    res("20.0k", "SUM_BUS", "SUMFB")
+    res("10.0k", "SUMFB", "GND")
+    res("1.00k", "SUM_BUS", "SUM_JACK")
     add("JACK", "Thonkiconn", {"1": "SUM_JACK", "2": "GND"},
         ref="J4", fp="THONKICONN-TIGHT")
 
@@ -368,19 +370,19 @@ VREF = 2.5
 
 STAGES = [
     dict(n=1, name="OCT", amp=("U1", 2), out=("U1", 3), src="SUM_BUS",
-         segs=[(12, "OCT_1V"), (12, "OCT_2V"), (6, None)],
+         segs=[(12, "OCT_1V"), (12, "OCT_2V"), (6, None)], top_fixed="5.49k",
          up="OCT_1V", detent=None, down="OCT_2V",
          want={"OCT_1V": 1.0, "OCT_2V": 2.0}),
     dict(n=2, name="3RD", amp=("U1", 4), out=("U2", 1), src="OUT1",
-         segs=[(3, "S2_MIN3"), (1, "S2_MAJ3"), (1, "S2_4th"), (25, None)],
+         segs=[(3, "S2_MIN3"), (1, "S2_MAJ3"), (1, "S2_4th"), (25, None)], top_fixed="24.3k",
          up="S2_MAJ3", detent="S2_4th", down="S2_MIN3",
          want={"S2_MIN3": 0.25, "S2_MAJ3": 1 / 3, "S2_4th": 5 / 12}),
     dict(n=3, name="3RD", amp=("U2", 2), out=("U2", 3), src="OUT2",
-         segs=[(3, "S3_MIN3"), (1, "S3_MAJ3"), (1, "S3_4th"), (25, None)],
+         segs=[(3, "S3_MIN3"), (1, "S3_MAJ3"), (1, "S3_4th"), (25, None)], top_fixed="24.3k",
          up="S3_MAJ3", detent="S3_4th", down="S3_MIN3",
          want={"S3_MIN3": 0.25, "S3_MAJ3": 1 / 3, "S3_4th": 5 / 12}),
     dict(n=4, name="5TH", amp=("U2", 4), out=("U3", 1), src="OUT3",
-         segs=[(3, "S4_MIN3"), (1, "S4_MAJ3"), (3, "S4_5th"), (23, None)],
+         segs=[(3, "S4_MIN3"), (1, "S4_MAJ3"), (3, "S4_5th"), (23, None)], top_fixed="22.6k",
          up="S4_MAJ3", detent="S4_5th", down="S4_MIN3",
          want={"S4_MIN3": 0.25, "S4_MAJ3": 1 / 3, "S4_5th": 7 / 12}),
 ]
@@ -433,7 +435,7 @@ def stage(st):
     # and trims about +/-1.7% either way.
     add("POT", "1k", {"1": f"LAD{n}_TOP", "2": f"LAD{n}_TRIM",
                       "3": f"LAD{n}_TRIM"},
-        ref=f"VR{n}", fp="PV36W-MULTITURN-TRIMMER")
+        ref=f"VR{n}", fp="Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical")
 
     # Ladder, built GND upward. Each entry is (value, tap at the TOP of that
     # segment); the last has no tap and runs to the trimmer.
@@ -441,7 +443,11 @@ def stage(st):
     for i, (value, tap) in enumerate(st["segs"]):
         top = i == len(st["segs"]) - 1
         upper = f"LAD{n}_TRIM" if top else tap
-        res(f"{value - 0.5:g}k" if top else f"{value:g}k", node, upper)
+        # E24 3.00k / 12.0k, not E96: E96 has no exact 3:1 pair, and its 3.01k
+        # cannot be selected to 3.000k at 0.1%. The top segment is trimmed, so
+        # it takes the nearest stocked value instead.
+        LADDER_VALUE = {12: "12.0k", 3: "3.00k", 1: "1.00k"}
+        res(st["top_fixed"] if top else LADDER_VALUE[value], node, upper)
         node = upper
 
     # selector: 2-position on the octave stage, 3-position on the others
@@ -461,14 +467,14 @@ def stage(st):
     cap("330pF", f"BIAS{n}_SNUB", "GND")
 
     # summing node: stage input and bias averaged, then a gain of 2
-    res("10k", st["src"], f"SUM{n}")
-    res("10k", f"BIAS{n}", f"SUM{n}")
+    res("10.0k", st["src"], f"SUM{n}")
+    res("10.0k", f"BIAS{n}", f"SUM{n}")
     out_ref, out_unit = st["out"]
     opamp(out_ref, out_unit, f"SUM{n}", f"FB{n}", f"OUT{n}")
-    res("10k", f"OUT{n}", f"FB{n}")
-    res("10k", f"FB{n}", "GND")
+    res("10.0k", f"OUT{n}", f"FB{n}")
+    res("10.0k", f"FB{n}", "GND")
 
-    res("1k", f"OUT{n}", f"OUT{n}_JACK")
+    res("1.00k", f"OUT{n}", f"OUT{n}_JACK")
     add("JACK", "Thonkiconn", {"1": f"OUT{n}_JACK", "2": "GND"},
         ref=f"J{4 + n}", fp="THONKICONN-TIGHT")
 
@@ -526,19 +532,19 @@ def check_function():
     for st in STAGES:
         n = st["n"]
         summing = [p["value"] for p in parts_on(f"SUM{n}")]
-        if sorted(summing) != ["10k", "10k"]:
-            fails.append(f"stage {n} summing node has {summing}, wants two 10k")
+        if sorted(summing) != ["10.0k", "10.0k"]:
+            fails.append(f"stage {n} summing node has {summing}, wants two 10.0k")
         fb = [p["value"] for p in parts_on(f"FB{n}")]
         if len(fb) != 2 or fb[0] != fb[1]:
             fails.append(f"stage {n} gain network is {fb}, wants two equal")
 
     # Three inputs averaged then multiplied by three.
     ins = sorted(p["value"] for p in parts_on("SUMNODE"))
-    if ins != ["10k"] * 3:
-        fails.append(f"input summer has {ins}, wants three 10k")
+    if ins != ["10.0k"] * 3:
+        fails.append(f"input summer has {ins}, wants three 10.0k")
     gain = [p["value"] for p in parts_on("SUMFB")]
-    if sorted(gain) != ["10k", "20k"]:
-        fails.append(f"input summer gain network is {gain}, wants 10k and 20k")
+    if sorted(gain) != ["10.0k", "20.0k"]:
+        fails.append(f"input summer gain network is {gain}, wants 10.0k and 20.0k")
 
     # An unpatched input must be a hard 0 V, not a pulldown, or the passive
     # averager re-weights itself and the gain goes wrong.
@@ -938,6 +944,11 @@ def main():
     print("\nladder taps, trimmer centred")
     for line in taps:
         print(line)
+    if "--check" in sys.argv:
+        print("\n--check: " + ("FAILED\n  " + "\n  ".join(fails) if fails
+                                else "all checks pass; nothing written"))
+        return 1 if fails else 0
+
     if fails:
         print("\nFAILED - nothing written:")
         for f in fails[:20]:
