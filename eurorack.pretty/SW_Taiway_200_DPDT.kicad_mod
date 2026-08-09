@@ -1,0 +1,58 @@
+(footprint "SW_Taiway_200_DPDT"
+	(version 20240108)
+	(generator "hand")
+	(layer "F.Cu")
+	(descr "Taiway series 200 sub-miniature DPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MDPx: ON-ON, ON-OFF-ON, or the custom MDP6 ON-ON-ON. Terminals on a 2.54 x 5.08 grid, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 8.10 (throw axis, X) x 9.10. PADS ARE NUMBERED AS THE DATASHEET DOES: pins 1-2-3 are one pole and 4-5-6 the other, with the COMMONS on 2 and 5, i.e. the centre of each row. Taiway's contact table is written in this numbering (ON-ON-ON reads 2-3,5-6 / 2-3,5-4 / 2-1,5-4), so a symbol drawn from the datasheet drops straight on. NOTE the sibling SW_200_MDP3_DPDT in this library is the same physical part with a deliberately different remap, commons on pads 1 and 4, for symbols numbered that way - the two are NOT interchangeable. Pick whichever matches your symbol and check the common lands on a centre terminal.")
+	(tags "toggle switch dpdt on-on-on on-off-on subminiature taiway 200 eurorack")
+	(attr through_hole)
+	(property "Reference" "SW" (at 0 -6.0 0) (layer "F.SilkS")
+		(uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e01) (effects (font (size 1 1) (thickness 0.15)))
+	)
+	(property "Value" "SW_Taiway_200_DPDT" (at 0 6.0 0) (layer "F.Fab")
+		(uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e02) (effects (font (size 1 1) (thickness 0.15)))
+	)
+	(fp_rect
+		(start -4.05 -4.55) (end 4.05 4.55)
+		(stroke (width 0.1) (type default)) (fill no)
+		(layer "F.Fab") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e03)
+	)
+	(fp_rect
+		(start -4.3 -4.8) (end 4.3 4.8)
+		(stroke (width 0.05) (type default)) (fill no)
+		(layer "F.CrtYd") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e04)
+	)
+	(fp_line
+		(start -4.05 -4.85) (end 4.05 -4.85)
+		(stroke (width 0.12) (type default))
+		(layer "F.SilkS") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e05)
+	)
+	(pad "1" thru_hole circle
+		(at -2.54 -2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e21)
+	)
+	(pad "2" thru_hole circle
+		(at 0 -2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e22)
+	)
+	(pad "3" thru_hole circle
+		(at 2.54 -2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e23)
+	)
+	(pad "4" thru_hole circle
+		(at -2.54 2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e24)
+	)
+	(pad "5" thru_hole circle
+		(at 0 2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e25)
+	)
+	(pad "6" thru_hole circle
+		(at 2.54 2.54) (size 1.7 1.7) (drill 1.1)
+		(layers "*.Cu" "*.Mask") (uuid 7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e26)
+	)
+	(model "${KIPRJMOD}/3d/200MDPxT2B1M2xE.stp"
+		(offset (xyz 0 0 0))
+		(scale (xyz 1 1 1))
+		(rotate (xyz 0 0 0))
+	)
+)

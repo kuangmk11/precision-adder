@@ -74,30 +74,54 @@ the footprint's pad 1 against the datasheet with the part oriented as you will f
 
 | Qty | Part | Designators | Footprint |
 |---:|---|---|---|
-| 8 | Thonkiconn PJ398SM | J1–J8 | `THONKICONN-TIGHT` *(custom)* |
-| 4 | Taiway `200-MSP3-T1B1M2QE` SPDT ON-OFF-ON | SW1A–SW4A | `TAIWAY_200_SP_M2` *(custom)* |
-| 3 | Taiway `200-MDP6-T1B1M2QE` DPDT ON-ON-ON | SW2B, SW3B, SW4B | `TAIWAY_200_DP_M2` *(custom)* |
-| 1 | Taiway `200-MSP1-T1B1M2QE` SPDT ON-ON | SW1B | `TAIWAY_200_SP_M2` *(custom)* |
+| 8 | Thonkiconn PJ398SM | J1–J8 | `eurorack:Thonkiconn_PJ301M` |
+| 4 | Taiway `200-MSP3-T1B1M2QE` SPDT ON-OFF-ON | SW1–SW4 | `eurorack:SW_Taiway_200_SPDT` |
+| 3 | Taiway `200-MDP6-T1B1M2QE` DPDT ON-ON-ON | SW6, SW7, SW8 | `eurorack:SW_Taiway_200_DPDT` |
+| 1 | Taiway `200-MSP1-T1B1M2QE` SPDT ON-ON | SW5 | `eurorack:SW_Taiway_200_SPDT` |
 | 4 | 1k multiturn trimmer | VR1–VR4 | `Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical` |
 | 2 | 50k multiturn trimmer | VR5, VR6 | `Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical` |
 | 2 | Ferrite bead, axial | FB1, FB2 | `Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal` |
-| 1 | Eurorack 2×5 shrouded header | P1 | `EURO_PWR_HEADER_LOCK` *(custom)* |
+| 1 | Eurorack 2×5 shrouded header | P1 | `Connector_IDC:IDC-Header_2x05_P2.54mm_Vertical` |
 
 Keep the **shrouded, keyed** power header — it is the only thing that stops the ribbon
 going on backwards, and D1/D2 are the last line of defence after it.
 
-### Custom footprints still to draw
+### Footprint libraries
 
-| Footprint | Geometry |
+Everything resolves against stock KiCad libraries plus `eurorack.pretty` at the repo root,
+wired up by `docs/fp-lib-table` as `${KIPRJMOD}/../eurorack.pretty`. **ERC reports 0 errors
+and 0 warnings.**
+
+Two footprints were added to `eurorack.pretty` for this build:
+
+| Footprint | Notes |
 |---|---|
-| `TAIWAY_200_SP_M2` | 3 pins in a row, **2.54 mm** pitch |
-| `TAIWAY_200_DP_M2` | 6 pins, 2 columns × 3 rows, **5.08 × 2.54 mm**; numbered 6‑5‑4 down one column, 3‑2‑1 down the other |
-| `THONKICONN-TIGHT` | carries over from v2.2 |
-| `EURO_PWR_HEADER_LOCK` | carries over from v2.2 |
+| `SW_Taiway_200_SPDT` | 3 pads in a line on 2.54, **pad 2 is the common** |
+| `SW_Taiway_200_DPDT` | 6 pads, 2.54 × 5.08, **pads 2 and 5 are the commons** |
+
+**Both use Taiway's own pin numbering.** The library already contained
+`SW_200_MDP3_DPDT`, which is the same physical part with the commons deliberately remapped
+to pads 1 and 4 to suit a differently-numbered symbol. The two are *not* interchangeable —
+pick the one matching your symbol and confirm the common lands on a centre terminal. Both
+descriptions say so.
+
+The Thonkiconn footprint names its pads `T` / `TN` / `S` rather than 1/2/3, so the jack
+symbols use those as their pin numbers. KiCad allows any string there, and matching the
+footprint is what keeps the pads connected.
 
 Panel holes for the toggles are Ø5.0, against Taiway's recommended Ø4.95 for the 10‑48
 bushing — fine. The optional 4.55 mm anti-rotation flat is not cut, so nut torque alone
 holds them.
+
+### Switch designators
+
+`SW1`–`SW4` are the four polarity toggles, one per stage. `SW5` is the `OCT` magnitude
+switch. `SW6`–`SW8` are the three quality selectors on stages 2–4.
+
+Earlier drafts called these `SW1A`/`SW1B` and so on. That reads well but KiCad rejects it:
+a trailing letter is how it writes the *unit* of a multi-unit symbol, so a reference ending
+in one never counts as annotated. It does not appear in ERC — only in the annotation dialog
+and as a warning on netlist export.
 
 ## Trimmer set points
 

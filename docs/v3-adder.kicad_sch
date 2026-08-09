@@ -782,7 +782,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "T"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -800,7 +800,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "S"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -957,7 +957,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "T"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -975,7 +975,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "S"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -986,14 +986,14 @@
 				(pin passive line
 					(at -5.08 0 0)
 					(length 2.54)
-					(name "N"
+					(name "TN"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "TN"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1756,139 +1756,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "adder:REG_POS"
-			(pin_names
-				(offset 0.254)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "REG"
-				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "REG_POS_0_1"
-				(rectangle
-					(start -5.08 -5.08)
-					(end 5.08 5.08)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "REG_POS_1_1"
-				(pin power_out line
-					(at -7.62 2.54 0)
-					(length 2.54)
-					(name "OUT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -7.62 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 7.62 2.54 180)
-					(length 2.54)
-					(name "IN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "adder:REG_NEG"
 			(pin_names
 				(offset 0.254)
@@ -1908,7 +1775,7 @@
 					)
 				)
 			)
-			(property "Value" "REG"
+			(property "Value" "REG_NEG"
 				(at 0 -5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2005,6 +1872,139 @@
 					(at 7.62 2.54 180)
 					(length 2.54)
 					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "adder:REG_POS"
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "REG_POS"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "REG_POS_0_1"
+				(rectangle
+					(start -5.08 -5.08)
+					(end 5.08 5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "REG_POS_1_1"
+				(pin power_out line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 7.62 2.54 180)
+					(length 2.54)
+					(name "IN"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -9142,7 +9142,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "00d7909a-8739-58e7-8dac-95281d888f4d")
-		(property "Reference" "SW3B"
+		(property "Reference" "SW7"
 			(at 290.48 145.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9162,7 +9162,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_DP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_DPDT"
 			(at 284.48 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -9215,7 +9215,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW3B")
+					(reference "SW7")
 					(unit 1)
 				)
 			)
@@ -9759,7 +9759,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 147.32 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -9791,10 +9791,10 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "b97633fb-01a8-54f0-9453-883a4738d8f7")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "ba2d5d8f-037c-5470-8916-4f05d628b13f")
 		)
 		(instances
@@ -10183,7 +10183,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 411.48 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -10215,13 +10215,13 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "4d6b206e-8a34-5255-9a13-58d41fb5324c")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "27744662-91f9-5328-8760-8f4ea5d5ead3")
 		)
-		(pin "3"
+		(pin "TN"
 			(uuid "dd29b9b0-e5a6-57a3-a1e4-0928567813ba")
 		)
 		(instances
@@ -10419,7 +10419,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 410.21 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -10451,13 +10451,13 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "e0318d2d-e09d-5d48-8150-77c2252a74a3")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "0b95ea98-b7c6-588f-8788-524f4976454e")
 		)
-		(pin "3"
+		(pin "TN"
 			(uuid "9fbdef68-c8f5-5412-80f8-9d4d8be2a858")
 		)
 		(instances
@@ -11467,7 +11467,7 @@
 				)
 			)
 		)
-		(property "Footprint" "EURO_PWR_HEADER_LOCK"
+		(property "Footprint" "Connector_IDC:IDC-Header_2x05_P2.54mm_Vertical"
 			(at 387.35 223.52 0)
 			(hide yes)
 			(show_name no)
@@ -11627,7 +11627,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "2d199e59-95c5-51d5-a826-2366b693df3d")
-		(property "Reference" "SW2B"
+		(property "Reference" "SW6"
 			(at 291.75 118.46 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11647,7 +11647,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_DP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_DPDT"
 			(at 285.75 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -11700,7 +11700,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW2B")
+					(reference "SW6")
 					(unit 1)
 				)
 			)
@@ -12745,7 +12745,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 149.86 227.33 0)
 			(hide yes)
 			(show_name no)
@@ -12777,10 +12777,10 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "15cbe4cd-85e9-5319-8f57-37663b74bcca")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "f1ea3cc9-aae5-5411-93c9-5b564860c9ad")
 		)
 		(instances
@@ -12881,7 +12881,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "48db5e04-a23f-55b8-bd66-3aac31d1d7a2")
-		(property "Reference" "SW1B"
+		(property "Reference" "SW5"
 			(at 278.892 84.836 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12901,7 +12901,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_SP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_SPDT"
 			(at 274.32 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -12945,7 +12945,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW1B")
+					(reference "SW5")
 					(unit 1)
 				)
 			)
@@ -13511,7 +13511,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "57dc818a-d8d9-55f0-8021-315a0e841469")
-		(property "Reference" "SW1A"
+		(property "Reference" "SW1"
 			(at 154.94 87.884 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13531,7 +13531,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_SP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_SPDT"
 			(at 154.94 97.79 0)
 			(hide yes)
 			(show_name no)
@@ -13575,7 +13575,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW1A")
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -13592,7 +13592,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "588b8c7a-7537-5bb7-b532-bdb46d4309c0")
-		(property "Reference" "SW4A"
+		(property "Reference" "SW4"
 			(at 151.892 166.37 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13612,7 +13612,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_SP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_SPDT"
 			(at 156.21 176.53 0)
 			(hide yes)
 			(show_name no)
@@ -13656,7 +13656,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW4A")
+					(reference "SW4")
 					(unit 1)
 				)
 			)
@@ -14064,7 +14064,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "5c889b69-ca19-5d34-b30a-f1163f8e307f")
-		(property "Reference" "SW4B"
+		(property "Reference" "SW8"
 			(at 291.75 183.23 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14084,7 +14084,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_DP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_DPDT"
 			(at 285.75 189.23 0)
 			(hide yes)
 			(show_name no)
@@ -14137,7 +14137,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW4B")
+					(reference "SW8")
 					(unit 1)
 				)
 			)
@@ -14384,7 +14384,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "60267cf2-94ea-5aef-b83a-4624606fbdfd")
-		(property "Reference" "SW2A"
+		(property "Reference" "SW2"
 			(at 157.226 115.57 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14404,7 +14404,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_SP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_SPDT"
 			(at 157.48 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -14448,7 +14448,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW2A")
+					(reference "SW2")
 					(unit 1)
 				)
 			)
@@ -14755,7 +14755,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 148.59 300.99 0)
 			(hide yes)
 			(show_name no)
@@ -14787,10 +14787,10 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "48c79a6c-3775-50c7-802c-5016c33f63b1")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "3a44ea6e-c80b-5394-a176-3ca72c38cb22")
 		)
 		(instances
@@ -15208,7 +15208,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "73486f7c-5614-50ea-a165-bb72f2ce82b3")
-		(property "Reference" "SW3A"
+		(property "Reference" "SW3"
 			(at 152.146 137.668 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15228,7 +15228,7 @@
 				)
 			)
 		)
-		(property "Footprint" "TAIWAY_200_SP_M2"
+		(property "Footprint" "eurorack:SW_Taiway_200_SPDT"
 			(at 157.48 148.59 0)
 			(hide yes)
 			(show_name no)
@@ -15272,7 +15272,7 @@
 		(instances
 			(project "v3-adder"
 				(path "/8f1c0b1e-0000-4000-8000-000000000001"
-					(reference "SW3A")
+					(reference "SW3")
 					(unit 1)
 				)
 			)
@@ -16629,7 +16629,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 148.59 254 0)
 			(hide yes)
 			(show_name no)
@@ -16661,10 +16661,10 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "65d23d03-bf01-5c9f-bd9a-d00a22d7e828")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "18018f54-e67b-5db5-acd5-16366ebc2ee2")
 		)
 		(instances
@@ -16785,7 +16785,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 379.73 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -16817,10 +16817,10 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "a03a6e77-6641-5b8d-bf6f-c549f5b5cf18")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "e594af4b-df69-5440-b1da-bcd8a11e067d")
 		)
 		(instances
@@ -21694,7 +21694,7 @@
 				)
 			)
 		)
-		(property "Footprint" "THONKICONN-TIGHT"
+		(property "Footprint" "eurorack:Thonkiconn_PJ301M"
 			(at 411.48 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -21726,13 +21726,13 @@
 				)
 			)
 		)
-		(pin "1"
+		(pin "T"
 			(uuid "442a2308-d1c8-5a42-a5af-09e52ee2b481")
 		)
-		(pin "2"
+		(pin "S"
 			(uuid "23f67522-6c36-5166-aab5-677359ce25a4")
 		)
-		(pin "3"
+		(pin "TN"
 			(uuid "76892509-f693-52f8-80ec-6784b6413ae4")
 		)
 		(instances

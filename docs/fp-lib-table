@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "eurorack")(type "KiCad")(uri "${KIPRJMOD}/../eurorack.pretty")(options "")(descr "Module-specific footprints kept with the repo: Thonkiconn jacks, Taiway series 200 toggles, panel holes"))
+)

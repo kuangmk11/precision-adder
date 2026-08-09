@@ -75,15 +75,18 @@ SYMS = {
     # classic way to destroy one. Both are drawn here with their real pin
     # numbers, taken off the v2.2 schematic, and everything wires them by pin
     # NAME so the numbering cannot be got the wrong way round.
-    "REG_POS": dict(ref="U",                      # 78L05: 3 in, 2 gnd, 1 out
+    # Pin POSITIONS are the same for both so the two are drop-in swappable in a
+    # placed schematic; only the numbers and names differ, per device. U4 is
+    # fitted rotated 180 so its IN still reads on the left.
+    "REG_POS": dict(ref="U",                      # 78L05: 1 out, 2 gnd, 3 in
                     art=[("rect", -5.08, -5.08, 5.08, 5.08)],
-                    pins=[("3", "IN", -7.62, 2.54, 0, "power_in"),
+                    pins=[("1", "OUT", -7.62, 2.54, 0, "power_out"),
                           ("2", "GND", 0, -7.62, 90, "power_in"),
-                          ("1", "OUT", 7.62, 2.54, 180, "power_out")]),
-    "REG_NEG": dict(ref="U",                      # 79L05: 2 in, 1 gnd, 3 out
+                          ("3", "IN", 7.62, 2.54, 180, "power_in")]),
+    "REG_NEG": dict(ref="U",                      # 79L05: 1 gnd, 2 in, 3 out
                     art=[("rect", -5.08, -5.08, 5.08, 5.08)],
-                    pins=[("2", "IN", -7.62, 2.54, 0, "power_in"),
-                          ("1", "GND", 0, -7.62, 90, "power_in"),
+                    pins=[("1", "GND", -7.62, 2.54, 0, "power_in"),
+                          ("2", "IN", 0, -7.62, 90, "power_in"),
                           ("3", "OUT", 7.62, 2.54, 180, "power_out")]),
     # a jack: sleeve bar down the left, tip contact springing off it
     "JACK": dict(ref="J",
@@ -92,8 +95,8 @@ SYMS = {
                       ("poly", [(-2.54, -2.54), (1.27, -2.54)]),
                       ("poly", [(1.27, -1.778), (2.54, -2.54),
                                 (1.27, -3.302)])],
-                 pins=[("1", "T", -5.08, 2.54, 0, "passive"),
-                       ("2", "S", -5.08, -2.54, 0, "passive")]),
+                 pins=[("T", "T", -5.08, 2.54, 0, "passive"),
+                       ("S", "S", -5.08, -2.54, 0, "passive")]),
     # Thonkiconn with its normalling contact. The switch shorts tip to pin 3
     # when no plug is in, so wiring pin 3 to GND holds an unused input at a
     # hard 0 V - which the passive summing network requires. A pulldown will
@@ -107,9 +110,9 @@ SYMS = {
                                    (1.27, -3.302)]),
                          ("poly", [(-2.54, 0), (0.5, 0.9)]),
                          _dot(-2.54, 0)],
-                    pins=[("1", "T", -5.08, 2.54, 0, "passive"),
-                          ("2", "S", -5.08, -2.54, 0, "passive"),
-                          ("3", "N", -5.08, 0, 0, "passive")]),
+                    pins=[("T", "T", -5.08, 2.54, 0, "passive"),
+                          ("S", "S", -5.08, -2.54, 0, "passive"),
+                          ("TN", "TN", -5.08, 0, 0, "passive")]),
     # lever drawn resting on throw A; the centre position is open
     "SW_ONON": dict(ref="SW",
                        art=[_dot(-2.54, 2.54), _dot(-2.54, -2.54),
@@ -284,7 +287,7 @@ def build():
     add("HDR2x5", "Eurorack 2x5",
         {"1": "N12_RAW", "2": "N12_RAW", "3": "GND", "4": "GND", "5": "GND",
          "6": "GND", "7": "GND", "8": "GND", "9": "P12_RAW", "10": "P12_RAW"},
-        ref="P1", fp="EURO_PWR_HEADER_LOCK")
+        ref="P1", fp="Connector_IDC:IDC-Header_2x05_P2.54mm_Vertical")
     add("FB", "Ferrite", {"1": "P12_RAW", "2": "P12_F"}, fp="Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
     add("D", "1N5819", {"1": "+12V", "2": "P12_F"}, fp="Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
     add("FB", "Ferrite", {"1": "N12_RAW", "2": "N12_F"}, fp="Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
@@ -340,15 +343,15 @@ def build():
     for n in (1, 2, 3):
         # pin 3 to GND: the jack's own switch grounds the tip when unpatched,
         # which is what keeps the summing ratios right with 1 or 2 inputs in use
-        add("JACK_SW", "Thonkiconn", {"1": f"IN{n}", "2": "GND", "3": "GND"},
-            ref=f"J{n}", fp="THONKICONN-TIGHT")
+        add("JACK_SW", "Thonkiconn", {"T": f"IN{n}", "S": "GND", "TN": "GND"},
+            ref=f"J{n}", fp="eurorack:Thonkiconn_PJ301M")
         res("10.0k", f"IN{n}", "SUMNODE")
     opamp("U1", 1, "SUMNODE", "SUMFB", "SUM_BUS")
     res("20.0k", "SUM_BUS", "SUMFB")
     res("10.0k", "SUMFB", "GND")
     res("1.00k", "SUM_BUS", "SUM_JACK")
-    add("JACK", "Thonkiconn", {"1": "SUM_JACK", "2": "GND"},
-        ref="J4", fp="THONKICONN-TIGHT")
+    add("JACK", "Thonkiconn", {"T": "SUM_JACK", "S": "GND"},
+        ref="J4", fp="eurorack:Thonkiconn_PJ301M")
 
     # ---------------- the four stages ---------------------------------------
     for st in STAGES:
@@ -410,7 +413,7 @@ def selector_3(n, up, mid, dn):
     Nothing ever shorts two taps together, which a tied-commons arrangement
     would do in every position.
     """
-    link = f"SW{n}B_POLE"
+    link = f"SW{4 + n}_POLE"
     if ONONON_VARIANT == 1:
         conns = {"2": f"BIAS{n}_SEL", "3": link, "5": link,
                  "6": up, "4": mid, "1": dn}
@@ -418,7 +421,7 @@ def selector_3(n, up, mid, dn):
         conns = {"2": f"BIAS{n}_SEL", "1": link, "5": link,
                  "3": up, "6": mid, "4": dn}
     add("SW_DPDT", "200-MDP6 (DPDT ON-ON-ON)", conns,
-        ref=f"SW{n}B", fp="TAIWAY_200_DP_M2")
+        ref=f"SW{4 + n}", fp="eurorack:SW_Taiway_200_DPDT")
 
 
 def stage(st):
@@ -429,7 +432,7 @@ def stage(st):
     # GND through its own bottom segment, so the stage contributes exactly 0.
     add("SW_ONON", "200-MSP3 (SPDT ON-OFF-ON)",
         {"1": "VREF_P", "3": "VREF_N", "2": f"LAD{n}_TOP"},
-        ref=f"SW{n}A", fp="TAIWAY_200_SP_M2")
+        ref=f"SW{n}", fp="eurorack:SW_Taiway_200_SPDT")
     # Trimmer as a rheostat in series at the top of the chain. The top fixed
     # resistor is 0.5k light, so the chain is nominal with the wiper centred
     # and trims about +/-1.7% either way.
@@ -454,7 +457,7 @@ def stage(st):
     if st["detent"] is None:
         add("SW_ONON", "200-MSP1 (SPDT ON-ON)",
             {"1": st["up"], "3": st["down"], "2": f"BIAS{n}_SEL"},
-            ref=f"SW{n}B", fp="TAIWAY_200_SP_M2")
+            ref=f"SW{4 + n}", fp="eurorack:SW_Taiway_200_SPDT")
     else:
         selector_3(n, st["up"], st["detent"], st["down"])
 
@@ -475,8 +478,8 @@ def stage(st):
     res("10.0k", f"FB{n}", "GND")
 
     res("1.00k", f"OUT{n}", f"OUT{n}_JACK")
-    add("JACK", "Thonkiconn", {"1": f"OUT{n}_JACK", "2": "GND"},
-        ref=f"J{4 + n}", fp="THONKICONN-TIGHT")
+    add("JACK", "Thonkiconn", {"T": f"OUT{n}_JACK", "S": "GND"},
+        ref=f"J{4 + n}", fp="eurorack:Thonkiconn_PJ301M")
 
 
 # --------------------------------------------------------------------------
@@ -549,7 +552,7 @@ def check_function():
     # An unpatched input must be a hard 0 V, not a pulldown, or the passive
     # averager re-weights itself and the gain goes wrong.
     for p in parts:
-        if p["sym"] == "JACK_SW" and p["conns"].get("3") != "GND":
+        if p["sym"] == "JACK_SW" and p["conns"].get("TN") != "GND":
             fails.append(f"{p['ref']} switch pin is not grounded; an unpatched "
                          f"input will not sum to zero")
 
@@ -608,7 +611,7 @@ def check_selector():
         if st["detent"] is None:
             continue
         n = st["n"]
-        sw = next((p for p in parts if p["ref"] == f"SW{n}B"), None)
+        sw = next((p for p in parts if p["ref"] == f"SW{4 + n}"), None)
         if sw is None:
             fails.append(f"stage {n} has no selector")
             continue
@@ -680,6 +683,22 @@ def check_panel_agreement():
                 fails.append(f"stage {st['n']} {throw}: panel prints "
                              f"{printed!r}, schematic wires {wired!r}")
     return fails
+
+
+def check_annotation():
+    """Every reference must be <letters><digits>, or KiCad calls it unannotated.
+
+    SW1A / SW1B looked like sensible names and are not: a trailing letter is how
+    KiCad writes the *unit* of a multi-unit symbol, so a literal reference ending
+    in one never counts as annotated. It does not show up in ERC - only in the
+    annotation dialog and as a warning on netlist export.
+    """
+    import re as _re
+    bad = [p["ref"] for p in parts
+           if not p["ref"].startswith("#")
+           and not _re.fullmatch(r"[A-Za-z]+[0-9]+", p["ref"])]
+    return [f"reference {r!r} is not <letters><digits>; KiCad will call it "
+            f"unannotated" for r in sorted(set(bad))]
 
 
 def check_designators():
@@ -936,7 +955,7 @@ def main():
     build()
     nets, report, fails = check()
     taps, tap_fails = check_ladders()
-    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector() + check_rotation_symmetry() + check_regulators()
+    fails += tap_fails + check_designators() + check_function() + check_panel_agreement() + check_selector() + check_rotation_symmetry() + check_regulators() + check_annotation()
 
     print("design")
     for line in report:
