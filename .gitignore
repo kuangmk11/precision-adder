@@ -14,3 +14,10 @@ docs/*.jsonl
 
 # KiCad per-user local project state
 *.kicad_prl
+
+# KiCad automatic schematic/board backups
+*-backups/
+
+# python bytecode
+__pycache__/
+*.pyc
