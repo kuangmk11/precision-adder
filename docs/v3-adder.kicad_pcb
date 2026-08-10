@@ -380,7 +380,7 @@
 	(footprint "eurorack:SW_Taiway_200_SPDT"
 		(layer "F.Cu")
 		(uuid "0667bf26-8911-4d70-8d4b-b52205e84f04")
-		(at 15.4 88.0 90)
+		(at 15.2 88.0 90)
 		(descr "Taiway series 200 sub-miniature SPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MSPx: ON-ON (MSP1), ON-OFF-ON (MSP3), and the momentary variants. Three terminals in a line on 2.54, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 5.10 (throw axis, X) x 8.10. Pads numbered as the datasheet does: 1 and 3 are the throws, PAD 2 IS THE COMMON and is the centre terminal. Taiway's contact table reads 2-3 / OPEN / 2-1 in this numbering. Shares the throw axis and bushing with SW_Taiway_200_DPDT, so an SPDT and a DPDT sit on the same panel pitch.")
 		(tags "toggle switch spdt on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW4"
@@ -3812,7 +3812,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "1d64e745-1887-4c29-bbe3-6c0aee475a86")
-		(at 15.4 28.6)
+		(at 15.2 28.6)
 		(property "Reference" "J4"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -4428,7 +4428,7 @@
 	(footprint "eurorack:SW_Taiway_200_SPDT"
 		(layer "F.Cu")
 		(uuid "2b1eb7ee-52b4-4299-aa25-f364f84c1834")
-		(at 4.6 88.0 90)
+		(at 4.8 88.0 90)
 		(descr "Taiway series 200 sub-miniature SPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MSPx: ON-ON (MSP1), ON-OFF-ON (MSP3), and the momentary variants. Three terminals in a line on 2.54, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 5.10 (throw axis, X) x 8.10. Pads numbered as the datasheet does: 1 and 3 are the throws, PAD 2 IS THE COMMON and is the centre terminal. Taiway's contact table reads 2-3 / OPEN / 2-1 in this numbering. Shares the throw axis and bushing with SW_Taiway_200_DPDT, so an SPDT and a DPDT sit on the same panel pitch.")
 		(tags "toggle switch spdt on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW3"
@@ -8005,7 +8005,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "4731cd3d-d899-4853-a102-6252cc1f9404")
-		(at 15.4 16.6 180)
+		(at 15.2 16.6 180)
 		(property "Reference" "J2"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -9368,7 +9368,7 @@
 	(footprint "eurorack:SW_Taiway_200_DPDT"
 		(layer "F.Cu")
 		(uuid "64e746d9-b246-4145-9bbb-3be60972352f")
-		(at 4.6 101.0 90)
+		(at 4.8 101.0 90)
 		(descr "Taiway series 200 sub-miniature DPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MDPx: ON-ON, ON-OFF-ON, or the custom MDP6 ON-ON-ON. Terminals on a 2.54 x 5.08 grid, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 8.10 (throw axis, X) x 9.10. PADS ARE NUMBERED AS THE DATASHEET DOES: pins 1-2-3 are one pole and 4-5-6 the other, with the COMMONS on 2 and 5, i.e. the centre of each row. Taiway's contact table is written in this numbering (ON-ON-ON reads 2-3,5-6 / 2-3,5-4 / 2-1,5-4), so a symbol drawn from the datasheet drops straight on. NOTE the sibling SW_200_MDP3_DPDT in this library is the same physical part with a deliberately different remap, commons on pads 1 and 4, for symbols numbered that way - the two are NOT interchangeable. Pick whichever matches your symbol and check the common lands on a centre terminal.")
 		(tags "toggle switch dpdt on-on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW7"
@@ -9540,7 +9540,7 @@
 	(footprint "eurorack:SW_Taiway_200_SPDT"
 		(layer "F.Cu")
 		(uuid "65511527-b85b-4b9b-a0e8-bd4a24169ff9")
-		(at 4.6 57.8 90)
+		(at 4.8 57.8 90)
 		(descr "Taiway series 200 sub-miniature SPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MSPx: ON-ON (MSP1), ON-OFF-ON (MSP3), and the momentary variants. Three terminals in a line on 2.54, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 5.10 (throw axis, X) x 8.10. Pads numbered as the datasheet does: 1 and 3 are the throws, PAD 2 IS THE COMMON and is the centre terminal. Taiway's contact table reads 2-3 / OPEN / 2-1 in this numbering. Shares the throw axis and bushing with SW_Taiway_200_DPDT, so an SPDT and a DPDT sit on the same panel pitch.")
 		(tags "toggle switch spdt on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW5"
@@ -11533,7 +11533,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "752681aa-1553-4a2a-8632-0e5a3ea35753")
-		(at 4.6 112.0)
+		(at 4.8 112.0)
 		(property "Reference" "J7"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -12238,7 +12238,7 @@
 	(footprint "eurorack:SW_Taiway_200_DPDT"
 		(layer "F.Cu")
 		(uuid "75b88447-9c1f-41be-a993-013fc1a10ec7")
-		(at 15.4 101.0 90)
+		(at 15.2 101.0 90)
 		(descr "Taiway series 200 sub-miniature DPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MDPx: ON-ON, ON-OFF-ON, or the custom MDP6 ON-ON-ON. Terminals on a 2.54 x 5.08 grid, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 8.10 (throw axis, X) x 9.10. PADS ARE NUMBERED AS THE DATASHEET DOES: pins 1-2-3 are one pole and 4-5-6 the other, with the COMMONS on 2 and 5, i.e. the centre of each row. Taiway's contact table is written in this numbering (ON-ON-ON reads 2-3,5-6 / 2-3,5-4 / 2-1,5-4), so a symbol drawn from the datasheet drops straight on. NOTE the sibling SW_200_MDP3_DPDT in this library is the same physical part with a deliberately different remap, commons on pads 1 and 4, for symbols numbered that way - the two are NOT interchangeable. Pick whichever matches your symbol and check the common lands on a centre terminal.")
 		(tags "toggle switch dpdt on-on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW8"
@@ -12410,7 +12410,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "76f62cd5-2580-4d2e-9ec9-7871c714ea5a")
-		(at 4.6 68.8)
+		(at 4.8 68.8)
 		(property "Reference" "J5"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -12964,7 +12964,7 @@
 	(footprint "eurorack:SW_Taiway_200_DPDT"
 		(layer "F.Cu")
 		(uuid "83c818ed-c47e-476b-8030-59cba8d2596b")
-		(at 15.4 57.8 90)
+		(at 15.2 57.8 90)
 		(descr "Taiway series 200 sub-miniature DPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MDPx: ON-ON, ON-OFF-ON, or the custom MDP6 ON-ON-ON. Terminals on a 2.54 x 5.08 grid, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 8.10 (throw axis, X) x 9.10. PADS ARE NUMBERED AS THE DATASHEET DOES: pins 1-2-3 are one pole and 4-5-6 the other, with the COMMONS on 2 and 5, i.e. the centre of each row. Taiway's contact table is written in this numbering (ON-ON-ON reads 2-3,5-6 / 2-3,5-4 / 2-1,5-4), so a symbol drawn from the datasheet drops straight on. NOTE the sibling SW_200_MDP3_DPDT in this library is the same physical part with a deliberately different remap, commons on pads 1 and 4, for symbols numbered that way - the two are NOT interchangeable. Pick whichever matches your symbol and check the common lands on a centre terminal.")
 		(tags "toggle switch dpdt on-on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW6"
@@ -13571,7 +13571,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "920aac32-d15e-4bc1-bbba-1d3858475494")
-		(at 4.6 28.6)
+		(at 4.8 28.6)
 		(property "Reference" "J3"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -14981,7 +14981,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "a4ff7e3f-e049-4e9c-b11f-68c653225250")
-		(at 4.6 16.6 180)
+		(at 4.8 16.6 180)
 		(property "Reference" "J1"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -19080,7 +19080,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "d51b018b-a8bb-4882-a63c-cc653bb1c39d")
-		(at 15.4 68.8)
+		(at 15.2 68.8)
 		(property "Reference" "J6"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -19489,7 +19489,7 @@
 	(footprint "eurorack:Thonkiconn_PJ301M"
 		(layer "F.Cu")
 		(uuid "dd866d72-e452-48f2-96e2-8cd29c4b9754")
-		(at 15.4 112.0)
+		(at 15.2 112.0)
 		(property "Reference" "J8"
 			(at -4.7498 5.1054 270)
 			(unlocked yes)
@@ -21466,7 +21466,7 @@
 	(footprint "eurorack:SW_Taiway_200_SPDT"
 		(layer "F.Cu")
 		(uuid "f5916137-113b-4e1a-aad8-753465c00ef2")
-		(at 15.4 44.8 90)
+		(at 15.2 44.8 90)
 		(descr "Taiway series 200 sub-miniature SPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MSPx: ON-ON (MSP1), ON-OFF-ON (MSP3), and the momentary variants. Three terminals in a line on 2.54, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 5.10 (throw axis, X) x 8.10. Pads numbered as the datasheet does: 1 and 3 are the throws, PAD 2 IS THE COMMON and is the centre terminal. Taiway's contact table reads 2-3 / OPEN / 2-1 in this numbering. Shares the throw axis and bushing with SW_Taiway_200_DPDT, so an SPDT and a DPDT sit on the same panel pitch.")
 		(tags "toggle switch spdt on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW2"
@@ -21594,7 +21594,7 @@
 	(footprint "eurorack:SW_Taiway_200_SPDT"
 		(layer "F.Cu")
 		(uuid "f85f22ee-6e37-41a0-9d3b-d431038c4696")
-		(at 4.6 44.8 90)
+		(at 4.8 44.8 90)
 		(descr "Taiway series 200 sub-miniature SPDT toggle, PCB vertical, M2 PC thru-hole. Fits any 200-MSPx: ON-ON (MSP1), ON-OFF-ON (MSP3), and the momentary variants. Three terminals in a line on 2.54, 10-48 UNS bushing (o4.80 thread, 5.50 high, flat) -> o4.95 panel hole. Body 5.10 (throw axis, X) x 8.10. Pads numbered as the datasheet does: 1 and 3 are the throws, PAD 2 IS THE COMMON and is the centre terminal. Taiway's contact table reads 2-3 / OPEN / 2-1 in this numbering. Shares the throw axis and bushing with SW_Taiway_200_DPDT, so an SPDT and a DPDT sit on the same panel pitch.")
 		(tags "toggle switch spdt on-on on-off-on subminiature taiway 200 eurorack")
 		(property "Reference" "SW1"
@@ -22623,43 +22623,43 @@
 	)
 	(embedded_fonts no)
 	(gr_line
-		(start 0.5 8.5)
-		(end 19.5 8.5)
+		(start 0.2 8.5)
+		(end 19.8 8.5)
 		(stroke
 			(width 0.1)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "8c084942-d646-4e39-9963-c12c1aa1a23b")
+		(uuid "34480ca8-1b22-46dd-b0bf-10d1f5c1ea60")
 	)
 	(gr_line
-		(start 19.5 8.5)
-		(end 19.5 120.0)
+		(start 19.8 8.5)
+		(end 19.8 120.0)
 		(stroke
 			(width 0.1)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "9068169b-91a3-4016-ad19-fbd83c1b5d4e")
+		(uuid "78cc98eb-afb7-4ee2-b380-f9c47bc4bd54")
 	)
 	(gr_line
-		(start 19.5 120.0)
-		(end 0.5 120.0)
+		(start 19.8 120.0)
+		(end 0.2 120.0)
 		(stroke
 			(width 0.1)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "3427baca-9774-42eb-bd47-f60cd1f55c57")
+		(uuid "78412952-5d0a-4c65-bc1b-8e1891ff6314")
 	)
 	(gr_line
-		(start 0.5 120.0)
-		(end 0.5 8.5)
+		(start 0.2 120.0)
+		(end 0.2 8.5)
 		(stroke
 			(width 0.1)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "069935f3-b2a1-4c63-aa92-041f558a2716")
+		(uuid "0713cab2-4136-475c-8607-f51ceae2ae0f")
 	)
 )

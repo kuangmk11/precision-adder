@@ -45,7 +45,12 @@ DETENT_SIZE, PITCH_DETENT = 1.0, 1.1   # the one mark that will not fit at 1.6
 # --------------------------------------------------------------------------
 
 PANEL_W, PANEL_H = 20.0, 128.5         # 4 HP
-COL_L, COL_R = 4.6, 15.4               # control columns, 10.8 mm pitch
+# 10.4 mm pitch, not the 10.8 it started at. The DPDT selector is 9.10 mm wide
+# once rotated for a vertical throw, so two of them eat 18.2 of the panel's
+# 20 mm. At 10.8 their bodies overhung the PCB edge; at anything below 10.0 the
+# detent marks lose the clearance a fab can hold. 10.4 is the balance point:
+# a 19.5 mm board (normal for 4 HP) against 0.15 mm at the marks (fab minimum).
+COL_L, COL_R = 4.8, 15.2               # control columns, 10.4 mm pitch
 
 JACK_D, JACK_NUT = 6.0, 8.0            # Thonkiconn
 TOGGLE_D, TOGGLE_NUT = 5.0, 7.5        # subminiature toggle

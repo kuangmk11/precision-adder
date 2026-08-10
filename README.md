@@ -109,7 +109,7 @@ Four jacks at the top: three summed inputs and `SUM`, the buffered sum that `PT`
 `SUM` is an output, so it carries the ring — the panel's only closed circle, which is what
 lets direction read at a glance. The ring has to clear the 8 mm nut to be visible at all,
 and a 20 mm panel carrying two 8 mm nuts has 4 mm of slack in total, so at r 4.4 it ends up
-0.07 mm from the cut on the outboard side. Still on the board, but well inside the 0.6 mm
+0.28 mm from the cut on the outboard side. Still on the board, but well inside the 0.6 mm
 edge margin, and a fab may trim the outer edge of it. Taken deliberately: a broken ring
 reads worse than a clipped one. Below them, **four boxed groups, one per stage — polarity
 switch, selector switch, that stage's output.** Each stage now owns its output, which the
@@ -155,23 +155,23 @@ Origin top-left, millimetres, Y down — the drawing's own frame, not the old ge
 
 | Y (mm) | X (mm) | Ø | What |
 |---:|---:|---:|---|
+| 16.60 | 4.80 | 6.0 | IN1 |
+| 16.60 | 15.20 | 6.0 | IN2 |
+| 28.60 | 4.80 | 6.0 | IN3 |
+| 28.60 | 15.20 | 6.0 | SUM (output, ringed) |
+| 44.80 | 4.80 | 5.0 | OCT polarity  +/o/− |
+| 44.80 | 15.20 | 5.0 | 3RD polarity  +/o/− |
+| 57.80 | 4.80 | 5.0 | OCT select  1/2 |
+| 57.80 | 15.20 | 5.0 | 3RD select  MAJ/MIN (detent 4) |
+| 68.80 | 4.80 | 6.0 | OUT1 |
+| 68.80 | 15.20 | 6.0 | OUT2 |
+| 88.00 | 4.80 | 5.0 | 3RD polarity  +/o/− |
+| 88.00 | 15.20 | 5.0 | 5TH polarity  +/o/− |
+| 101.00 | 4.80 | 5.0 | 3RD select  MAJ/MIN (detent 4) |
+| 101.00 | 15.20 | 5.0 | 5TH select  MAJ/MIN (detent 5) |
+| 112.00 | 4.80 | 6.0 | OUT3 |
+| 112.00 | 15.20 | 6.0 | OUT4 |
 | 3.00 | 12.50 | 6.4×3.2 | mounting slot, obround |
-| 16.60 | 4.60 | 6.0 | IN1 |
-| 16.60 | 15.40 | 6.0 | IN2 |
-| 28.60 | 4.60 | 6.0 | IN3 |
-| 28.60 | 15.40 | 6.0 | SUM (output, ringed) |
-| 44.80 | 4.60 | 5.0 | OCT polarity +/o/− |
-| 44.80 | 15.40 | 5.0 | 3RD polarity +/o/− |
-| 57.80 | 4.60 | 5.0 | OCT select 1/2 |
-| 57.80 | 15.40 | 5.0 | 3RD select MAJ/MIN (detent 4) |
-| 68.80 | 4.60 | 6.0 | OUT1 |
-| 68.80 | 15.40 | 6.0 | OUT2 |
-| 88.00 | 4.60 | 5.0 | 3RD polarity +/o/− |
-| 88.00 | 15.40 | 5.0 | 5TH polarity +/o/− |
-| 101.00 | 4.60 | 5.0 | 3RD select MAJ/MIN (detent 4) |
-| 101.00 | 15.40 | 5.0 | 5TH select MAJ/MIN (detent 5) |
-| 112.00 | 4.60 | 6.0 | OUT3 |
-| 112.00 | 15.40 | 6.0 | OUT4 |
 | 125.50 | 7.50 | 6.4×3.2 | mounting slot, obround |
 
 Mounting follows the style guide's ≤ 6 HP rule: one 6.4 × 3.2 mm horizontal slot top-right
@@ -181,9 +181,9 @@ pivot on a single screw per rail. v2.2's round Ø3.2 holes do not carry over.
 #### What the generator checks, and what it cannot
 
 `gen_panel.py` refuses to write if anything overlaps, and reports the tightest clearance in
-each category. Currently: **0.25 mm** text-to-nut, **0.64 mm** text-to-text, **0.25 mm**
+each category. Currently: **0.15 mm** text-to-nut, **0.64 mm** text-to-text, **0.15 mm**
 text-to-silk, **0.42 mm** text-to-ring, **0.60 mm** silk-to-edge, **1.40 mm** of material
-at the worst hole, and **2.80 mm** between the closest two nuts. `SUM`'s ring is exempted
+at the worst hole, and **2.40 mm** between the closest two nuts. `SUM`'s ring is exempted
 from the edge margin and reported separately, so the exception stays visible instead of
 being absorbed into a looser rule.
 
