@@ -1,0 +1,16 @@
+# KiCad on Windows writes CRLF. Without this, simply opening and saving a file
+# shows up as every line changed, which buries real edits and makes the
+# netlist-vs-intent diffs the only trustworthy review tool.
+*.kicad_sch  text eol=lf
+*.kicad_pcb  text eol=lf
+*.kicad_sym  text eol=lf
+*.kicad_pro  text eol=lf
+*.kicad_prl  text eol=lf
+*.kicad_mod  text eol=lf
+fp-lib-table text eol=lf
+sym-lib-table text eol=lf
+
+*.py         text eol=lf
+*.sh         text eol=lf
+*.md         text eol=lf
+*.svg        text eol=lf
