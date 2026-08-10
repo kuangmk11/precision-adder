@@ -21,3 +21,6 @@ docs/*.jsonl
 # python bytecode
 __pycache__/
 *.pyc
+
+# KiCad lock files (present while a project is open)
+~*.lck
