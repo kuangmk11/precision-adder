@@ -345,11 +345,11 @@ def build():
         # which is what keeps the summing ratios right with 1 or 2 inputs in use
         add("JACK_SW", "Thonkiconn", {"T": f"IN{n}", "S": "GND", "TN": "GND"},
             ref=f"J{n}", fp="eurorack:Thonkiconn_PJ301M")
-        res("10.0k", f"IN{n}", "SUMNODE")
+        res("10k", f"IN{n}", "SUMNODE")
     opamp("U1", 1, "SUMNODE", "SUMFB", "SUM_BUS")
-    res("20.0k", "SUM_BUS", "SUMFB")
-    res("10.0k", "SUMFB", "GND")
-    res("1.00k", "SUM_BUS", "SUM_JACK")
+    res("20k", "SUM_BUS", "SUMFB")
+    res("10k", "SUMFB", "GND")
+    res("1k", "SUM_BUS", "SUM_JACK")
     add("JACK", "Thonkiconn", {"T": "SUM_JACK", "S": "GND"},
         ref="J4", fp="eurorack:Thonkiconn_PJ301M")
 
@@ -449,7 +449,7 @@ def stage(st):
         # E24 3.00k / 12.0k, not E96: E96 has no exact 3:1 pair, and its 3.01k
         # cannot be selected to 3.000k at 0.1%. The top segment is trimmed, so
         # it takes the nearest stocked value instead.
-        LADDER_VALUE = {12: "12.0k", 3: "3.00k", 1: "1.00k"}
+        LADDER_VALUE = {12: "12k", 3: "3k", 1: "1k"}
         res(st["top_fixed"] if top else LADDER_VALUE[value], node, upper)
         node = upper
 
@@ -470,14 +470,14 @@ def stage(st):
     cap("330pF", f"BIAS{n}_SNUB", "GND")
 
     # summing node: stage input and bias averaged, then a gain of 2
-    res("10.0k", st["src"], f"SUM{n}")
-    res("10.0k", f"BIAS{n}", f"SUM{n}")
+    res("10k", st["src"], f"SUM{n}")
+    res("10k", f"BIAS{n}", f"SUM{n}")
     out_ref, out_unit = st["out"]
     opamp(out_ref, out_unit, f"SUM{n}", f"FB{n}", f"OUT{n}")
-    res("10.0k", f"OUT{n}", f"FB{n}")
-    res("10.0k", f"FB{n}", "GND")
+    res("10k", f"OUT{n}", f"FB{n}")
+    res("10k", f"FB{n}", "GND")
 
-    res("1.00k", f"OUT{n}", f"OUT{n}_JACK")
+    res("1k", f"OUT{n}", f"OUT{n}_JACK")
     add("JACK", "Thonkiconn", {"T": f"OUT{n}_JACK", "S": "GND"},
         ref=f"J{4 + n}", fp="eurorack:Thonkiconn_PJ301M")
 
@@ -535,19 +535,19 @@ def check_function():
     for st in STAGES:
         n = st["n"]
         summing = [p["value"] for p in parts_on(f"SUM{n}")]
-        if sorted(summing) != ["10.0k", "10.0k"]:
-            fails.append(f"stage {n} summing node has {summing}, wants two 10.0k")
+        if sorted(summing) != ["10k", "10k"]:
+            fails.append(f"stage {n} summing node has {summing}, wants two 10k")
         fb = [p["value"] for p in parts_on(f"FB{n}")]
         if len(fb) != 2 or fb[0] != fb[1]:
             fails.append(f"stage {n} gain network is {fb}, wants two equal")
 
     # Three inputs averaged then multiplied by three.
     ins = sorted(p["value"] for p in parts_on("SUMNODE"))
-    if ins != ["10.0k"] * 3:
-        fails.append(f"input summer has {ins}, wants three 10.0k")
+    if ins != ["10k"] * 3:
+        fails.append(f"input summer has {ins}, wants three 10k")
     gain = [p["value"] for p in parts_on("SUMFB")]
-    if sorted(gain) != ["10.0k", "20.0k"]:
-        fails.append(f"input summer gain network is {gain}, wants 10.0k and 20.0k")
+    if sorted(gain) != ["10k", "20k"]:
+        fails.append(f"input summer gain network is {gain}, wants 10k and 20k")
 
     # An unpatched input must be a hard 0 V, not a pulldown, or the passive
     # averager re-weights itself and the gain goes wrong.

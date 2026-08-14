@@ -155,3 +155,11 @@ group.
 
 Only the first is a real change of part; the rest are non-stock values being pinned to
 stocked ones. None of them alters a tap voltage — the trimmer takes up the difference.
+
+**This table is history, and its first two rows now read backwards.** The Value fields were
+later shortened for the silkscreen, so the schematic and board say `3k` and `12k` again. The
+parts did not change back: they are still the E24 3.00 k and 12.0 k 0.1 % resistors chosen
+above, and the reasoning for picking E24 over E96 stands. Only the label is shorter. Trailing
+zeros are dropped wherever they carry no information — `10.0k` is written `10k`, while `49.9k`,
+`24.3k`, `22.6k` and `5.49k` keep every digit. Tolerance lives in this document, not on the
+silk, which has no room for it at 4 HP.
