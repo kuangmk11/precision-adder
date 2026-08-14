@@ -145,9 +145,29 @@ the footprint's pad 1 against the datasheet with the part oriented as you will f
 | 2 | 50k multiturn trimmer | VR5, VR6 | `Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical` |
 | 2 | Ferrite bead, axial | FB1, FB2 | `Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal` |
 | 1 | Eurorack 2×5 shrouded header | P1 | `Connector_IDC:IDC-Header_2x05_P2.54mm_Vertical` |
+| 4 | 1×6 pin header, 2.54 mm | P2–P5 | `Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical` |
+| 4 | 1×6 socket, 2.54 mm | P6–P9 | `Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical` |
 
 Keep the **shrouded, keyed** power header — it is the only thing that stops the ribbon
 going on backwards, and D1/D2 are the last line of defence after it.
+
+### Board-to-board interconnect
+
+P2–P9 join the two cards. Pins go on the **control board's rear**, sockets on the
+**trimmer board's front**, and the cards stack by a plain 20.2 mm translation with
+no flip. Mating pairs:
+
+| Pins (control board) | Socket (trimmer board) | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|---|
+| P2 | P6 | GND | REFP_TOP | — | — | — | +12V |
+| P3 | P7 | GND | LAD1_TOP | LAD2_TOP | S2_4th | LAD1_TRIM | −12V |
+| P4 | P8 | +12V | REFP_W | — | REFN_TOP | LAD3_TOP | GND |
+| P5 | P9 | S4_5th | S3_4th | LAD4_TOP | REFN_W | — | GND |
+
+Nineteen signals across twenty-four pins; the five dashes are spares, carried in the
+schematic as no-connects so they stay available. The socket body is what sets the
+11.04 mm board spacing the capacitor heights are budgeted against, so substituting a
+taller or shorter socket changes that budget.
 
 ### Footprint libraries
 

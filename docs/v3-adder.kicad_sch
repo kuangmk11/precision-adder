@@ -400,6 +400,93 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "adder:HDR1x6"
+			(pin_names (offset 0.254))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "P"
+				(at 0 10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects (font (size 1.27 1.27)))
+			)
+			(property "Value" "HDR1x6"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects (font (size 1.27 1.27)))
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects (font (size 1.27 1.27)))
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects (font (size 1.27 1.27)))
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects (font (size 1.27 1.27)))
+			)
+			(symbol "HDR1x6_0_1"
+				(rectangle
+					(start -2.54 -8.89)
+					(end 2.54 8.89)
+					(stroke (width 0.254) (type default))
+					(fill (type none))
+				)
+			)
+			(symbol "HDR1x6_1_1"
+				(pin passive line
+					(at -5.08 6.35 0)
+					(length 2.54)
+					(name "P1" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -5.08 3.81 0)
+					(length 2.54)
+					(name "P2" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -5.08 1.27 0)
+					(length 2.54)
+					(name "P3" (effects (font (size 1.27 1.27))))
+					(number "3" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -5.08 -1.27 0)
+					(length 2.54)
+					(name "P4" (effects (font (size 1.27 1.27))))
+					(number "4" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -5.08 -3.81 0)
+					(length 2.54)
+					(name "P5" (effects (font (size 1.27 1.27))))
+					(number "5" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -5.08 -6.35 0)
+					(length 2.54)
+					(name "P6" (effects (font (size 1.27 1.27))))
+					(number "6" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
 		(symbol "adder:HDR2x5"
 			(pin_names
 				(offset 0.254)
@@ -21897,6 +21984,974 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 55.88 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4434fabf-f58c-5b53-bb70-82167cf1bd92")
+		(property "Reference" "P2"
+			(at 55.88 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 pin header (mates P6)"
+			(at 55.88 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+			(at 55.88 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 55.88 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 55.88 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "ecc882ce-2b28-5b2d-94af-6fd756b7c00d"))
+		(pin "2" (uuid "c1596bc6-c013-508c-aa4e-5b49341c53df"))
+		(pin "3" (uuid "bfad9386-2dc1-5f9c-ab1b-9559b29c8eb2"))
+		(pin "4" (uuid "4afc7095-ed53-579c-bf0a-0b10ca9ac2c2"))
+		(pin "5" (uuid "01c9783a-7db4-5271-aadc-74f508776de1"))
+		(pin "6" (uuid "9215328f-8f3a-54df-8845-ae42d5259094"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 50.8 375.92) (xy 46.99 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "911e38f0-cb68-52f0-8e5b-83222f12c872")
+	)
+	(label "GND"
+		(at 46.99 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "5421e33b-63f1-5338-8e01-bd929efbdb02")
+	)
+	(wire
+		(pts
+			(xy 50.8 378.46) (xy 46.99 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "e3c9ca74-ef2f-564d-b412-6190211c7164")
+	)
+	(label "REFP_TOP"
+		(at 46.99 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "0389816a-499c-592e-842f-003053ea1df8")
+	)
+	(no_connect
+		(at 50.8 381.0)
+		(uuid "5c68337b-b1aa-59fb-b8e9-cc26ffd5765f")
+	)
+	(no_connect
+		(at 50.8 383.54)
+		(uuid "f362b03f-7c0c-5d6a-9c68-09b2707538ad")
+	)
+	(no_connect
+		(at 50.8 386.08)
+		(uuid "91433721-8f78-5fdc-b163-dda28cfd5359")
+	)
+	(wire
+		(pts
+			(xy 50.8 388.62) (xy 46.99 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "9fab7cb0-8c5b-5d2f-be50-a316af8edf95")
+	)
+	(label "+12V"
+		(at 46.99 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "b09f1767-1110-517d-969e-94385fa83173")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 111.76 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0310567b-cf4d-5803-9e42-ef5d4ca62897")
+		(property "Reference" "P6"
+			(at 111.76 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 socket (mates P2)"
+			(at 111.76 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 111.76 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 111.76 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 111.76 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "7c266ffe-d996-5800-880e-bfff9c586135"))
+		(pin "2" (uuid "5fac3f6d-485b-572a-9bbb-9cd099a8f562"))
+		(pin "3" (uuid "8be64827-a749-5c05-af28-3fc597fc4f6e"))
+		(pin "4" (uuid "e31b0816-23e0-5af5-9609-5049569bc787"))
+		(pin "5" (uuid "68b7844f-1f3b-5e39-a3f7-a32957fad800"))
+		(pin "6" (uuid "488ce2d3-0b8b-5046-8ad8-bca2b5966f7c"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 106.68 375.92) (xy 102.87 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "e7a3f4cd-d6c4-5071-87e9-dfabb3d8f382")
+	)
+	(label "GND"
+		(at 102.87 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "dbb84885-0447-512a-821d-1e1347c5db57")
+	)
+	(wire
+		(pts
+			(xy 106.68 378.46) (xy 102.87 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "b68ee62d-293a-59e4-b887-cdc2530d63d6")
+	)
+	(label "REFP_TOP"
+		(at 102.87 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "6be67a40-f750-5a7c-a8fe-fd863f29ad03")
+	)
+	(no_connect
+		(at 106.68 381.0)
+		(uuid "0a5c0907-bd77-57e2-8523-a8e9d4806c14")
+	)
+	(no_connect
+		(at 106.68 383.54)
+		(uuid "9f2cfcda-16a4-526d-b29c-2f7e5e5254a5")
+	)
+	(no_connect
+		(at 106.68 386.08)
+		(uuid "f8a3bb1c-17cc-5ca9-a712-004df6f7220c")
+	)
+	(wire
+		(pts
+			(xy 106.68 388.62) (xy 102.87 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "58f60207-54fa-57ba-b347-6ed50f65830f")
+	)
+	(label "+12V"
+		(at 102.87 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "8a58edd9-7eea-5cce-9ee5-de5837bf26ae")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 167.64 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cb4e83f2-5922-5b86-b5c8-183c17609dbc")
+		(property "Reference" "P3"
+			(at 167.64 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 pin header (mates P7)"
+			(at 167.64 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+			(at 167.64 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 167.64 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 167.64 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "96b841d8-9304-5911-9245-1469e74fc4e8"))
+		(pin "2" (uuid "00cf4850-cae2-50dd-91fb-fd1fa1818371"))
+		(pin "3" (uuid "2770b28f-2224-5113-9406-1fb70c21f36a"))
+		(pin "4" (uuid "a1e8b3e0-02e2-5282-a620-778aa4f18b43"))
+		(pin "5" (uuid "ceea1605-5326-5df1-964e-26f9681dcda1"))
+		(pin "6" (uuid "1e403346-476c-5431-a185-dcf8166a1486"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 162.56 375.92) (xy 158.75 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "abcf71f7-f993-52e2-beb1-39299d61945a")
+	)
+	(label "GND"
+		(at 158.75 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "fef2cfee-a2a4-564f-b20a-83cb983139af")
+	)
+	(wire
+		(pts
+			(xy 162.56 378.46) (xy 158.75 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "35a993cd-8ca5-5d4a-8bbd-be426402f843")
+	)
+	(label "LAD1_TOP"
+		(at 158.75 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "16135f01-d337-52b5-a128-6d099cce7f30")
+	)
+	(wire
+		(pts
+			(xy 162.56 381.0) (xy 158.75 381.0)
+		)
+		(stroke (width 0) (type default))
+		(uuid "28f2d3f4-5bd1-57c4-b92e-6923e6cd78c9")
+	)
+	(label "LAD2_TOP"
+		(at 158.75 381.0 180)
+		(effects (font (size 1 1)))
+		(uuid "2d1b6dd5-549d-5c0d-ac48-1128746146ed")
+	)
+	(wire
+		(pts
+			(xy 162.56 383.54) (xy 158.75 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "a8310632-cbc1-57f4-8e70-db5d82b84f98")
+	)
+	(label "S2_4th"
+		(at 158.75 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "1ae77b71-fdcc-5f8a-adaa-6befe4f695ff")
+	)
+	(wire
+		(pts
+			(xy 162.56 386.08) (xy 158.75 386.08)
+		)
+		(stroke (width 0) (type default))
+		(uuid "27e1a193-8e72-507d-93e9-b66f0554151f")
+	)
+	(label "LAD1_TRIM"
+		(at 158.75 386.08 180)
+		(effects (font (size 1 1)))
+		(uuid "e2ccd20f-9689-5406-9946-f97ae89bee3e")
+	)
+	(wire
+		(pts
+			(xy 162.56 388.62) (xy 158.75 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "c8e43479-191f-5fb4-a6b4-bc8bedca3fac")
+	)
+	(label "-12V"
+		(at 158.75 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "935f5944-a80a-5d1b-a073-254c0a23e7af")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 223.52 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e85dacba-2f5b-5df9-aaec-f6385698425c")
+		(property "Reference" "P7"
+			(at 223.52 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 socket (mates P3)"
+			(at 223.52 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 223.52 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 223.52 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 223.52 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "b657521a-b3ca-53fb-a8e0-5395aabfd5cb"))
+		(pin "2" (uuid "a72b0b58-97b8-5996-8647-927ec9df39e4"))
+		(pin "3" (uuid "bf2534cc-0eab-5337-b257-462ae65bfcce"))
+		(pin "4" (uuid "df185c89-73db-5ce4-a080-743d7ef54571"))
+		(pin "5" (uuid "f43daac1-a17d-5da9-af0d-6597804b1d75"))
+		(pin "6" (uuid "18235968-8d26-5065-8d3b-31aed16faee9"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 218.44 375.92) (xy 214.63 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "6d64624d-03e0-512d-9369-71f773ce6a14")
+	)
+	(label "GND"
+		(at 214.63 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "0a10573f-f56c-5191-bc41-058cbd80dafc")
+	)
+	(wire
+		(pts
+			(xy 218.44 378.46) (xy 214.63 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "f2356b81-f795-561e-b725-3ef5a7bc93fc")
+	)
+	(label "LAD1_TOP"
+		(at 214.63 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "61e523ab-34bf-5d93-ac4f-fc387f68a0ff")
+	)
+	(wire
+		(pts
+			(xy 218.44 381.0) (xy 214.63 381.0)
+		)
+		(stroke (width 0) (type default))
+		(uuid "8b7b2a86-c43d-57d8-8020-0fca9cccec3d")
+	)
+	(label "LAD2_TOP"
+		(at 214.63 381.0 180)
+		(effects (font (size 1 1)))
+		(uuid "6db64602-59a6-56a4-859a-1d2690621db9")
+	)
+	(wire
+		(pts
+			(xy 218.44 383.54) (xy 214.63 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "0bc3b928-2166-5861-9d26-f98656e7d222")
+	)
+	(label "S2_4th"
+		(at 214.63 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "41283c18-409a-583c-8edf-41080ccca9fc")
+	)
+	(wire
+		(pts
+			(xy 218.44 386.08) (xy 214.63 386.08)
+		)
+		(stroke (width 0) (type default))
+		(uuid "46836895-1f90-5b02-a579-ffb15787c386")
+	)
+	(label "LAD1_TRIM"
+		(at 214.63 386.08 180)
+		(effects (font (size 1 1)))
+		(uuid "1d863c29-81af-5d62-8a50-8693a59366da")
+	)
+	(wire
+		(pts
+			(xy 218.44 388.62) (xy 214.63 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "66f1ae2c-a94d-53e2-bf35-8ba104883679")
+	)
+	(label "-12V"
+		(at 214.63 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "cb79c846-f39f-5974-a68c-b44086421b1e")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 279.4 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e21828d2-1141-5878-8bd4-cd0b836fa2c5")
+		(property "Reference" "P4"
+			(at 279.4 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 pin header (mates P8)"
+			(at 279.4 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+			(at 279.4 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 279.4 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 279.4 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "4b4c2e2c-9aac-5a3a-a7dc-bb2a8a02b1a5"))
+		(pin "2" (uuid "2f4ba612-5699-5701-8e5f-2395ebbbc5d3"))
+		(pin "3" (uuid "15bb6f30-4777-5588-acee-7e973e63d9d9"))
+		(pin "4" (uuid "0d2f06b9-c2c7-595e-ae2f-8934e2139bf7"))
+		(pin "5" (uuid "59e19970-5d5b-5253-9d4c-8db28611848b"))
+		(pin "6" (uuid "b161b34c-0f30-5106-b923-2e7afd9d814b"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 274.32 375.92) (xy 270.51 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "a1a245c5-4134-5ce3-a295-bba5a6fb3afb")
+	)
+	(label "+12V"
+		(at 270.51 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "65220d1d-9646-571a-bdef-ca2dc5451438")
+	)
+	(wire
+		(pts
+			(xy 274.32 378.46) (xy 270.51 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "9841adfa-67bd-5ced-97eb-2efaf7729fa6")
+	)
+	(label "REFP_W"
+		(at 270.51 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "d08805f2-7727-5d26-9691-46b559bcd042")
+	)
+	(no_connect
+		(at 274.32 381.0)
+		(uuid "06f0d45a-4eab-527f-a46e-7e6d262ae465")
+	)
+	(wire
+		(pts
+			(xy 274.32 383.54) (xy 270.51 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "9a132553-66db-5988-a73b-f35cfbfacda0")
+	)
+	(label "REFN_TOP"
+		(at 270.51 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "aa95d197-e43f-5ffb-b88d-ffe6340a6fc1")
+	)
+	(wire
+		(pts
+			(xy 274.32 386.08) (xy 270.51 386.08)
+		)
+		(stroke (width 0) (type default))
+		(uuid "bb21c2cd-e441-5784-86c8-0a38dbab8b3b")
+	)
+	(label "LAD3_TOP"
+		(at 270.51 386.08 180)
+		(effects (font (size 1 1)))
+		(uuid "71dbeb31-cb41-5fe9-8101-564c27a3f322")
+	)
+	(wire
+		(pts
+			(xy 274.32 388.62) (xy 270.51 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "130eebde-ad38-5e8b-ab74-1470437cb8d6")
+	)
+	(label "GND"
+		(at 270.51 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "f8efd5c6-90a8-5d82-af75-ac3b2c312f72")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 335.28 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "32d4bb1b-d5db-521c-b047-03a336dd3c07")
+		(property "Reference" "P8"
+			(at 335.28 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 socket (mates P4)"
+			(at 335.28 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 335.28 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 335.28 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 335.28 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "c39e582e-0ca2-5113-9de0-cce0de1f00e9"))
+		(pin "2" (uuid "43ffc9ef-0a71-5d24-b2cd-2bf36cbe7995"))
+		(pin "3" (uuid "76fa7a3e-7f54-52a1-9075-f0b028ea1721"))
+		(pin "4" (uuid "226d8a6a-bdc3-5efc-a2d3-38cc187d2a67"))
+		(pin "5" (uuid "4eda4658-4a5f-5517-94b1-54b943782176"))
+		(pin "6" (uuid "7db10613-7a92-50f4-a443-8e8fa57d1b36"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 330.2 375.92) (xy 326.39 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "c3ab10d0-3b61-59be-b550-ecd3af0afa5c")
+	)
+	(label "+12V"
+		(at 326.39 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "ee697d7d-2fd6-5930-b025-db2fa63dea53")
+	)
+	(wire
+		(pts
+			(xy 330.2 378.46) (xy 326.39 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "63cfb133-58ba-5c94-8d95-31719b96e677")
+	)
+	(label "REFP_W"
+		(at 326.39 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "c3e01afd-f203-5237-ac34-ee0a34f6693a")
+	)
+	(no_connect
+		(at 330.2 381.0)
+		(uuid "ccad53f9-f6c8-5a7e-a9f7-56b84a5d7fd7")
+	)
+	(wire
+		(pts
+			(xy 330.2 383.54) (xy 326.39 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "8f888edd-e377-504b-8320-9d52d3012761")
+	)
+	(label "REFN_TOP"
+		(at 326.39 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "50267c89-2d97-5b3e-bf1b-209c3f73ef6f")
+	)
+	(wire
+		(pts
+			(xy 330.2 386.08) (xy 326.39 386.08)
+		)
+		(stroke (width 0) (type default))
+		(uuid "96575cdb-d82b-5f16-b19d-31d9f2195814")
+	)
+	(label "LAD3_TOP"
+		(at 326.39 386.08 180)
+		(effects (font (size 1 1)))
+		(uuid "dd3efd7b-d2a1-595a-9e62-249939d40aa0")
+	)
+	(wire
+		(pts
+			(xy 330.2 388.62) (xy 326.39 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "c9108b09-279b-5e72-b94a-60d3313c6467")
+	)
+	(label "GND"
+		(at 326.39 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "0ba72699-326c-5917-a324-a6f6084cadf0")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 391.16 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "caff26b7-8ed2-533c-89e4-7c1e0e4dc156")
+		(property "Reference" "P5"
+			(at 391.16 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 pin header (mates P9)"
+			(at 391.16 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+			(at 391.16 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 391.16 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 391.16 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "20b937fb-a0fc-5295-8bfc-40e850dd384b"))
+		(pin "2" (uuid "e2b6a210-ef25-5249-845c-1548f7d3536d"))
+		(pin "3" (uuid "bfc55039-71e1-5a8e-a914-1604e35ba625"))
+		(pin "4" (uuid "dd61c20d-5392-5a14-b8d7-601533cc705d"))
+		(pin "5" (uuid "1d1c1046-1e5c-55aa-8764-4e76ab191e1c"))
+		(pin "6" (uuid "6f89e692-1506-57c8-bc33-996c229d6e2f"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 386.08 375.92) (xy 382.27 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "42851231-7d7b-50b3-8c07-7dfe066a8eab")
+	)
+	(label "S4_5th"
+		(at 382.27 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "8d489112-eb3f-5c87-90d9-3a18d64ba035")
+	)
+	(wire
+		(pts
+			(xy 386.08 378.46) (xy 382.27 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "f271dd0c-1bd3-5767-a2bb-be017f316fbb")
+	)
+	(label "S3_4th"
+		(at 382.27 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "7f1090b8-5e77-51e9-b1b7-23b2b4faa04c")
+	)
+	(wire
+		(pts
+			(xy 386.08 381.0) (xy 382.27 381.0)
+		)
+		(stroke (width 0) (type default))
+		(uuid "40be9863-6707-547f-a19a-86bd68f36ca2")
+	)
+	(label "LAD4_TOP"
+		(at 382.27 381.0 180)
+		(effects (font (size 1 1)))
+		(uuid "9378c1fe-e5a6-5ef8-8311-a25401a3c559")
+	)
+	(wire
+		(pts
+			(xy 386.08 383.54) (xy 382.27 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "19154c3e-619f-5f72-9735-9494c88953b0")
+	)
+	(label "REFN_W"
+		(at 382.27 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "bd1093a3-a54e-586c-8faf-42b53f549b32")
+	)
+	(no_connect
+		(at 386.08 386.08)
+		(uuid "7d335c6b-1948-53b5-9414-989a2fce17b6")
+	)
+	(wire
+		(pts
+			(xy 386.08 388.62) (xy 382.27 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "5bd97332-6ce1-58f4-b08b-8d51ed3cfe62")
+	)
+	(label "GND"
+		(at 382.27 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "f38c056e-9a5b-5383-b94d-49dc1cdd0900")
+	)
+	(symbol
+		(lib_id "adder:HDR1x6")
+		(at 447.04 382.27 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "41c94a9b-2a8c-55f1-bc7c-bf8452daab00")
+		(property "Reference" "P9"
+			(at 447.04 370.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1x6 socket (mates P5)"
+			(at 447.04 393.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 447.04 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Datasheet" ""
+			(at 447.04 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Description" ""
+			(at 447.04 382.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1.27 1.27)))
+		)
+		(pin "1" (uuid "da4588cb-da40-55d7-a9f0-9f76b7bdc54d"))
+		(pin "2" (uuid "3882375c-8174-5afd-abb3-6ce5cffa60a9"))
+		(pin "3" (uuid "8d13ceff-131d-58b1-9c08-428d3ff8c659"))
+		(pin "4" (uuid "42d19919-d546-5ff5-8f98-30a54c460148"))
+		(pin "5" (uuid "b77ebe62-4d5b-5191-90c5-a40e83028e8e"))
+		(pin "6" (uuid "e6c5a1df-8a76-5987-a6e5-5a0561b0601e"))
+		(instances
+			(project "v3-adder"
+				(path "/8f1c0b1e-0000-4000-8000-000000000001"
+					(reference "P9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 441.96 375.92) (xy 438.15 375.92)
+		)
+		(stroke (width 0) (type default))
+		(uuid "78db7bdd-9fe6-5765-8ebd-162571591ee2")
+	)
+	(label "S4_5th"
+		(at 438.15 375.92 180)
+		(effects (font (size 1 1)))
+		(uuid "35dacbcd-3b87-5314-9b67-9c20c4fd7ea7")
+	)
+	(wire
+		(pts
+			(xy 441.96 378.46) (xy 438.15 378.46)
+		)
+		(stroke (width 0) (type default))
+		(uuid "5a19582e-38c5-5630-9e73-bb74e7602daa")
+	)
+	(label "S3_4th"
+		(at 438.15 378.46 180)
+		(effects (font (size 1 1)))
+		(uuid "3f2d0819-3e28-5da5-ba97-f3b296ac41a5")
+	)
+	(wire
+		(pts
+			(xy 441.96 381.0) (xy 438.15 381.0)
+		)
+		(stroke (width 0) (type default))
+		(uuid "13e79d5b-8629-5f28-95d5-6a0f3a108df7")
+	)
+	(label "LAD4_TOP"
+		(at 438.15 381.0 180)
+		(effects (font (size 1 1)))
+		(uuid "cf146b8b-b49b-5bfb-a98e-1138f6a76106")
+	)
+	(wire
+		(pts
+			(xy 441.96 383.54) (xy 438.15 383.54)
+		)
+		(stroke (width 0) (type default))
+		(uuid "6a44fc21-110e-592f-80a9-0e2ce68ea096")
+	)
+	(label "REFN_W"
+		(at 438.15 383.54 180)
+		(effects (font (size 1 1)))
+		(uuid "f04f8164-fc07-5b94-98df-1e6fce75618d")
+	)
+	(no_connect
+		(at 441.96 386.08)
+		(uuid "eef7a4cf-fad1-5e55-a5e7-118df38f5aad")
+	)
+	(wire
+		(pts
+			(xy 441.96 388.62) (xy 438.15 388.62)
+		)
+		(stroke (width 0) (type default))
+		(uuid "41b88478-7f16-5ba7-a5ba-8570a3ac005f")
+	)
+	(label "GND"
+		(at 438.15 388.62 180)
+		(effects (font (size 1 1)))
+		(uuid "fda99360-709a-570f-aa2e-8f22278e0c7b")
 	)
 	(sheet_instances
 		(path "/"
