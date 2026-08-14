@@ -488,68 +488,187 @@ def arc_points(cx, cy, r, a0, a1):
     return p(a0), p((a0 + a1) / 2), p(a1)
 
 
+# KiCad 10's board format, written out here rather than left to KiCad's
+# upgrade-on-open. Opening the 20221018 file this script used to emit rewrote
+# 1939 lines the first time the panel was loaded in 10.0, after which the
+# generator could no longer reproduce its own output. Note the layer numbers
+# are 10.0's and differ from the old ones: B.Cu moved 31 -> 2, F.SilkS 37 -> 5,
+# B.SilkS 36 -> 7, F.Mask 39 -> 1, B.Mask 38 -> 3, Edge.Cuts 44 -> 25,
+# Margin 45 -> 27. Courtyard layers are new; KiCad adds them regardless.
+BOARD_VERSION = 20260206
+BOARD_LAYERS = [
+    '(0 "F.Cu" signal)',
+    '(2 "B.Cu" signal)',
+    '(5 "F.SilkS" user "F.Silkscreen")',
+    '(7 "B.SilkS" user "B.Silkscreen")',
+    '(1 "F.Mask" user)',
+    '(3 "B.Mask" user)',
+    '(25 "Edge.Cuts" user)',
+    '(27 "Margin" user)',
+    '(31 "F.CrtYd" user "F.Courtyard")',
+    '(29 "B.CrtYd" user "B.Courtyard")',
+]
+
+# Verbatim from a KiCad 10 save of this panel. It is pure plot boilerplate and
+# none of it is ours, but emitting it keeps a regen from wiping the gerber
+# output directory back to blank every time the panel is rebuilt.
+BOARD_SETUP = """\
+	(setup
+		(pad_to_mask_clearance 0)
+		(allow_soldermask_bridges_in_footprints no)
+		(tenting
+			(front yes)
+			(back yes)
+		)
+		(covering
+			(front no)
+			(back no)
+		)
+		(plugging
+			(front no)
+			(back no)
+		)
+		(capping no)
+		(filling no)
+		(pcbplotparams
+			(layerselection 0x00000000_00000000_55555555_575555ff)
+			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
+			(disableapertmacros no)
+			(usegerberextensions no)
+			(usegerberattributes yes)
+			(usegerberadvancedattributes yes)
+			(creategerberjobfile yes)
+			(dashed_line_dash_ratio 12)
+			(dashed_line_gap_ratio 3)
+			(svgprecision 4)
+			(plotframeref no)
+			(mode 1)
+			(useauxorigin no)
+			(pdf_front_fp_property_popups yes)
+			(pdf_back_fp_property_popups yes)
+			(pdf_metadata yes)
+			(pdf_single_document no)
+			(dxfpolygonmode yes)
+			(dxfimperialunits yes)
+			(dxfusepcbnewfont yes)
+			(psnegative no)
+			(psa4output no)
+			(plot_black_and_white yes)
+			(sketchpadsonfab no)
+			(plotpadnumbers no)
+			(hidednponfab no)
+			(sketchdnponfab yes)
+			(crossoutdnponfab yes)
+			(subtractmaskfromsilk no)
+			(outputformat 1)
+			(mirror no)
+			(drillshape 0)
+			(scaleselection 1)
+			(outputdirectory "adder_panel_gerbers/")
+		)
+	)"""
+
+
+def num(v):
+    """Format a coordinate the way KiCad does: no trailing zeros, no '.0'."""
+    s = f"{float(v):.4f}".rstrip("0").rstrip(".")
+    return s if s not in ("", "-0") else "0"
+
+
 def kicad(path):
     ox, oy = ORIGIN
-    def X(v): return round(v + ox, 4)
-    def Y(v): return round(v + oy, 4)
+    def X(v): return num(v + ox)
+    def Y(v): return num(v + oy)
     # Deterministic, so regenerating an unchanged panel is a no-op diff rather
-    # than rewriting every line with fresh random ids.
+    # than rewriting every line with fresh random ids. KiCad preserves these
+    # across a save, so a hand-edited panel keeps the same ids we gave it.
     ns = uuid.UUID("6f1a2c30-0000-4000-8000-000000000001")
     n = [0]
 
     def tid():
         n[0] += 1
-        return f'(tstamp {uuid.uuid5(ns, str(n[0]))})'
+        return f'\t\t(uuid "{uuid.uuid5(ns, str(n[0]))}")'
 
-    out = ['(kicad_pcb (version 20221018) (generator "gen_panel.py")',
-           '  (general (thickness 1.6))',
-           '  (paper "A4")',
-           '  (layers',
-           '    (0 "F.Cu" signal)',
-           '    (31 "B.Cu" signal)',
-           '    (36 "B.SilkS" user "B.Silkscreen")',
-           '    (37 "F.SilkS" user "F.Silkscreen")',
-           '    (38 "B.Mask" user)',
-           '    (39 "F.Mask" user)',
-           '    (44 "Edge.Cuts" user)',
-           '    (45 "Margin" user)',
-           '  )',
-           '  (setup (pad_to_mask_clearance 0))',
-           '  (net 0 "")']
+    def stroke(w):
+        return f"\t\t(stroke\n\t\t\t(width {num(w)})\n\t\t\t(type solid)\n\t\t)"
 
-    for x0, y0, x1, y1 in cuts_lines:
-        out.append(f'  (gr_line (start {X(x0)} {Y(y0)}) (end {X(x1)} {Y(y1)}) '
-                   f'(stroke (width 0.05) (type solid)) (layer "Edge.Cuts") {tid()})')
-    for cx, cy, r, a0, a1 in cuts_arcs:
+    def line(x0, y0, x1, y1, w, layer):
+        return ("\t(gr_line\n"
+                f"\t\t(start {X(x0)} {Y(y0)})\n"
+                f"\t\t(end {X(x1)} {Y(y1)})\n"
+                f"{stroke(w)}\n"
+                f'\t\t(layer "{layer}")\n'
+                f"{tid()}\n\t)")
+
+    def arc(cx, cy, r, a0, a1, w, layer):
         s, m, e = arc_points(cx, cy, r, a0, a1)
-        out.append(f'  (gr_arc (start {X(s[0])} {Y(s[1])}) (mid {X(m[0])} {Y(m[1])}) '
-                   f'(end {X(e[0])} {Y(e[1])}) (stroke (width 0.05) (type solid)) '
-                   f'(layer "Edge.Cuts") {tid()})')
+        return ("\t(gr_arc\n"
+                f"\t\t(start {X(s[0])} {Y(s[1])})\n"
+                f"\t\t(mid {X(m[0])} {Y(m[1])})\n"
+                f"\t\t(end {X(e[0])} {Y(e[1])})\n"
+                f"{stroke(w)}\n"
+                f'\t\t(layer "{layer}")\n'
+                f"{tid()}\n\t)")
+
+    def circle(cx, cy, r, w, layer):
+        return ("\t(gr_circle\n"
+                f"\t\t(center {X(cx)} {Y(cy)})\n"
+                f"\t\t(end {X(cx + r)} {Y(cy)})\n"
+                f"{stroke(w)}\n"
+                "\t\t(fill no)\n"
+                f'\t\t(layer "{layer}")\n'
+                f"{tid()}\n\t)")
+
+    def label(glyph, cx, baseline, size):
+        thick = num(max(0.15, size * 0.15))
+        return (f'\t(gr_text "{glyph}"\n'
+                f"\t\t(at {X(cx)} {Y(baseline - size / 2)} 0)\n"
+                '\t\t(layer "F.SilkS")\n'
+                f"{tid()}\n"
+                "\t\t(effects\n"
+                "\t\t\t(font\n"
+                f"\t\t\t\t(size {num(size)} {num(size)})\n"
+                f"\t\t\t\t(thickness {thick})\n"
+                "\t\t\t)\n"
+                "\t\t)\n"
+                "\t)")
+
+    out = ["(kicad_pcb",
+           f"\t(version {BOARD_VERSION})",
+           '\t(generator "gen_panel.py")',
+           '\t(generator_version "10.0")',
+           "\t(general",
+           "\t\t(thickness 1.6)",
+           "\t\t(legacy_teardrops no)",
+           "\t)",
+           '\t(paper "A4")',
+           "\t(layers"]
+    out += [f"\t\t{l}" for l in BOARD_LAYERS]
+    out.append("\t)")
+    out.append(BOARD_SETUP.rstrip("\n"))
+
+    # Emission order is this script's, not KiCad's -- KiCad reorders on save by
+    # its own spatial index, which is not reproducible and does not matter. What
+    # does matter is that the order here never changes, because the uuids are
+    # handed out in it.
+    for x0, y0, x1, y1 in cuts_lines:
+        out.append(line(x0, y0, x1, y1, 0.05, "Edge.Cuts"))
+    for cx, cy, r, a0, a1 in cuts_arcs:
+        out.append(arc(cx, cy, r, a0, a1, 0.05, "Edge.Cuts"))
     for cx, cy, r in cuts_circles:
-        out.append(f'  (gr_circle (center {X(cx)} {Y(cy)}) (end {X(cx + r)} {Y(cy)}) '
-                   f'(stroke (width 0.05) (type solid)) (fill none) '
-                   f'(layer "Edge.Cuts") {tid()})')
+        out.append(circle(cx, cy, r, 0.05, "Edge.Cuts"))
 
     for x0, y0, x1, y1, w in silk_lines:
-        out.append(f'  (gr_line (start {X(x0)} {Y(y0)}) (end {X(x1)} {Y(y1)}) '
-                   f'(stroke (width {w}) (type solid)) (layer "F.SilkS") {tid()})')
+        out.append(line(x0, y0, x1, y1, w, "F.SilkS"))
     for cx, cy, r, a0, a1, w in silk_arcs:
-        s, m, e = arc_points(cx, cy, r, a0, a1)
-        out.append(f'  (gr_arc (start {X(s[0])} {Y(s[1])}) (mid {X(m[0])} {Y(m[1])}) '
-                   f'(end {X(e[0])} {Y(e[1])}) (stroke (width {w}) (type solid)) '
-                   f'(layer "F.SilkS") {tid()})')
+        out.append(arc(cx, cy, r, a0, a1, w, "F.SilkS"))
     for cx, cy, r, w, _ in silk_circles:
-        out.append(f'  (gr_circle (center {X(cx)} {Y(cy)}) (end {X(cx + r)} {Y(cy)}) '
-                   f'(stroke (width {w}) (type solid)) (fill none) '
-                   f'(layer "F.SilkS") {tid()})')
+        out.append(circle(cx, cy, r, w, "F.SilkS"))
     for ch, cx, baseline, size in chars:
-        thick = round(max(0.15, size * 0.15), 3)
-        glyph = ch.replace("−", "-")
-        out.append(f'  (gr_text "{glyph}" (at {X(cx)} {Y(baseline - size / 2)}) '
-                   f'(layer "F.SilkS") {tid()}'
-                   f' (effects (font (size {size} {size}) (thickness {thick}))))')
+        out.append(label(ch.replace("\u2212", "-"), cx, baseline, size))
 
-    out.append(')')
+    out.append("\t(embedded_fonts no)")
+    out.append(")")
     with open(path, "w") as f:
         f.write("\n".join(out) + "\n")
 
