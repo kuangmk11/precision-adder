@@ -1,0 +1,30 @@
+(version 1)
+
+# Advisory spacing around the high-impedance precision nets.
+#
+# The ladder taps, summing junctions, feedback junctions and reference divider
+# sit at 10k-30k. Leakage from one of those nodes to a DC rail is a constant
+# offset, and on 1V/oct 1 mV is 1.2 cents -- so it is worth keeping them off the
+# rails and the GND pour where the routing allows it.
+#
+# WARNING, not error, deliberately. On a clean board this is a second-order
+# effect: FR4 surface insulation resistance runs past 1e12 ohm, which at 30k
+# source impedance is nanovolts. It only bites with ionic contamination --
+# unwashed no-clean flux in humid air can drop SIR to ~1e9 ohm, and even then
+# the error is well under a cent. Washing the board after hand soldering does
+# more for this than any spacing rule. So: obey it where it is free, ignore it
+# where 4 HP says no.
+#
+# Scoped to rails and GND only. Leakage between two high-Z nets is not a
+# systematic error the way leakage to a fixed potential is.
+#
+# This CANNOT be expressed as a HighZ netclass clearance. Netclass clearance is
+# a floor against every object including the neighbouring pads of the part the
+# net lands on, and SOIC-14 on 1.27 mm pitch leaves only a 0.67 mm gap between
+# pads -- anything above ~0.2 mm would make the op-amp fanout permanently
+# DRC-violating. Excluding pads keeps the escapes legal.
+
+(rule "high_z_spacing"
+	(severity warning)
+	(constraint clearance (min 0.4mm))
+	(condition "A.NetClass == 'HighZ' && (B.NetClass == 'Power' || B.NetName == 'GND') && A.Type != 'Pad' && B.Type != 'Pad'"))
