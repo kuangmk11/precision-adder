@@ -50,12 +50,39 @@ A matched pair matters more than the marked value.
 |---:|---|---|---|---|
 | 7 | 0.1uF | X7R | C8, C11–C16 | `Capacitor_SMD:C_1206_3216Metric` |
 | 4 | 330pF | C0G | C17–C20 | `Capacitor_SMD:C_1206_3216Metric` |
-| 4 | 10uF | electrolytic | C1, C3, C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
+| 2 | 10uF | electrolytic, **≤7 mm tall** | C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
+| 2 | 10uF | electrolytic, any height | C1, C3 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
 | 2 | 0.33uF | X7R | C5, C7 | `Capacitor_SMD:C_1206_3216Metric` |
 | 2 | 100pF | C0G | C2, C4 | `Capacitor_SMD:C_1206_3216Metric` |
 | 1 | 0.01uF | X7R | C6 | `Capacitor_SMD:C_1206_3216Metric` |
 
 C0G on the snubbers and the HF supply caps; X7R elsewhere is fine.
+
+**C9 and C10 must be low-profile cans; C1 and C3 need not be.** The two boards
+are stacked, and the only parts inside the gap are the ones on the control
+board's rear face — which is where C9 and C10 live. C1 and C3 sit on the trimmer
+board's rear, facing the back of the case, where nothing constrains them.
+
+The gap is set by the interconnect: an 8.50 mm socket body plus the 2.54 mm
+plastic of the mating header puts the two boards **11.04 mm** apart. That is the
+whole budget for anything on the control board's rear, and the parts already
+there use:
+
+| | height above board |
+|---|---|
+| U4, U5 — TO-92 | 7.30 mm |
+| C9, C10 — as modelled | 5.00 mm |
+| U1–U3 — SOIC-14 | 1.75 mm |
+| 1206 SMD | ~0.95 mm |
+
+A 5 mm-diameter 10 µF is commonly sold as a **5 × 11 mm** can, which lands
+exactly on 11.04 mm with no clearance at all — it will foul the trimmer board.
+The 5 mm part the 3D model shows leaves 6 mm. Anything up to 7 mm is safe;
+past that the margin is not worth having.
+
+Worth noting that C9 and C10 are the same two flagged above as wanting tantalum
+for their ESR, since they hang off the reference buffer outputs. An SMD tantalum
+in EIA-3528 is about 2.1 mm tall and settles both problems at once.
 
 ## Semiconductors
 
