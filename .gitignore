@@ -18,6 +18,10 @@ docs/*.jsonl
 # KiCad automatic schematic/board backups
 *-backups/
 
+# manual "save as" copies kept alongside the real file
+* - bak.*
+*-bak.*
+
 # python bytecode
 __pycache__/
 *.pyc
