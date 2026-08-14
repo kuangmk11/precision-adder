@@ -50,7 +50,7 @@ A matched pair matters more than the marked value.
 |---:|---|---|---|---|
 | 7 | 0.1uF | X7R | C8, C11–C16 | `Capacitor_SMD:C_1206_3216Metric` |
 | 4 | 330pF | C0G | C17–C20 | `Capacitor_SMD:C_1206_3216Metric` |
-| 2 | 10uF | electrolytic, **≤7 mm tall** | C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
+| 2 | 10uF | electrolytic, **≤7 mm tall, ESR ≥1 Ω** | C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
 | 2 | 10uF | electrolytic, any height | C1, C3 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
 | 2 | 0.33uF | X7R | C5, C7 | `Capacitor_SMD:C_1206_3216Metric` |
 | 2 | 100pF | C0G | C2, C4 | `Capacitor_SMD:C_1206_3216Metric` |
@@ -80,9 +80,45 @@ exactly on 11.04 mm with no clearance at all — it will foul the trimmer board.
 The 5 mm part the 3D model shows leaves 6 mm. Anything up to 7 mm is safe;
 past that the margin is not worth having.
 
-Worth noting that C9 and C10 are the same two flagged above as wanting tantalum
-for their ESR, since they hang off the reference buffer outputs. An SMD tantalum
-in EIA-3528 is about 2.1 mm tall and settles both problems at once.
+### C9 and C10 need ESR, and "low ESR" is the wrong part
+
+They hang directly off U3's reference buffer outputs, wired as unity-gain
+followers — the worst case for capacitive load. **The OPA4196 is rated to drive
+1 nF bare. These are 10 µF, ten thousand times that.** The capacitor's own ESR is
+what keeps that loop stable, so it is a specified parameter here, not a defect to
+be minimised.
+
+TI's Table 3 (SBOS869) gives the series resistance needed for a given phase
+margin, and stops characterising at 1 µF:
+
+| C load | 100 pF | 1 nF | 10 nF | 100 nF | 1 µF |
+|---|---|---|---|---|---|
+| R for 45° | 280 Ω | 113 Ω | 68 Ω | 17.8 Ω | 3.6 Ω |
+| R for 60° | — | 432 Ω | 210 Ω | 53.6 Ω | 10 Ω |
+
+Extrapolating one decade puts 10 µF at roughly **0.8 Ω for 45° and 2.2 Ω for
+60°**. Against what each capacitor type actually offers:
+
+| Type, 10 µF | ESR | |
+|---|---|---|
+| ceramic X7R 1210 | 2–10 mΩ | ~200× too low |
+| polymer tantalum, polymer aluminium | 20–100 mΩ | still far too low |
+| **MnO2 tantalum, EIA-3528** | 0.5–3 Ω | in range |
+| **aluminium electrolytic, 5 mm** | 1–3 Ω | in range |
+
+So **do not substitute a ceramic, a polymer tantalum, or a "low ESR" aluminium
+part here.** All three are marketed as upgrades and all three remove the damping.
+An ordinary MnO2 tantalum in EIA-3528 is 2.1 mm tall and satisfies the height
+limit and the ESR requirement together.
+
+The ESR must be in the capacitor rather than a discrete resistor, even though TI
+recommends the resistor. An isolation resistor sits between the amplifier output
+and *everything*, so the ladder current flows through it: worst case is four
+30 kΩ ladders selecting the positive reference, 333 µA. At the 10 Ω TI lists for
+1 µF that is 3.3 mV of reference shift, moving the `OCT_2V` tap by 3.2 cents —
+and the shift tracks how many switches point up, so it is not a fixed offset and
+cannot be trimmed out. The capacitor's ESR carries no DC load current at all,
+because the ladders connect to the amplifier output directly.
 
 ## Semiconductors
 
