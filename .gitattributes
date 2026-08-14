@@ -14,3 +14,10 @@ sym-lib-table text eol=lf
 *.sh         text eol=lf
 *.md         text eol=lf
 *.svg        text eol=lf
+
+# STEP is ASCII, so git would happily eol-normalise and try to diff it. These
+# are machine-written and regenerate wholesale; a multi-megabyte textual diff
+# helps nobody, and normalising a vendor model risks changing bytes we did not
+# author. Treat them as opaque.
+*.stp        binary
+*.step       binary
