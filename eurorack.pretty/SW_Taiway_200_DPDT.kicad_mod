@@ -132,7 +132,7 @@
 		(uuid "7c2a3d70-4e2b-4b3f-8d2e-1b3a5c9f1e26")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/3d/200MDPxT2B1M2xE.stp"
+	(model "${KIPRJMOD}/../eurorack.3dshapes/200MDPxT2B1M2xE.stp"
 		(offset
 			(xyz 0 0 0)
 		)

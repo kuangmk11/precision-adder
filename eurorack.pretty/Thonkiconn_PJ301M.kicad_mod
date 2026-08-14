@@ -236,7 +236,7 @@
 		(uuid "f7bdc3e5-4e07-4f8a-9c69-33fa3a1ba542")
 	)
 	(embedded_fonts no)
-	(model "${KIPRJMOD}/3d/PJ301M-12 Thonkiconn v0.2.stp"
+	(model "${KIPRJMOD}/../eurorack.3dshapes/PJ301M-12 Thonkiconn v0.2.stp"
 		(offset
 			(xyz 0 0 0)
 		)

@@ -108,4 +108,15 @@
 		(uuid "9d4b5e80-6a3c-4c5d-9e4f-2c4b6d0a2f23")
 	)
 	(embedded_fonts no)
+	(model "${KIPRJMOD}/../eurorack.3dshapes/200MSPxT2B1M2xE.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )
