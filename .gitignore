@@ -28,3 +28,9 @@ __pycache__/
 
 # KiCad lock files (present while a project is open)
 ~*.lck
+
+# KiCad 3D board export: 9 MB, regenerable with
+#   kicad-cli pcb export step docs/v3-adder.kicad_pcb
+# and it changes wholesale on every board edit. The panel export is small
+# enough to keep; this one is not.
+docs/boards.step
