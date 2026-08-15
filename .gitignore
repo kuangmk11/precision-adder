@@ -6,9 +6,24 @@ docs/*.jsonl
 
 # machine-local Claude Code settings
 .claude/settings.local.json
+.claude/*.local.json
 
 # VS Code Local History
 .history/
+
+# other editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS / filesystem junk
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
 
 # KiCad ERC/DRC output from tools/kicad-check.sh
 .kicadcheck/
@@ -29,6 +44,15 @@ __pycache__/
 
 # KiCad lock files (present while a project is open)
 ~*.lck
+*.lck
+
+# KiCad autosave, fp cache, generated reports, routing exchange
+_autosave-*
+fp-info-cache
+*-erc.rpt
+*-drc.rpt
+*.dsn
+*.ses
 
 # KiCad 3D board export: 9 MB, regenerable with
 #   kicad-cli pcb export step docs/v3-adder.kicad_pcb
