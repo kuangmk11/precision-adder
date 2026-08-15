@@ -3,8 +3,21 @@ This is a precision CV source and adder. It has four stages, each with an input,
 
 Each section provides a different voltage to be added to the input: +/- 2v, +/- 1v, +/- .5833333v (a fifth), +/- .4166666v (a fourth)
 
-<img src="adder-front.JPG" width=210>
-<img src="adder-side.JPG" width=210>
+<img src="reference/adder-front.JPG" width=210>
+<img src="reference/adder-side.JPG" width=210>
+
+## The v2.2 reference build
+
+Everything shipped for the built v2.2 board now lives in [`reference/`](reference/): its
+schematic PDF, the three gerber archives, the EasyEDA bill of materials and the photos
+above. That revision is finished and is not being changed — the directory is there so the
+built design stays available for anyone assembling a v2.2, and as the thing v3 is measured
+against.
+
+Two v2.2 documents deliberately stay outside it. [`docs/v2.2-topology.md`](docs/v2.2-topology.md)
+is the ladder maths read off the v2.2 schematic, and it is a live input to v3 rather than an
+artifact of the old build — `tools/gen_schematic.py` works from it, and `docs/v3-BOM.md`
+verifies against it. [`docs/DESIGN-LOG.md`](docs/DESIGN-LOG.md) spans both revisions.
 
 ## Available intervals
 
@@ -240,6 +253,20 @@ toggles, trimmers, ferrites, the Eurorack header. Those footprints are yours to 
 a name that does not resolve is a more honest placeholder than a wrong one that does. Stock
 KiCad footprints are used everywhere they exist, so the passives, op-amps, regulators and
 diodes resolve on any install.
+
+### Bill of materials
+
+[`docs/v3-BOM.md`](docs/v3-BOM.md) is the parts list, with the tolerance reasoning for every
+line. [`docs/BOM_v3_DigiKey.csv`](docs/BOM_v3_DigiKey.csv) alongside it is an upload-ready
+DigiKey list covering 93 of the parts; its sourcing notes are the last section of `v3-BOM.md`.
+
+Three things are worth knowing before ordering. The **E24 values this design depends on are
+stocked in 0.1 %** — Panasonic's ERA-8 series has both the 3.00k and the 12.0k, so choosing E24
+over E96 for the exact 3:1 ratio costs nothing in availability. The **ON-ON-ON DPDT has no
+DigiKey equivalent** in this form factor and must come from a synth DIY shop, along with the
+jacks and the axial ferrites. And **C9/C10 need a decision**: the MnO2 tantalum that satisfies
+the ESR requirement is a surface-mount part, which does not fit the through-hole footprint the
+BOM currently specifies for them.
 
 #### Switches
 

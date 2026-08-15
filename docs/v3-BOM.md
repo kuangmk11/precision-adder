@@ -50,8 +50,8 @@ A matched pair matters more than the marked value.
 |---:|---|---|---|---|
 | 7 | 0.1uF | X7R | C8, C11–C16 | `Capacitor_SMD:C_1206_3216Metric` |
 | 4 | 330pF | C0G | C17–C20 | `Capacitor_SMD:C_1206_3216Metric` |
-| 2 | 10uF | electrolytic, **≤7 mm tall, ESR ≥1 Ω** | C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
-| 2 | 10uF | electrolytic, any height | C1, C3 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
+| 2 | 10uF | electrolytic, **ESR ≥1 Ω, mount lying flat** | C9, C10 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
+| 2 | 10uF | electrolytic, any height, mounts upright | C1, C3 | `Capacitor_THT:CP_Radial_D5.0mm_P2.00mm` |
 | 2 | 0.33uF | X7R | C5, C7 | `Capacitor_SMD:C_1206_3216Metric` |
 | 2 | 100pF | C0G | C2, C4 | `Capacitor_SMD:C_1206_3216Metric` |
 | 1 | 0.01uF | X7R | C6 | `Capacitor_SMD:C_1206_3216Metric` |
@@ -75,10 +75,14 @@ there use:
 | U1–U3 — SOIC-14 | 1.75 mm |
 | 1206 SMD | ~0.95 mm |
 
-A 5 mm-diameter 10 µF is commonly sold as a **5 × 11 mm** can, which lands
-exactly on 11.04 mm with no clearance at all — it will foul the trimmer board.
-The 5 mm part the 3D model shows leaves 6 mm. Anything up to 7 mm is safe;
-past that the margin is not worth having.
+A 5 mm-diameter 10 µF is sold as a **5 × 11 mm** can, and 11 mm against 11.04 mm
+is no clearance at all — stood upright it will foul the trimmer board. There is
+no shorter part to buy; every stocked 5 mm 10 µF is 11 mm or longer.
+
+**So C9 and C10 are laid flat**, leads bent 90° at the board, the can resting on
+the control board's rear face. On its side the same part is 5.00 mm tall — the
+figure in the table above — which leaves 6 mm of clearance. Anything up to 7 mm
+is safe; past that the margin is not worth having.
 
 ### C9 and C10 need ESR, and "low ESR" is the wrong part
 
@@ -108,8 +112,9 @@ Extrapolating one decade puts 10 µF at roughly **0.8 Ω for 45° and 2.2 Ω for
 
 So **do not substitute a ceramic, a polymer tantalum, or a "low ESR" aluminium
 part here.** All three are marketed as upgrades and all three remove the damping.
-An ordinary MnO2 tantalum in EIA-3528 is 2.1 mm tall and satisfies the height
-limit and the ESR requirement together.
+An ordinary aluminium electrolytic — the last row of that table, and what the
+board's through-hole footprint expects — sits squarely in range. Height is dealt
+with by laying the can flat, as above, not by picking a different chemistry.
 
 The ESR must be in the capacitor rather than a discrete resistor, even though TI
 recommends the resistor. An isolation resistor sits between the amplifier output
@@ -246,3 +251,98 @@ above, and the reasoning for picking E24 over E96 stands. Only the label is shor
 zeros are dropped wherever they carry no information — `10.0k` is written `10k`, while `49.9k`,
 `24.3k`, `22.6k` and `5.49k` keep every digit. Tolerance lives in this document, not on the
 silk, which has no room for it at 4 HP.
+
+## Sourcing
+
+[`BOM_v3_DigiKey.csv`](BOM_v3_DigiKey.csv) is an upload-ready DigiKey list covering 93 of the
+parts. Create a list at [digikey.com/en/mylists](https://www.digikey.com/en/mylists) and choose
+the spreadsheet upload option. Every line was checked as Active and in stock on 2026-08-14
+except where noted below; stock moves, so verify before ordering.
+
+**Reconciled against the board** on 2026-08-15. `v3-adder.kicad_pcb` places 109 footprints. The
+CSV's 93 pieces plus the 13 parts listed under *Not on the DigiKey list* below account for 106 of
+them; the remaining 3 are P2–P5, which the board draws as four separate 1×6 headers and the CSV
+buys as a single 1×40 breakaway strip. Every value and quantity in the tables above matches the
+board exactly.
+
+### Resistors
+
+**The E24 gamble paid off.** Panasonic's ERA-8 series carries 0.1 % thin film in 1206 across
+both E24 values this design depends on — `ERA-8AEB302V` for the 3.00k and `ERA-8AEB123V` for
+the 12.0k — with 18.5k and healthy stock respectively. The argument above for choosing E24
+over E96 therefore costs nothing in availability, which was the one thing that could have
+undermined it. All five 0.1 % values come from the same series, so they share a tolerance
+grade, a tempco (±25 ppm/°C) and a supplier.
+
+The 1 % parts are Yageo RC1206 except the 49.9k. Yageo's `RC1206FR-0749K9L` is out of stock
+with a restock date of 2026-08-17, and Panasonic's `ERJ-8ENF4992V` — the obvious substitute —
+is marked **Not For New Designs**, which is the wrong flag for a board that has not been built
+yet. The list uses Vishay `CRCW120649K9FKEA` instead: active, in stock, same price.
+
+The 1.00k appears twice, five at 0.1 % (ladder segments) and five at 1 % (output protection).
+That split is deliberate and follows the tolerance reasoning above. If you would rather buy one
+part than two, ordering all ten as `ERA-8AEB102V` is never wrong — it costs about $0.85 extra.
+
+### C9 and C10 — resolved: electrolytic, laid flat
+
+Earlier revisions of this section argued for an MnO2 tantalum in EIA-3528, which conflicts with
+the footprint. `v3-adder.kicad_pcb` places all four 10 µF positions — C1, C3, C9 and C10 — on the
+same `CP_Radial_D5.0mm_P2.00mm` through-hole footprint, so the board wants a can, not a chip.
+**All four are ordinary aluminium electrolytics: Panasonic `ECA-1VM100`, 10 µF 35 V, 5 mm
+diameter on 2 mm pitch.** No board edit, and one line on the order instead of two.
+
+This satisfies the stability requirement on its own terms. The table above puts a 5 mm aluminium
+electrolytic at 1–3 Ω of ESR, which is the range the phase-margin analysis calls for — the same
+row that made the tantalum acceptable. Nothing about the damping argument changes.
+
+**Height is handled by mounting, not by part selection.** A 5 mm 10 µF can is 5 × 11 mm, and
+11 mm against an 11.04 mm board gap is no clearance at all. So **lay C9 and C10 over** — bend the
+leads 90° at the board and let the cans lie against the control board's rear face. A 5 mm-diameter
+can on its side stands 5.00 mm, which is exactly the figure the height table above already
+budgets for C9/C10, so the design's own numbers assume this. Allow about 12 mm of clear board
+length next to each one for the body to lie in, and orient them away from U4/U5.
+
+C1 and C3 mount normally. They sit on the trimmer board's rear, facing the back of the case,
+where nothing constrains height.
+
+There is no shorter part to buy instead: DigiKey's stocked 5 mm-diameter 10 µF through-hole parts
+start at 5 × 11 mm and run to 5 × 13 mm. Dropping the voltage rating does not shrink the can at
+this capacitance either.
+
+### OPA4196 packaging
+
+`OPA4196IDR` (tape) is out of stock until 2026-09-08. The list uses `OPA4196ID` (tube) at
+$5.36 against the reel part's $4.55. Three of them either way, so the packaging premium is
+about $2.40 — cheaper than waiting, and the tube is easier to handle for hand assembly anyway.
+
+### Not on the DigiKey list
+
+| Qty | Part | Why | Where |
+|---:|---|---|---|
+| 8 | Thonkiconn PJ398SM | Not a DigiKey line | Thonk, Modular Addict |
+| 3 | Taiway `200-MDP6-T1B1M2QE` DPDT ON-ON-ON | See below | Tayda, Love My Switches, Small Bear |
+| 2 | Ferrite bead, axial leaded | See below | Mouser, or substitute |
+
+**The ON-ON-ON DPDT has no DigiKey equivalent.** The three quality selectors are the one switch
+function DigiKey cannot supply in this form factor: its only stocked ON-ON-ON DPDT is a full-size
+part with a 15/32-32 bushing and a right-angle body, and it is not kept in stock either. The
+sub-miniature 10-48 part has to come from a synth DIY shop. The other five switches are fine —
+E-Switch `200MSP3T2B1M2QE` (ON-OFF-ON) and `200MSP1T1B1M2QEH` (ON-ON) are both stocked, in the
+same 10-48 sub-miniature family, and drop onto the Taiway footprints.
+
+Note the suffix: Taiway's part is `T1B1M2QE`, the stocked E-Switch ON-OFF-ON is `T2B1M2QE`.
+The digit is the actuator variant, not the function or the bushing. Check the actuator length
+suits your panel before committing to four of them.
+
+**Axial ferrite beads are effectively not a DigiKey category.** They stock SMD beads and cable
+cores, not the resistor-shaped leaded part the `R_Axial_DIN0207` footprint expects. Mouser
+carries Würth's leaded range. Failing that, the footprint takes any 1/4 W axial body, so a wire
+link or a small-value resistor will complete the board — you lose the HF filtering on the supply
+rails and nothing else.
+
+### Cost
+
+The 0.1 % resistors and the three OPA4196 dominate: roughly $9 of precision resistors and $16 of
+op amps, against about $4 for every 1 % resistor and ceramic on the board. The six trimmers add
+another $14. That distribution is the design working as intended — the money is in the parts that
+set pitch and in the amplifier driving them.

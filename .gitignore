@@ -1,4 +1,5 @@
-BOM_precision-adder-final-v2.2.numbers
+# local Numbers copy of the v2.2 BOM, which lives in reference/ alongside the CSV
+reference/BOM_precision-adder-final-v2.2.numbers
 
 # local session archives (raw Claude Code transcripts)
 docs/*.jsonl
